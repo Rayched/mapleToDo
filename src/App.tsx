@@ -7,83 +7,97 @@
  */
 
 import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 import styled from "styled-components";
 
-const ToDoInputForm = styled.form`
+const ToDoInputForm = styled.form<{isOpen: boolean}>`
   input {
     display: block;
   }
+  display: ${(props) => props.isOpen ? "block" : "none"};
+  margin: 5px 0px;
 `;
 
 interface I_ToDos {
   ToDo?: string;
-  openT?: string;
+  startT?: string;
   endT?: string;
 }
 
 function App(){
   const [ToDos, setToDos] = useState<I_ToDos[]>([]);
-  const [openT, setOpenT] = useState("");
-  const [endT, setCloseT] = useState("");
-  const [Quest, setQuest] = useState("");
+  const [startTime, setStart] = useState("");
+  const [endTime, setEnd] = useState("");
+  const [ToDo, setToDo] = useState("");
+
+  const [isHide, setHide] = useState(false);
+
+  const {} = useForm();
 
   const saveTimes = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if(openT !== "" && endT !== "" && Quest !== ""){
+    if(startTime !== "" && endTime !== "" && ToDo !== ""){
       const ToDoItems: I_ToDos = {
-        ToDo: Quest,
-        openT: openT,
-        endT: endT
+        ToDo: ToDo,
+        startT: startTime,
+        endT: endTime
       }
           
       setToDos((oldToDos) => [...oldToDos, ToDoItems]);
-      setOpenT("");
-      setCloseT("");
-      setQuest("");
+      setStart("");
+      setEnd("");
+      setToDo("");
     } else {
+      alert("일정 정보를 입력하지 않았습니다!");
       return;
     };
   };
 
-  const openT_Change = (event: React.ChangeEvent<HTMLInputElement>) => setOpenT(event.currentTarget.value);
-  const endT_Change = (event: React.ChangeEvent<HTMLInputElement>) => setCloseT(event.currentTarget.value);
-  const Quest_Change = (event: React.ChangeEvent<HTMLInputElement>) => setQuest(event.currentTarget.value);
+  const startT_Change = (event: React.ChangeEvent<HTMLInputElement>) => setStart(event.currentTarget.value);
+  const endT_Change = (event: React.ChangeEvent<HTMLInputElement>) => setEnd(event.currentTarget.value);
+  const ToDo_Change = (event: React.ChangeEvent<HTMLInputElement>) => setToDo(event.currentTarget.value);
+
+  const onClick = () => {
+    setHide(!isHide);
+  }
 
   return (
     <div>
       <h4>일정 입력</h4>
-      <ToDoInputForm onSubmit={saveTimes}>
+      <button onClick={onClick}>{isHide ? "Close" : "Open"}</button>
+      <ToDoInputForm onSubmit={saveTimes} isOpen={isHide}>
         <input 
-          name="openT" 
+          name="Start_Time" 
           type="text" 
-          value={openT} 
-          onChange={openT_Change}
+          value={startTime} 
+          onChange={startT_Change}
           placeholder="시작 시간"
         />
         <input 
           name="endT" 
           type="text" 
-          value={endT}
+          value={endTime}
           onChange={endT_Change}
           placeholder="종료 시간"
         />
         <input 
           name="Quest"
           type="text"
-          value={Quest}
-          onChange={Quest_Change}
+          value={ToDo}
+          onChange={ToDo_Change}
           placeholder="일정을 입력해주세요."
         />
         <button type="submit">일정 추가</button>
       </ToDoInputForm>
       <div>
+        <h4>일정 목록</h4>
         <ul>
         {
           ToDos.map((todo) => {
             return (
               <li>
-                {todo.ToDo} ({todo.openT} ~ {todo.endT})
+                {todo.ToDo} ({todo.startT} ~ {todo.endT})
               </li>
             );
           })
