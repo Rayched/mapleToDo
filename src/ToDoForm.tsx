@@ -28,12 +28,13 @@ const InputForm = styled.form`
 const ToDoList = styled.div``;
 
 function ToDoForm(){
-    const [ToDo, setToDo] = useState<I_ToDo>({});
+    const [ToDo, setToDo] = useState<I_ToDo[]>([]);
 
     const {
         register,
         handleSubmit,
-        setValue
+        setValue,
+        formState
     } = useForm();
 
     const onValid = (data: I_InputData) => {
@@ -43,7 +44,10 @@ function ToDoForm(){
             Doing: data.ToDoInput
         };
 
-        setToDo(ToDoInfo);
+        setToDo((oldToDo) => [...oldToDo, ToDoInfo]);
+
+        //Input 값 초기화
+
         setValue("opT_Hour", "");
         setValue("opT_Minute", "");
         setValue("edT_Hour", "");
@@ -51,7 +55,7 @@ function ToDoForm(){
         setValue("ToDoInput", "");
     };
 
-    console.log(ToDo);
+    console.log(formState.errors);
 
     return (
         <div>
@@ -59,15 +63,26 @@ function ToDoForm(){
                 <span>
                     시작 시간 &nbsp;
                     <input 
-                        type="text" 
+                        type="number" 
                         placeholder="시 / Hour" 
-                        {...register("opT_Hour")}
+                        {...register("opT_Hour", {
+                                required: true,
+                                min: 0,
+                                max: 24,
+                                maxLength: 2
+                            }
+                        )}
                     />
                     &nbsp; : &nbsp;
                     <input 
-                        type="text" 
+                        type="number" 
                         placeholder="분 / Minute"
-                        {...register("opT_Minute")}
+                        {...register("opT_Minute", {
+                            required: true,
+                            min: 0,
+                            max: 59,
+                            maxLength: 2
+                        })}
                     />
                 </span>
                 <span>
@@ -75,13 +90,23 @@ function ToDoForm(){
                     <input 
                         type="text" 
                         placeholder="시 / Hour"
-                        {...register("edT_Hour")}
+                        {...register("edT_Hour", {
+                            required: true,
+                            min: 0,
+                            max: 24,
+                            maxLength: 2
+                        })}
                     />
                     &nbsp; : &nbsp;
                     <input 
                         type="text" 
                         placeholder="분 / Minute"
-                        {...register("edT_Minute")}
+                        {...register("edT_Minute", {
+                            required: true,
+                            min: 0,
+                            max: 59,
+                            maxLength: 2
+                        })}
                     />
                 </span>
                 <span>
@@ -89,17 +114,28 @@ function ToDoForm(){
                     <input 
                         type="text" 
                         placeholder="일정을 입력해주세요."
-                        {...register("ToDoInput")}
+                        {...register("ToDoInput", {
+                            required: true
+                        })}
                     />
                 </span>
                 <button>일정 등록</button>
             </InputForm>
             <ToDoList>
+                <h4>일정 목록</h4>
                 <ul>
                     {
-                        <li>
-                            {ToDo.Doing} ({ToDo.openT} ~ {ToDo.endT})
-                        </li>
+                        ToDo.length === 0 ? null
+                        : (
+                                ToDo.map((todo) => {
+                                    return (
+                                        <li>
+                                            <input type="checkbox"/>
+                                            {todo.Doing} ({todo.openT} ~ {todo.endT})
+                                        </li>
+                                    );
+                                })
+                        )
                     }
                 </ul>
             </ToDoList>
