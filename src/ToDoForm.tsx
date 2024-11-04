@@ -1,7 +1,7 @@
 //To Do List
 //일정 정보를 입력하는 입력 form
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 
@@ -16,7 +16,8 @@ interface I_InputData {
 interface I_ToDo {
     openT?: string;
     endT?: string;
-    Doing?: string;
+    ToDo_text?: string;
+    Category: "To-Do"|"Done";
 };
 
 const InputForm = styled.form`
@@ -25,26 +26,36 @@ const InputForm = styled.form`
     }
 `;
 
-const ToDoList = styled.div``;
+const ToDoList = styled.div`
+
+    .NavBar {
+        display: flex;
+        
+        .Category {
+            padding: 0px 3px;
+            margin: 0px 3px;
+        }
+    };
+`;
 
 function ToDoForm(){
-    const [ToDo, setToDo] = useState<I_ToDo[]>([]);
+    const [ToDos, setToDos] = useState<I_ToDo[]>([]);
 
     const {
         register,
         handleSubmit,
         setValue,
-        formState
     } = useForm();
 
     const onValid = (data: I_InputData) => {
         const ToDoInfo: I_ToDo = {
             openT: data.opT_Hour + ":" + data.opT_Minute,
             endT: data.edT_Hour + ":" + data.edT_Minute,
-            Doing: data.ToDoInput
+            ToDo_text: data.ToDoInput,
+            Category: "To-Do"
         };
 
-        setToDo((oldToDo) => [...oldToDo, ToDoInfo]);
+        setToDos((oldToDo) => [...oldToDo, ToDoInfo]);
 
         //Input 값 초기화
 
@@ -55,7 +66,33 @@ function ToDoForm(){
         setValue("ToDoInput", "");
     };
 
-    console.log(formState.errors);
+    const Change_Categorys = (event: React.MouseEvent<HTMLButtonElement>) => {
+        const {
+            currentTarget: {name}
+        } = event;
+
+        console.log(event);
+
+        setToDos((oldToDos) => {
+            const TargetIndex = ToDos.findIndex((todo) => todo.ToDo_text === name);
+            const FindToDo = oldToDos[TargetIndex];
+
+            const newCategory = FindToDo.Category === "To-Do" ? "Done": "To-Do";
+            
+            const newToDo: I_ToDo = {
+                openT: FindToDo.openT,
+                endT: FindToDo.endT,
+                ToDo_text: FindToDo.ToDo_text,
+                Category: newCategory
+            };
+
+            return [
+                ...oldToDos.slice(0, TargetIndex),
+                newToDo,
+                ...oldToDos.slice(TargetIndex + 1)
+            ];
+        });
+    }
 
     return (
         <div>
@@ -123,15 +160,22 @@ function ToDoForm(){
             </InputForm>
             <ToDoList>
                 <h4>일정 목록</h4>
+                <div className="NavBar">
+                    <span className="Category">진행 중</span>
+                    <span className="Category">완료</span>
+                </div>
                 <ul>
                     {
-                        ToDo.length === 0 ? null
+                        ToDos.length === 0 ? null
                         : (
-                                ToDo.map((todo) => {
+                                ToDos.map((todo) => {
                                     return (
                                         <li>
-                                            <input type="checkbox"/>
-                                            {todo.Doing} ({todo.openT} ~ {todo.endT})
+                                            {todo.ToDo_text} ({todo.openT} ~ {todo.endT})
+                                            / {todo.Category}
+                                            / <button name={todo.ToDo_text} onClick={Change_Categorys}>
+                                                {todo.Category === "To-Do" ? "진행 중" : "완료"}
+                                            </button> 
                                         </li>
                                     );
                                 })
