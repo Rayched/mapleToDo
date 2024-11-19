@@ -6,9 +6,13 @@
  * 일정 입력 form 하단에 지금까지 추가했던 일정들이 나온다.
  */
 
+import DailyPlanner from "./Components/DailyPlanner";
+
 function App(){
   return (
-    <div>재건축 시작</div>
+    <div>
+      <DailyPlanner />
+    </div>
   );
 }
 
