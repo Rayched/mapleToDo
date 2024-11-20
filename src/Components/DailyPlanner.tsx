@@ -1,6 +1,4 @@
-import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { categorys } from "../atoms";
 import { useState } from "react";
 import CreateToDo from "./CreateToDo";
 import ToDoList from "./ToDoList";
@@ -17,14 +15,20 @@ const Categorys = styled.nav`
     justify-content: space-between;
 `;
 const Category_Item = styled.button`
-    border: 1px solid black;
-    padding: 2px;
+    border: 2px solid black;
+    padding: 5px;
+    font-weight: bold;
+    border-radius: 10px;
 `;
 
 const ToDoWrapper = styled.div``;
 
 function DailyPlanner(){
-    const Category = useRecoilValue(categorys);
+    const Category = [
+        {id: "AddToDo", name: "일정 등록"}, 
+        {id: "Doing", name: "진행 중"}, 
+        {id: "Done", name: "완료"}
+    ];
     const [isAddToDo, setAddToDo] = useState(false);
 
     const ChangePage = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -46,8 +50,8 @@ function DailyPlanner(){
                 {
                     Category.map((category) => {
                         return (
-                            <Category_Item name={category} onClick={ChangePage}>
-                                {category}
+                            <Category_Item name={category.id} onClick={ChangePage}>
+                                {category.name}
                             </Category_Item>
                         );
                     })
