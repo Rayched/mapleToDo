@@ -1,4 +1,9 @@
+import { useState } from "react";
 import styled from "styled-components";
+
+interface I_ToDoItem {
+  Checked: boolean;
+}
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -68,7 +73,17 @@ const ToDoItems = styled.div`
   margin: 8px 0px;
 `;
 
+const ToDoItem = styled.li<I_ToDoItem>`
+  text-decoration: ${(props) => props.Checked ? "line-through" : "none"};
+`;
+
 function App(){
+  const [checked, setChecked] = useState(false);
+
+  const isChecked = () => {
+    setChecked((prev) => !prev);
+  } 
+
   return (
     <Wrapper>
       <Header>
@@ -86,26 +101,10 @@ function App(){
         </ToDoNav>
         <ToDoItems>
           <ul>
-            <li>
-              <input type="checkbox" />
+            <ToDoItem Checked={checked}>
+              <input type="checkbox" value="todo1" onChange={isChecked}/>
               일정 1
-            </li>
-            <li>
-              <input type="checkbox" />
-              일정 2
-            </li>
-            <li>
-              <input type="checkbox" />
-              일정 3
-            </li>
-            <li>
-              <input type="checkbox" />
-              일정 4
-            </li>
-            <li>
-              <input type="checkbox" />
-              일정 5
-            </li>
+            </ToDoItem>
           </ul>
         </ToDoItems>
       </MainContainer>
