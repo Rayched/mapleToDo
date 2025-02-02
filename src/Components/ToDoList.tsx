@@ -3,6 +3,7 @@ import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { getCharData } from "./Fetchs";
 import { getDateTimes } from "./Dates";
+import { error } from "console";
 
 interface I_Character {
     access_flag?: string;
@@ -23,16 +24,19 @@ interface I_Character {
 
 function ToDoList(){
     const {charNm} = useParams();
-    const DateTimes = getDateTimes();
 
-    const TargetDts = DateTimes.join("-");
+    const Navigate = useNavigate();
 
-    const {isLoading, data, error} = useQuery<I_Character>(
+    const {isLoading, data} = useQuery<I_Character>(
         "characters",
-        () => getCharData({
-            charNm: String(charNm),
-            targetDt: TargetDts
-        })
+        () => getCharData(charNm),
+        {
+            retry: false,
+            onError: (error) => {
+                alert(`${error}`);
+                Navigate("/");
+            }
+        }
     );
 
     return (
