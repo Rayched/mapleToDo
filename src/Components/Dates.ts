@@ -10,8 +10,8 @@ export function getDateTimes(){
     const Dates = new Date();
 
     const Years = String(Dates.getFullYear());
-    const Month = modifyNumber(Dates.getMonth());
-    const dates = modifyNumber(Dates.getDate());
+    const Month = modifyNumber(Dates.getMonth() + 1);
+    const dates = modifyNumber(Dates.getDate() - 1);
 
     const FullDate = Years + "-" + Month + "-" + dates;
 

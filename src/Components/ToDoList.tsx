@@ -39,6 +39,8 @@ function ToDoList(){
         }
     );
 
+    useEffect(() => console.log(data), [isLoading]);
+
     return (
         <div>
             {
