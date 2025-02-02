@@ -8,7 +8,7 @@
 - Library : `React`
 - State Management : `recoil`
 - Style : `Styled Components`, `Framer Motion`
-- Forms : `React Hook Form`
+- Data's : `React Hook Form`, `React Query`
 - Routing : `React Router Dom`
 
 ---

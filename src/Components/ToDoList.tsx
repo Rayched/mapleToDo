@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getCharData } from "./Fetchs";
+import { getDateTimes } from "./Dates";
 
 interface I_Character {
     access_flag?: string;
@@ -22,11 +23,16 @@ interface I_Character {
 
 function ToDoList(){
     const {charNm} = useParams();
-    const [Values, setValues] = useState("");
+    const DateTimes = getDateTimes();
 
-    const {isLoading, data} = useQuery<I_Character>(
+    const TargetDts = DateTimes.join("-");
+
+    const {isLoading, data, error} = useQuery<I_Character>(
         "characters",
-        () => getCharData("손곈")
+        () => getCharData({
+            charNm: String(charNm),
+            targetDt: TargetDts
+        })
     );
 
     return (
