@@ -22,6 +22,12 @@ const Titles = styled.header`
     align-items: center;
     padding: 5px 0px;
 
+    .icons {
+        width: 25px;
+        height: 25px;
+        background: inherit;
+    }
+
     h3 {
         font-size: 20px;
         font-weight: bold;
@@ -44,6 +50,7 @@ function Home(){
     return (
         <Homes>
             <Titles>
+                <img className="icons" src="maple_icons.png"/>
                 <h3>
                     Maple Scheduler in Web
                 </h3>
@@ -56,7 +63,14 @@ function Home(){
                 />
                 <button>검색</button>
             </form>
-            <div></div>
+            <div>
+                <h4>북마크 목록</h4>
+                <div>
+                    <div>손곈</div>
+                    <div>경력직용기사</div>
+                    <div>알리오Olio</div>
+                </div>
+            </div>
         </Homes>
     );
 };
