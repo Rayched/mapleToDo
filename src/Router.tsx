@@ -8,7 +8,7 @@ function Routers(){
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Home />}/>
-                <Route path="/:charNm" element={<Detail/>}/>
+                <Route path="/charToDo" element={<Detail />}/>
             </Routes>
         </BrowserRouter>
     );

@@ -57,8 +57,7 @@ const Character_data = styled.div`
 const Schedules = styled.div``;
 
 function Detail(){
-    const {charNm} = useParams();
-
+    /*
     const {isLoading, data} = useQuery<I_Character>(
         "characterData",
         () => getCharData(charNm),
@@ -85,6 +84,10 @@ function Detail(){
             </Schedules>
         </Wrapper>
     );
+    */
+   return (
+    <div>Detail Page</div>
+   );
 };
 
 export default Detail;

@@ -1,11 +1,24 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useQuery } from "react-query";
 import { Navigate, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { FindCharacter } from "../modules/NewFetch";
+import { Keys } from "../modules/Fetchs";
+import { useSetRecoilState } from "recoil";
+import { OcidAtoms } from "../Atoms";
 
 interface I_Charactors {
     charNm: string;
 }
+
+interface I_Outputs {
+    ocid?: string;
+    error?: {
+        message?: string;
+        name?: string;
+    }
+};
 
 const Homes = styled.div`
     width: 100%;
@@ -110,17 +123,40 @@ const Bookmark_Item = styled.li`
     };
 `;
 
+/**
+ * 성공 시
+ * { ocid : "ocid..."}
+ * 실패 시
+ * {}
+ */
+
 function Home(){
     const Navigate = useNavigate();
-    /**
-     * 'react router dom'의 useNavigate() Hook 통해서
-     * 내가 입력한 검색어를 '/[:charNm]'으로 보낼 수 있었다
-     */
 
-    const {register, handleSubmit} = useForm<I_Charactors>();
+    const setOcids = useSetRecoilState(OcidAtoms);
 
-    const onValid = (data: I_Charactors) => {
-        Navigate(`/${data.charNm}`);
+    const {register, handleSubmit, setValue} = useForm<I_Charactors>();
+
+    const onValid = async(data: I_Charactors) => {
+        const API_URLs = `https://open.api.nexon.com/maplestory/v1/id?character_name=${data.charNm}`;
+        const API_Keys = Keys;
+
+        const FindCharacterID = fetch(API_URLs, {
+            headers: {
+                "x-nxopen-api-key" : API_Keys
+            }
+        }).then((resp) => resp.json());
+
+        const getDatas = await FindCharacterID.then((value) => value).catch((error) => error);
+        const Outputs = await {...getDatas};
+
+        if(Outputs.error){
+            alert(`입력하신 닉네임을 다시 확인해주세요.\n{${Outputs.error?.message}, ${Outputs.error.name}}`);
+            setValue("charNm", "");
+        } else {
+            await setOcids(Outputs?.ocid);
+            Navigate("/charToDo");
+        }
     };
 
     const TestItems = [

@@ -1,6 +1,10 @@
 import { atom } from "recoil";
 
-export const OcidAtoms = atom({
+interface I_Ocids {
+    ocid?: string;
+}
+
+export const OcidAtoms = atom<I_Ocids>({
     key: "Ocids",
-    default: ""
+    default: undefined
 });

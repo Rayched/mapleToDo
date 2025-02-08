@@ -1,7 +1,7 @@
 import { getDateTimes } from "./Dates";
 
-export const Basic_URLs = "https://open.api.nexon.com/maplestory/v1";
-const Keys = "test_f9ce4c7a085ed69bb5ef5d0d3b21357108ddddce8dbccfe8ecd4ed6db3cf9d32e9083e276f87ffa64730923916d0d710";
+const Basic_URLs = "https://open.api.nexon.com/maplestory/v1";
+export const Keys = "test_f9ce4c7a085ed69bb5ef5d0d3b21357108ddddce8dbccfe8ecd4ed6db3cf9d32e9083e276f87ffa64730923916d0d710";
 
 export interface I_CharParams {
     charNm?: string;
