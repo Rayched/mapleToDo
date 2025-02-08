@@ -1,9 +1,6 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useQuery } from "react-query";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { FindCharacter } from "../modules/NewFetch";
 import { Keys } from "../modules/Fetchs";
 import { useSetRecoilState } from "recoil";
 import { OcidAtoms } from "../Atoms";
@@ -155,6 +152,7 @@ function Home(){
             setValue("charNm", "");
         } else {
             await setOcids(Outputs?.ocid);
+            console.log(Outputs.ocid);
             Navigate("/charToDo");
         }
     };

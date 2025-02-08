@@ -4,6 +4,8 @@ import { getCharData } from "../modules/Fetchs";
 import { useEffect } from "react";
 import styled from "styled-components";
 import ToDoList from "./ToDoList";
+import { useRecoilValue } from "recoil";
+import { OcidAtoms } from "../Atoms";
 
 interface I_Character {
     access_flag?: string;
@@ -26,8 +28,6 @@ const Wrapper = styled.div`
     width: 100%;
     height: 95%;
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
 `;
 
@@ -57,37 +57,41 @@ const Character_data = styled.div`
 const Schedules = styled.div``;
 
 function Detail(){
-    /*
-    const {isLoading, data} = useQuery<I_Character>(
+    const CharacterID = useRecoilValue(OcidAtoms);
+
+    const {isLoading: InfoLoading, data: CharInfo} = useQuery<I_Character>(
         "characterData",
-        () => getCharData(charNm),
+        () => getCharData(CharacterID),
         {retry: false}
     );
 
-    useEffect(() => console.log(data), [isLoading]);
+    useEffect(() => console.log(CharacterID, CharInfo), [InfoLoading]);
 
     return (
         <Wrapper>
-            <Headers>
-                <Characters>
-                    <CharacterImgs src={data?.character_image}/>
-                    <Character_data>
-                        <div>{data?.character_name} / {data?.world_name}</div>
-                        <div>직업: {data?.character_class}</div>
-                        <div>LV {data?.character_level} ({data?.character_exp_rate} %)</div>
-                        <div>길드: {data?.character_guild_name}</div>
-                    </Character_data>
-                </Characters>
-            </Headers>
-            <Schedules>
-                <ToDoList />
-            </Schedules>
+            {
+                InfoLoading ? "데이터를 가져오고 있습니다..."
+                : (
+                    <>
+                        <Headers>
+                            <Characters>
+                                <CharacterImgs src={CharInfo?.character_image}/>
+                                <Character_data>
+                                    <div>{CharInfo?.character_name} / {CharInfo?.world_name}</div>
+                                    <div>직업: {CharInfo?.character_class}</div>
+                                    <div>LV {CharInfo?.character_level} ({CharInfo?.character_exp_rate} %)</div>
+                                    <div>길드: {CharInfo?.character_guild_name}</div>
+                                </Character_data>
+                            </Characters>
+                        </Headers>
+                        <Schedules>
+                            <ToDoList />
+                        </Schedules>
+                    </>
+                )
+            }
         </Wrapper>
     );
-    */
-   return (
-    <div>Detail Page</div>
-   );
 };
 
 export default Detail;
