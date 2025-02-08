@@ -23,8 +23,8 @@ interface I_Character {
 }
 
 const Wrapper = styled.div`
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 95%;
     display: flex;
     justify-content: center;
     align-items: center;
