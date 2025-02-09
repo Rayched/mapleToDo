@@ -7,13 +7,14 @@ interface I_Ocids {
     ocid: string;
 }
 
+export async function TestFetch(charID: string) {
+    return charID;
+}
+
 export async function getCharData(charID : I_Ocids){
     const DateTimes = getDateTimes();
 
-    //const characterURLs = Basic_URLs + `/character/basic?ocid=${charID}&date=${DateTimes}`;
-    const characterURLs = Basic_URLs + `/character/basic?ocid=${charID}&date=2025-02-07`;
-    //Test 용 URL (API 데이터 준비 중 이슈로 임의 날짜 설정)
-    //2025-02-09 00:36 기준
+    const characterURLs = Basic_URLs + `/character/basic?ocid=${charID}&date=${DateTimes}`;
 
     const CharacterData = await(await(
         await fetch(characterURLs, {

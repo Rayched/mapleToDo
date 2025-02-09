@@ -1,12 +1,18 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { Keys } from "../modules/Fetchs";
+import { getCharData, Keys, TestFetch } from "../modules/Fetchs";
 import { useSetRecoilState } from "recoil";
 import { OcidAtoms } from "../Atoms";
+import { useQuery } from "react-query";
+import { useState } from "react";
 
 interface I_Charactors {
     charNm: string;
+}
+
+interface I_Ocids {
+    ocid: string;
 }
 
 interface I_Outputs {
