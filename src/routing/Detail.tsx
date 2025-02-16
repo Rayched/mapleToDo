@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import styled from "styled-components";
 import ToDoList from "./ToDoList";
 import { useRecoilValue } from "recoil";
-import { OcidAtoms } from "../Atoms";
+import { charID_Atoms} from "../Atoms";
 
 interface I_Character {
     access_flag?: string;
@@ -70,17 +70,14 @@ const Worlds = [
 ];
 
 function Detail(){
-    const CharacterID = useRecoilValue(OcidAtoms);
+    const CharacterID = useRecoilValue(charID_Atoms);
 
     const {isLoading: InfoLoading, data: CharInfo} = useQuery<I_Character>(
         "characterData",
         () => getCharData(CharacterID),
-        {retry: false}
     );
 
     const WorldIdx = Worlds.findIndex((worldNm) => worldNm === CharInfo?.world_name);
-
-    useEffect(() => console.log(CharacterID, CharInfo), [InfoLoading]);
 
     return (
         <Wrapper>

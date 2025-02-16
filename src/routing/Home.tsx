@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { getCharData, Keys, TestFetch } from "../modules/Fetchs";
 import { useSetRecoilState } from "recoil";
-import { OcidAtoms } from "../Atoms";
+import { charID_Atoms, I_charID} from "../Atoms";
 import { useQuery } from "react-query";
 import { useState } from "react";
 
@@ -137,7 +137,7 @@ const Bookmark_Item = styled.li`
 function Home(){
     const Navigate = useNavigate();
 
-    const setOcids = useSetRecoilState(OcidAtoms);
+    const setCharID = useSetRecoilState(charID_Atoms);
 
     const {register, handleSubmit, setValue} = useForm<I_Charactors>();
 
@@ -158,32 +158,14 @@ function Home(){
             alert(`입력하신 닉네임을 다시 확인해주세요.\n{${Outputs.error?.message}, ${Outputs.error.name}}`);
             setValue("charNm", "");
         } else {
-            await setOcids(Outputs?.ocid);
-            console.log(Outputs.ocid);
+            const convert: I_charID = {
+                charNm: data.charNm,
+                ocid: Outputs?.ocid
+            };
+            await setCharID(convert);
             Navigate("/charToDo");
         }
     };
-
-    const TestItems = [
-        {
-            charNm: "손곈",
-            level: 271,
-            world: "스카니아",
-            char_class: "루미너스"
-        },
-        {
-            charNm: "경력직용기사",
-            level: 261,
-            world: "스카니아",
-            char_class: "카이저"
-        },
-        {
-            charNm: "알리오Olio",
-            level: 261,
-            world: "챌린저스2",
-            char_class: "데몬 슬레이어"
-        }
-    ];
 
     return (
         <Homes>
