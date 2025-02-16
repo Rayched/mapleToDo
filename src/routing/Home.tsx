@@ -92,7 +92,8 @@ const Bookmark_Box = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    width: 20em;
+    height: 7em;
     margin-top: 15px;
     padding: 10px;
     border-radius: 10px;
@@ -187,7 +188,7 @@ function Home(){
     return (
         <Homes>
             <Headers>
-                <Icons src="maple_icons.png"/>
+                <Icons src="logos/maple_icons.png"/>
                 <Titles>메이플 스케줄러 in Web</Titles>
             </Headers>
             <Mains>
@@ -196,7 +197,7 @@ function Home(){
                         type="text" 
                         placeholder="캐릭터 이름을 입력해주세요."
                         autoComplete="off"
-                        {...register("charNm", {required: "캐릭터 이름을 입력해주세요."})}
+                        {...register("charNm", {required: true})}
                     />
                     <SearchBtn>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -208,15 +209,6 @@ function Home(){
             <Bookmark_Box>
                 <B_Title>북마크</B_Title>
                 <Bookmarks>
-                    {
-                        TestItems.map((char) => {
-                            return (
-                                <Bookmark_Item>
-                                    {char.charNm} / Lv {char.level} / {char.char_class}
-                                </Bookmark_Item>
-                            );
-                        })
-                    }
                 </Bookmarks>
             </Bookmark_Box>
         </Homes>

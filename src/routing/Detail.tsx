@@ -32,18 +32,22 @@ const Wrapper = styled.div`
 `;
 
 const Headers = styled.header`
-    display: flex;
-    justify-content: center;
+    padding: 5px;
 `;
+
+const Titles = styled.div``;
 
 const Characters = styled.div`
     display: flex;
     align-items: center;
+    justify-content: center;
+    padding: 5px;
+    margin: 0px 10px;
 `;
 
 const CharacterImgs = styled.img`
-    width: 5.5em;
-    height: 6em;
+    width: 6em;
+    height: 7em;
     display: block;
 `;
 
@@ -52,9 +56,18 @@ const Character_data = styled.div`
     flex-direction: column;
     justify-content: center;
     font-weight: bold;
+    font-size: 17px;
 `;
 
-const Schedules = styled.div``;
+const Schedules = styled.div`
+    margin-top: 10px;
+`;
+
+const Worlds = [
+    "헬리오스", "에오스", "오로라", "레드", "이노시스", "유니온", 
+    "스카니아", "루나", "제니스", "크로아", "베라", "엘리시움", 
+    "아케인", "노바", "챌린저스1", "챌린저스2", "챌린저스3", "챌린저스4"
+];
 
 function Detail(){
     const CharacterID = useRecoilValue(OcidAtoms);
@@ -64,6 +77,8 @@ function Detail(){
         () => getCharData(CharacterID),
         {retry: false}
     );
+
+    const WorldIdx = Worlds.findIndex((worldNm) => worldNm === CharInfo?.world_name);
 
     useEffect(() => console.log(CharacterID, CharInfo), [InfoLoading]);
 
@@ -77,7 +92,11 @@ function Detail(){
                             <Characters>
                                 <CharacterImgs src={CharInfo?.character_image}/>
                                 <Character_data>
-                                    <div>{CharInfo?.character_name} / {CharInfo?.world_name}</div>
+                                    <div>
+                                        {CharInfo?.character_name} / 
+                                        <img src={`logos/icon_${WorldIdx}.png`} />
+                                        {CharInfo?.world_name}
+                                    </div>
                                     <div>직업: {CharInfo?.character_class}</div>
                                     <div>LV {CharInfo?.character_level} ({CharInfo?.character_exp_rate} %)</div>
                                     <div>길드: {CharInfo?.character_guild_name}</div>
