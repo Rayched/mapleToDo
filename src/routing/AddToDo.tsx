@@ -44,6 +44,7 @@ const ToDoForm = styled.form`
 interface I_AddToDo {
     isToDo: boolean;
     setIsToDo: Function;
+    nowCategories: string;
 };
 
 const AllToDos = {
@@ -77,7 +78,7 @@ const AllToDos = {
     WeeklyBoss: []
 };
 
-function AddToDo({isToDo, setIsToDo}: I_AddToDo){
+function AddToDo({isToDo, setIsToDo, nowCategories}: I_AddToDo){
     const {register, handleSubmit} = useForm();
 
     const setToDos = useSetRecoilState(ToDosAtom);
@@ -105,7 +106,7 @@ function AddToDo({isToDo, setIsToDo}: I_AddToDo){
                     <button onClick={() => setIsToDo(false)}>취소</button>
                 </ToDoHeader>
                 <ToDoForm onSubmit={handleSubmit(onValid)}>
-                    <div className="Category">카테고리 : 주간 퀘스트</div>
+                    <div className="Category">카테고리 : {nowCategories}</div>
                     <div className="ToDoSelect">
                         <select {...register("Quest", {required: true})}>
                             {
