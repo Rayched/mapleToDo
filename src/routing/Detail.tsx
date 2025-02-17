@@ -1,11 +1,9 @@
 import { useQuery } from "react-query";
-import { useParams } from "react-router-dom";
 import { getCharData } from "../modules/Fetchs";
-import { useEffect } from "react";
 import styled from "styled-components";
 import ToDoList from "./ToDoList";
 import { useRecoilValue } from "recoil";
-import { charID_Atoms} from "../Atoms";
+import { OcidAtoms} from "../Atoms";
 
 interface I_Character {
     access_flag?: string;
@@ -34,8 +32,6 @@ const Wrapper = styled.div`
 const Headers = styled.header`
     padding: 5px;
 `;
-
-const Titles = styled.div``;
 
 const Characters = styled.div`
     display: flex;
@@ -70,7 +66,7 @@ const Worlds = [
 ];
 
 function Detail(){
-    const CharacterID = useRecoilValue(charID_Atoms);
+    const CharacterID = useRecoilValue(OcidAtoms);
 
     const {isLoading: InfoLoading, data: CharInfo} = useQuery<I_Character>(
         "characterData",

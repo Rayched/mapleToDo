@@ -1,18 +1,12 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { getCharData, Keys, TestFetch } from "../modules/Fetchs";
+import { Keys } from "../modules/Fetchs";
 import { useSetRecoilState } from "recoil";
-import { charID_Atoms, I_charID} from "../Atoms";
-import { useQuery } from "react-query";
-import { useState } from "react";
+import { OcidAtoms } from "../Atoms";
 
 interface I_Charactors {
     charNm: string;
-}
-
-interface I_Ocids {
-    ocid: string;
 }
 
 interface I_Outputs {
@@ -137,7 +131,7 @@ const Bookmark_Item = styled.li`
 function Home(){
     const Navigate = useNavigate();
 
-    const setCharID = useSetRecoilState(charID_Atoms);
+    const setCharID = useSetRecoilState(OcidAtoms);
 
     const {register, handleSubmit, setValue} = useForm<I_Charactors>();
 
@@ -158,11 +152,7 @@ function Home(){
             alert(`입력하신 닉네임을 다시 확인해주세요.\n{${Outputs.error?.message}, ${Outputs.error.name}}`);
             setValue("charNm", "");
         } else {
-            const convert: I_charID = {
-                charNm: data.charNm,
-                ocid: Outputs?.ocid
-            };
-            await setCharID(convert);
+            await setCharID(Outputs);
             Navigate("/charToDo");
         }
     };

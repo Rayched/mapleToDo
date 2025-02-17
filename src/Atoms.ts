@@ -8,28 +8,14 @@ export interface I_ToDos {
     category?: string;
 }
 
-export interface I_charID {
-    charNm: string;
-    ocid: string;
-};
-
-interface I_AllToDos {
-    WeeklyQuest: I_WeeklyQuest[];
-    WeeklyContents: [],
-    WeeklyBoss: []
-}
-
 export interface I_WeeklyQuest {
     questId: string,
     questNm: string
 }
 
-export const charID_Atoms = atom<I_charID>({
-    key: "CharID",
-    default: {
-        charNm: "",
-        ocid: ""
-    }
+export const OcidAtoms = atom<I_Ocids>({
+    key: "OcidAtom",
+    default: undefined
 });
 
 export const ToDosAtom = atom<any[]>({

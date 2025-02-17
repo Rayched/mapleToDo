@@ -1,4 +1,3 @@
-import { I_charID } from "../Atoms";
 import { getDateTimes } from "./Dates";
 
 const Basic_URLs = "https://open.api.nexon.com/maplestory/v1";
@@ -12,7 +11,7 @@ export async function TestFetch(charID: string) {
     return charID;
 }
 
-export async function getCharData(CharID: I_charID){
+export async function getCharData(CharID: I_Ocids){
     const DateTimes = getDateTimes();
 
     const characterURLs = Basic_URLs + `/character/basic?ocid=${CharID.ocid}&date=${DateTimes}`;
