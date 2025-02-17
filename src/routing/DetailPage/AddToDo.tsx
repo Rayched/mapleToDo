@@ -109,7 +109,7 @@ function AddToDo({isToDo, setIsToDo, nowCategories}: I_AddToDo){
                 <ToDoForm onSubmit={handleSubmit(onValid)}>
                     <div className="Category">카테고리 : {nowCategories}</div>
                     <div className="ToDoSelect">
-                        <select {...register("Quest", {required: true})}>
+                        <select multiple {...register("Quest", {required: true})}>
                             {
                                 AllToDos.WeeklyQuest.map((todo) => <option key={todo.questId}>{todo.questNm}</option>)
                             }
