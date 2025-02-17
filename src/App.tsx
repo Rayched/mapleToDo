@@ -1,6 +1,5 @@
 import styled from "styled-components";
-import Routers from "./Router";
-import { QueryClientProvider, useQueryClient } from "react-query";
+import Routers from "./Routing/Router";
 
 const Wrapper = styled.div`
   width: 100vw;

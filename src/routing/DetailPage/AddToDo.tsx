@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { I_WeeklyQuest, ToDosAtom } from "../Atoms";
+import { I_WeeklyQuest, ToDosAtom } from "../../Atoms";
 
 interface I_Wrapper {
     isHides: boolean;
@@ -11,6 +11,7 @@ const Wrapper = styled.div<I_Wrapper>`
     width: 100vw;
     height: 100vh;
     top: 0%;
+    right: 0%;
     position: absolute;
     background-color: rgba(10, 10, 10, 0.5);
     display: ${(props) => props.isHides ? "flex" : "none"};

@@ -1,9 +1,9 @@
 import { useQuery } from "react-query";
-import { getCharData } from "../modules/Fetchs";
+import { getCharData } from "../../modules/Fetchs";
 import styled from "styled-components";
-import ToDoList from "./ToDoList";
 import { useRecoilValue } from "recoil";
-import { OcidAtoms} from "../Atoms";
+import { OcidAtoms} from "../../Atoms";
+import ToDoList from "./ToDoList";
 
 interface I_Character {
     access_flag?: string;
