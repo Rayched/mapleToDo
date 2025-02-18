@@ -4,7 +4,7 @@ import { useRecoilValue } from "recoil";
 import { ToDosAtom } from "../../Atoms";
 import AddToDo from "./AddToDo";
 
-interface I_Categories {
+export interface I_Categories {
     categoryId: string;
     categoryNm: string;
 }

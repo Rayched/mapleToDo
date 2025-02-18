@@ -2,6 +2,8 @@ import { useForm } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { I_WeeklyQuest, ToDosAtom } from "../../Atoms";
+import { I_Categories } from "./ToDoList";
+import { ContentsData } from "../../modules/datas/ContentsData";
 
 interface I_Wrapper {
     isHides: boolean;
@@ -19,7 +21,7 @@ const Wrapper = styled.div<I_Wrapper>`
     align-items: center;
 `;
 
-const ToDoBox = styled.div`
+const Container = styled.div`
     width: 29em;
     height: 35em;
     background-color: rgba(245, 245, 245, 1.0);
@@ -35,7 +37,7 @@ const ToDoHeader = styled.div`
     padding: 8px;
 `;
 
-const ToDoForm = styled.form`
+const ToDoBody = styled.form`
     display: flex;
     align-items: center;
     justify-content: center;
@@ -48,36 +50,11 @@ interface I_AddToDo {
     nowCategories: string;
 };
 
-const AllToDos = {
-    WeeklyQuest: [
-        {
-            questId: "Arc01",
-            questNm: "에르다 스펙트럼"
-        },
-        {
-            questId: "Arc02",
-            questNm: "배고픈 무토"
-        },
-        {
-            questId: "Arc03",
-            questNm: "레헬른 숨바꼭질"
-        },
-        {
-            questId: "Arc04",
-            questNm: "스피릿 세이비어"
-        },
-        {
-            questId: "Arc05",
-            questNm: "엔하임 디펜스"
-        },
-        {
-            questId: "Arc06",
-            questNm: "프로텍트 에스페라"
-        },
-    ],
-    WeeklyContents: [],
-    WeeklyBoss: []
-};
+const CategoryList: I_Categories[] = [
+    {categoryId: "WeeklyContents", categoryNm: "주간 컨텐츠"},
+    {categoryId: "WeeklyBoss", categoryNm: "주간 보스"},
+    {categoryId: "CustomToDo", categoryNm: "기타 메할일"},
+];
 
 function AddToDo({isToDo, setIsToDo, nowCategories}: I_AddToDo){
     const {register, handleSubmit} = useForm();
@@ -102,22 +79,19 @@ function AddToDo({isToDo, setIsToDo, nowCategories}: I_AddToDo){
 
     return (
         <Wrapper isHides={isToDo}>
-            <ToDoBox>
+            <Container>
                 <ToDoHeader>
                     <button onClick={() => setIsToDo(false)}>취소</button>
                 </ToDoHeader>
-                <ToDoForm onSubmit={handleSubmit(onValid)}>
-                    <div className="Category">카테고리 : {nowCategories}</div>
+                <ToDoBody onSubmit={handleSubmit(onValid)}>
+                    <div>{nowCategories}</div>
                     <div className="ToDoSelect">
-                        <select multiple {...register("Quest", {required: true})}>
-                            {
-                                AllToDos.WeeklyQuest.map((todo) => <option key={todo.questId}>{todo.questNm}</option>)
-                            }
+                        <select {...register("contentItems", {required: true})}>
                         </select>
                     </div>
                     <button>등록</button>
-                </ToDoForm>
-            </ToDoBox>
+                </ToDoBody>
+            </Container>
         </Wrapper>
     );
 };
