@@ -1,8 +1,7 @@
 import { useForm } from "react-hook-form";
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { I_WeeklyQuest, ToDosAtom } from "../../Atoms";
-import { I_Categories } from "./ToDoList";
+import { NowCategoriesAtom, ToDosAtom } from "../../Atoms";
 
 interface I_Wrapper {
     isHides: boolean;
@@ -46,27 +45,16 @@ const ToDoBody = styled.form`
 interface I_AddToDo {
     isToDo: boolean;
     setIsToDo: Function;
-    nowCategories: string;
 };
 
-const CategoryList: I_Categories[] = [
-    {categoryId: "WeeklyContents", categoryNm: "주간 컨텐츠"},
-    {categoryId: "WeeklyBoss", categoryNm: "주간 보스"},
-    {categoryId: "CustomToDo", categoryNm: "기타 메할일"},
-];
-
-function AddToDo({isToDo, setIsToDo, nowCategories}: I_AddToDo){
+function AddToDo({isToDo, setIsToDo}: I_AddToDo){
     const {register, handleSubmit} = useForm();
+    const NowCategories = useRecoilValue(NowCategoriesAtom);
 
-    const setToDos = useSetRecoilState(ToDosAtom);
+    //const setToDos = useSetRecoilState(ToDosAtom);
 
     const onValid = (FormData: any) => {
-        const Test: I_WeeklyQuest = {
-            questId: FormData.Quest,
-            questNm: FormData.Quest
-        };
-
-        console.log(Test);
+        /*
         setToDos((oldToDos) => {
             return [
                 ...oldToDos,
@@ -74,6 +62,7 @@ function AddToDo({isToDo, setIsToDo, nowCategories}: I_AddToDo){
             ];
         })
         setIsToDo(false);
+        */
     };
 
     return (
@@ -83,7 +72,7 @@ function AddToDo({isToDo, setIsToDo, nowCategories}: I_AddToDo){
                     <button onClick={() => setIsToDo(false)}>취소</button>
                 </ToDoHeader>
                 <ToDoBody onSubmit={handleSubmit(onValid)}>
-                    <div>{nowCategories}</div>
+                    <div>{NowCategories.name}</div>
                     <div className="ToDoSelect">
                         <select {...register("contentItems", {required: true})}>
                         </select>

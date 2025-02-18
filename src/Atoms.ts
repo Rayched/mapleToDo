@@ -8,10 +8,10 @@ export interface I_ToDos {
     category?: string;
 }
 
-export interface I_WeeklyQuest {
-    questId: string,
-    questNm: string
-}
+export interface I_Categories {
+    Id: string;
+    name: string;
+};
 
 export const OcidAtoms = atom<I_Ocids>({
     key: "OcidAtom",
@@ -21,4 +21,9 @@ export const OcidAtoms = atom<I_Ocids>({
 export const ToDosAtom = atom<any[]>({
     key: "ToDosAtom",
     default: []
+});
+
+export const NowCategoriesAtom = atom<I_Categories>({
+    key: "NowCategories",
+    default: { Id: "", name: "" }
 });

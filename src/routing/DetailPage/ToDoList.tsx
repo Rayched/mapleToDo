@@ -1,15 +1,10 @@
 import styled from "styled-components";
 import React, { useState } from "react";
-import { useRecoilValue } from "recoil";
-import { ToDosAtom } from "../../Atoms";
+import { useRecoilState, useRecoilValue} from "recoil";
+import { I_Categories, NowCategoriesAtom, ToDosAtom } from "../../Atoms";
 import AddToDo from "./AddToDo";
 
-export interface I_Categories {
-    categoryId: string;
-    categoryNm: string;
-}
-
-const Categories: I_Categories[] = [
+const Categories = [
     {
         categoryId : "WeeklyContents",
         categoryNm : "주간 컨텐츠"
@@ -63,13 +58,14 @@ const ToDosContainer = styled.div``;
 function ToDoList(){
     const [isAddToDo, setAddToDo] = useState(false);
     const ToDos = useRecoilValue(ToDosAtom);
+    const [NowCategories, setNowCategories] = useRecoilState(NowCategoriesAtom);
 
-    const [NowCategory, setCategory] = useState(Categories[0].categoryId);
-    const [CategoryNm, setCategoryNm] = useState(Categories[0].categoryNm);
-
-    const CategoryChange = ({categoryId, categoryNm}: I_Categories) => {
-        setCategory(categoryId);
-        setCategoryNm(categoryNm);
+    const CategoryChange = (Selected: I_Categories) => {
+        const Convert_Categorys: I_Categories = {
+            Id: Selected.Id,
+            name: Selected.name
+        };
+        setNowCategories(Convert_Categorys);
     };
 
     return (
@@ -78,16 +74,18 @@ function ToDoList(){
                 {
                     Categories.map((item) => {
                         return (
-                            <CategoryItem CategoryId={item.categoryId} nowCategory={NowCategory} onClick={() => CategoryChange(item)}>
-                                {item.categoryNm}
-                            </CategoryItem>
+                            <CategoryItem 
+                                CategoryId={item.categoryId}
+                                nowCategory={NowCategories.Id} 
+                                onClick={() => CategoryChange({Id: item.categoryId, name: item.categoryNm})}
+                            >{item.categoryNm}</CategoryItem>
                         );
                     })
                 }
             </CategoryBox>
             <ToDosContainer className="ToDoList">
                 <button onClick={() => setAddToDo(true)}>할 일 추가</button>
-                <AddToDo isToDo={isAddToDo} setIsToDo={setAddToDo} nowCategories={CategoryNm}/>
+                <AddToDo isToDo={isAddToDo} setIsToDo={setAddToDo} />
                 <ul>{ToDos?.map((todo) => <li>{todo.questNm}</li>)}</ul>
             </ToDosContainer>
         </Wrapper>
