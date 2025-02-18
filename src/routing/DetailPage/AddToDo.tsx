@@ -3,7 +3,6 @@ import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { I_WeeklyQuest, ToDosAtom } from "../../Atoms";
 import { I_Categories } from "./ToDoList";
-import { ContentsData } from "../../modules/datas/ContentsData";
 
 interface I_Wrapper {
     isHides: boolean;
