@@ -1,10 +1,13 @@
+/*
 import { useQuery } from "react-query";
 import { getCharData } from "../../modules/Fetchs";
 import styled from "styled-components";
 import { useRecoilValue } from "recoil";
 import { OcidAtoms} from "../../Atoms";
 import ToDoList from "./ToDoList";
+*/
 
+/*
 interface I_Character {
     access_flag?: string;
     character_class?: string;
@@ -65,7 +68,7 @@ const Worlds = [
     "아케인", "노바", "챌린저스1", "챌린저스2", "챌린저스3", "챌린저스4"
 ];
 
-function Detail(){
+function OldDetail(){
     const CharacterID = useRecoilValue(OcidAtoms);
 
     const {isLoading: InfoLoading, data: CharInfo} = useQuery<I_Character>(
@@ -105,5 +108,9 @@ function Detail(){
         </Wrapper>
     );
 };
+*/
+function OldDetail(){
+    return null;
+}
 
-export default Detail;
+export default OldDetail;

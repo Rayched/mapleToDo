@@ -1,27 +1,24 @@
 import { useForm } from "react-hook-form";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { NowCategoriesAtom, ToDosAtom } from "../../Atoms";
+import { CategoriesAtom } from "../../Atoms";
+import { Boss_data, Contents_data } from "../../modules/datas/ContentsData";
 
-interface I_Wrapper {
-    isHides: boolean;
-}
-
-const Wrapper = styled.div<I_Wrapper>`
+const Wrapper = styled.div`
     width: 100vw;
     height: 100vh;
     top: 0%;
     right: 0%;
     position: absolute;
     background-color: rgba(10, 10, 10, 0.5);
-    display: ${(props) => props.isHides ? "flex" : "none"};
+    display: flex;
     justify-content: center;
     align-items: center;
 `;
 
 const Container = styled.div`
-    width: 29em;
-    height: 35em;
+    width: 30em;
+    height: 38em;
     background-color: rgba(245, 245, 245, 1.0);
     border-radius: 15px;
     display: flex;
@@ -42,39 +39,46 @@ const ToDoBody = styled.form`
     flex-direction: column;
 `;
 
-interface I_AddToDo {
-    isToDo: boolean;
-    setIsToDo: Function;
+interface I_AddToDoParams {
+    setHide: Function;
 };
 
-function AddToDo({isToDo, setIsToDo}: I_AddToDo){
+function AddToDo({setHide}: I_AddToDoParams){
     const {register, handleSubmit} = useForm();
-    const NowCategories = useRecoilValue(NowCategoriesAtom);
+    const NowCategories = useRecoilValue(CategoriesAtom);
 
-    //const setToDos = useSetRecoilState(ToDosAtom);
-
-    const onValid = (FormData: any) => {
-        /*
-        setToDos((oldToDos) => {
-            return [
-                ...oldToDos,
-                Test
-            ];
-        })
-        setIsToDo(false);
-        */
-    };
+    const onValid = (FormData: any) => {};
 
     return (
-        <Wrapper isHides={isToDo}>
+        <Wrapper>
             <Container>
                 <ToDoHeader>
-                    <button onClick={() => setIsToDo(false)}>취소</button>
+                    <button onClick={() => setHide(false)}>취소</button>
                 </ToDoHeader>
                 <ToDoBody onSubmit={handleSubmit(onValid)}>
                     <div>{NowCategories.name}</div>
                     <div className="ToDoSelect">
-                        <select {...register("contentItems", {required: true})}>
+                        <select {...register("ToDoSelect", {required: true})}>
+                            {
+                                NowCategories.Id === "Weeklys"
+                                ? (
+                                    Contents_data.value.map((data) => {
+                                        return (
+                                            <option key={data.contentId}>{data.contentNm}</option>
+                                        );
+                                    })
+                                ) : null
+                            }
+                            {
+                                NowCategories.Id === "Boss"
+                                ? (
+                                    Boss_data.value.map((data) => {
+                                        return (
+                                            <option key={data.monsterNm}>{data.monsterNm}</option>
+                                        );
+                                    })
+                                ) : null
+                            }
                         </select>
                     </div>
                     <button>등록</button>

@@ -1,13 +1,13 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./Home";
-import Detail from "./DetailPage/Detail";
+import NewDetail from "./DetailPage/DetailPage";
 
 function Routers(){
     return (
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Home />}/>
-                <Route path="/charToDo" element={<Detail />}/>
+                <Route path="/charToDo" element={<NewDetail />}/>
             </Routes>
         </BrowserRouter>
     );

@@ -19,7 +19,7 @@ interface I_WeeklyBoss {
     value: WeeklyBoss_Values[]
 }
 
-const Contents_data: I_WeeklyContents = {
+export const Contents_data: I_WeeklyContents = {
     id: "WeeklyContents",
     value: [
         {contentId: "Azumos", contentNm: "아즈모스 협곡"},
@@ -40,7 +40,7 @@ const Contents_data: I_WeeklyContents = {
     ]
 };
 
-const Boss_data: I_WeeklyBoss = {
+export const Boss_data: I_WeeklyBoss = {
     id: "WeeklyBoss",
     value: [
         {monsterNm: "시그너스", monsterRank: ["이지", "노말"]},
@@ -70,9 +70,4 @@ const Boss_data: I_WeeklyBoss = {
          * {monsterNm: "발드릭스", monsterRank: ["노말", "하드"]}
          */
     ]
-};
-
-export const ContentsData = {
-    WeeklyContents: Contents_data,
-    WeeklyBoss: Boss_data
 };

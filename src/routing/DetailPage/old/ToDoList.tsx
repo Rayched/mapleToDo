@@ -1,7 +1,8 @@
+/*
 import styled from "styled-components";
 import React, { useState } from "react";
 import { useRecoilState, useRecoilValue} from "recoil";
-import { I_Categories, NowCategoriesAtom, ToDosAtom } from "../../Atoms";
+import { I_Categories, NowCategoriesAtom } from "../../../Atoms";
 import AddToDo from "./AddToDo";
 
 const Categories = [
@@ -57,7 +58,6 @@ const ToDosContainer = styled.div``;
 
 function ToDoList(){
     const [isAddToDo, setAddToDo] = useState(false);
-    const ToDos = useRecoilValue(ToDosAtom);
     const [NowCategories, setNowCategories] = useRecoilState(NowCategoriesAtom);
 
     const CategoryChange = (Selected: I_Categories) => {
@@ -86,10 +86,14 @@ function ToDoList(){
             <ToDosContainer className="ToDoList">
                 <button onClick={() => setAddToDo(true)}>할 일 추가</button>
                 <AddToDo isToDo={isAddToDo} setIsToDo={setAddToDo} />
-                <ul>{ToDos?.map((todo) => <li>{todo.questNm}</li>)}</ul>
             </ToDosContainer>
         </Wrapper>
     );
 };
+*/
+
+function ToDoList(){
+    return null;
+}
 
 export default ToDoList;

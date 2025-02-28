@@ -13,17 +13,14 @@ export interface I_Categories {
     name: string;
 };
 
+//Character ID Save
 export const OcidAtoms = atom<I_Ocids>({
     key: "OcidAtom",
     default: undefined
 });
 
-export const ToDosAtom = atom<any[]>({
-    key: "ToDosAtom",
-    default: []
-});
-
-export const NowCategoriesAtom = atom<I_Categories>({
-    key: "NowCategories",
+//사용자가 선택한 Category 기억해두는 atom
+export const CategoriesAtom = atom<I_Categories>({
+    key: "CategoriesAtom",
     default: { Id: "", name: "" }
 });
