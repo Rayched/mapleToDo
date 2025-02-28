@@ -47,7 +47,7 @@ function AddToDo({setHide}: I_AddToDoParams){
     const {register, handleSubmit} = useForm();
     const NowCategories = useRecoilValue(CategoriesAtom);
 
-    const onValid = (FormData: any) => {};
+    const onValid = () => {};
 
     return (
         <Wrapper>
@@ -58,7 +58,7 @@ function AddToDo({setHide}: I_AddToDoParams){
                 <ToDoBody onSubmit={handleSubmit(onValid)}>
                     <div>{NowCategories.name}</div>
                     <div className="ToDoSelect">
-                        <select {...register("ToDoSelect", {required: true})}>
+                        <select multiple {...register("ToDoSelect", {required: true})}>
                             {
                                 NowCategories.Id === "Weeklys"
                                 ? (

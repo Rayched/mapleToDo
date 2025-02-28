@@ -76,7 +76,7 @@ const DataItem = styled.div`
     }
 `;
 
-function NewDetail(){
+function Details(){
     const CharId = useRecoilValue(OcidAtoms);
 
     const {isLoading, data: CharInfo} = useQuery<I_CharInfo>(
@@ -114,4 +114,4 @@ function NewDetail(){
     );
 };
 
-export default NewDetail
+export default Details
