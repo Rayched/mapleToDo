@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { CategoriesAtom, I_WeeklyAtoms, WeeklyAtoms } from "../../Atoms";
-import { Boss_data, Contents_data } from "../../modules/datas/ContentsData";
+import { Boss_data, Contents_data, I_WeeklyContentAtoms, WeeklyContentAtoms } from "../../modules/datas/ContentAtoms";
 
 const Wrapper = styled.div`
     width: 100vw;
@@ -44,29 +44,39 @@ interface I_AddToDoParams {
 };
 
 interface I_Forms {
-    ToDoSelect?: string[];
+    ToDoSelect?: string;
 }
 
 function AddToDo({setHide}: I_AddToDoParams){
-    const {watch, register, handleSubmit} = useForm();
+    const {register, handleSubmit} = useForm();
     const NowCategories = useRecoilValue(CategoriesAtom);
+
+    const [WeeklyContents, setContents] = useRecoilState(WeeklyContentAtoms);
 
     const [WeeklyData, setWeeklyData] = useRecoilState(WeeklyAtoms);
 
     const onValid = ({ToDoSelect}: I_Forms) => {
-        if(ToDoSelect?.length === 0){
-            return;
-        } else {
-            console.log(ToDoSelect);
-            const AddWeeklyData = ToDoSelect?.map((data) => {
-                const Values: I_WeeklyAtoms = {contentsNm: data, isAdds: true, isDone: false}
-                return Values;
-            }) as I_WeeklyAtoms[]
-            setWeeklyData((oldItems) => [...oldItems, ...AddWeeklyData])
-            setHide(false);
-        }
-    };
+       const idx = WeeklyContents.findIndex((data) => data.Name === ToDoSelect);
+       const targets = WeeklyContents[idx];
 
+       const ConvertData: I_WeeklyContentAtoms = {
+            Id: targets.Id,
+            Name: targets.Name,
+            isAdds: true
+       };
+       setContents((oldItems) => [
+        ...oldItems.slice(0, idx),
+        ConvertData,
+        ...oldItems.slice(idx + 1)
+       ]);
+
+       const AddWeeklyData: I_WeeklyAtoms = {
+            contentsNm: ToDoSelect,
+            isDone: false
+       };
+       setWeeklyData((oldItems) => [...oldItems, AddWeeklyData]);
+       setHide(false);
+    };
     return (
         <Wrapper>
             <Container>
@@ -76,18 +86,18 @@ function AddToDo({setHide}: I_AddToDoParams){
                 <ToDoBody onSubmit={handleSubmit(onValid)}>
                     <div>{NowCategories.name}</div>
                     <div className="ToDoSelect">
-                        <select multiple {...register("ToDoSelect", {required: true})}>
+                        <select {...register("ToDoSelect", {required: true})}>
                             {
-                                NowCategories.Id === "Weeklys"
-                                ? (
-                                    Contents_data.value.map((data) => {
-                                        return (
-                                            <option key={data.contentId}>
-                                                {data.contentNm}
-                                            </option>
-                                        );
-                                    })
-                                ) : null
+                               NowCategories.Id === "Weeklys"
+                               ? (
+                                WeeklyContents.map((data) => {
+                                    return (
+                                        <option key={data.Id} disabled={data.isAdds}>
+                                            {data.Name}
+                                        </option>
+                                    );
+                                })
+                               ) : null
                             }
                             {
                                 NowCategories.Id === "Boss"

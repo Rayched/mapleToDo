@@ -15,7 +15,6 @@ export interface I_Categories {
 
 export interface I_WeeklyAtoms {
     contentsNm?: string;
-    isAdds?: boolean;
     isDone?: boolean;
 };
 
