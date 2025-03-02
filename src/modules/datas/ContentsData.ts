@@ -1,7 +1,7 @@
 
 type WeeklyContents_values = {
     contentId: string,
-    contentNm: string
+    contentNm: string,
 }
 
 interface I_WeeklyContents {

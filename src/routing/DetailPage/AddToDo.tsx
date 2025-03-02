@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { CategoriesAtom } from "../../Atoms";
+import { CategoriesAtom, I_WeeklyAtoms, WeeklyAtoms } from "../../Atoms";
 import { Boss_data, Contents_data } from "../../modules/datas/ContentsData";
 
 const Wrapper = styled.div`
@@ -43,11 +43,29 @@ interface I_AddToDoParams {
     setHide: Function;
 };
 
+interface I_Forms {
+    ToDoSelect?: string[];
+}
+
 function AddToDo({setHide}: I_AddToDoParams){
-    const {register, handleSubmit} = useForm();
+    const {watch, register, handleSubmit} = useForm();
     const NowCategories = useRecoilValue(CategoriesAtom);
 
-    const onValid = () => {};
+    const [WeeklyData, setWeeklyData] = useRecoilState(WeeklyAtoms);
+
+    const onValid = ({ToDoSelect}: I_Forms) => {
+        if(ToDoSelect?.length === 0){
+            return;
+        } else {
+            console.log(ToDoSelect);
+            const AddWeeklyData = ToDoSelect?.map((data) => {
+                const Values: I_WeeklyAtoms = {contentsNm: data, isAdds: true, isDone: false}
+                return Values;
+            }) as I_WeeklyAtoms[]
+            setWeeklyData((oldItems) => [...oldItems, ...AddWeeklyData])
+            setHide(false);
+        }
+    };
 
     return (
         <Wrapper>
@@ -64,7 +82,9 @@ function AddToDo({setHide}: I_AddToDoParams){
                                 ? (
                                     Contents_data.value.map((data) => {
                                         return (
-                                            <option key={data.contentId}>{data.contentNm}</option>
+                                            <option key={data.contentId}>
+                                                {data.contentNm}
+                                            </option>
                                         );
                                     })
                                 ) : null
@@ -74,7 +94,9 @@ function AddToDo({setHide}: I_AddToDoParams){
                                 ? (
                                     Boss_data.value.map((data) => {
                                         return (
-                                            <option key={data.monsterNm}>{data.monsterNm}</option>
+                                            <option key={data.monsterNm}>
+                                                <label>{data.monsterNm}</label>
+                                            </option>
                                         );
                                     })
                                 ) : null

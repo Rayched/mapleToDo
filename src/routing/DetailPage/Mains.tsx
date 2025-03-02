@@ -1,9 +1,9 @@
 //Detail Page, Main Part Components
 
 import styled from "styled-components";
-import { CategoriesAtom, I_Categories } from "../../Atoms";
+import { CategoriesAtom, I_Categories, WeeklyAtoms } from "../../Atoms";
 import React, { useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import AddToDo from "./AddToDo";
 
 interface I_CategoryItem {
@@ -51,10 +51,11 @@ const ToDoWrapper = styled.div`
 `;
 
 function Mains(){
-    const [isHide, setHide] = useState(true);
+    const [isHide, setHide] = useState(false);
     //AddToDo Render 여부 관리용 state
 
     const [NowCategories, setCategories] = useRecoilState(CategoriesAtom);
+    const Weeklys = useRecoilValue(WeeklyAtoms);
 
     const ChangeCategory = (targetId: string) => {
         const Idx = Categorys.findIndex((item) => item.Id === targetId);
@@ -86,6 +87,18 @@ function Mains(){
             <ToDoWrapper>
                 <button onClick={() => setHide((prev) => !prev)}>할 일 추가</button>
                 {isHide ? <AddToDo setHide={setHide} />: null}
+                <ul>
+                    {
+                        Weeklys.map((item) => {
+                            return (
+                                <li>
+                                    <input type="checkbox" />
+                                    {item.contentsNm}
+                                </li>
+                            );
+                        })
+                    }
+                </ul>
             </ToDoWrapper>
         </Container>
     );

@@ -13,6 +13,12 @@ export interface I_Categories {
     name: string;
 };
 
+export interface I_WeeklyAtoms {
+    contentsNm?: string;
+    isAdds?: boolean;
+    isDone?: boolean;
+};
+
 //Character ID Save
 export const OcidAtoms = atom<I_Ocids>({
     key: "OcidAtom",
@@ -24,3 +30,8 @@ export const CategoriesAtom = atom<I_Categories>({
     key: "CategoriesAtom",
     default: { Id: "", name: "" }
 });
+
+export const WeeklyAtoms = atom<I_WeeklyAtoms[]>({
+    key: "WeeklyAtom",
+    default: []
+})
