@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { CategoriesAtom, I_WeeklyAtoms, WeeklyAtoms } from "../../Atoms";
-import { Boss_data, Contents_data, I_WeeklyContentAtoms, WeeklyContentAtoms } from "../../modules/datas/ContentAtoms";
+import { Boss_data, I_WeeklyContentAtoms, WeeklyContentAtoms } from "../../modules/datas/ContentAtoms";
 
 const Wrapper = styled.div`
     width: 100vw;
@@ -53,7 +53,8 @@ function AddToDo({setHide}: I_AddToDoParams){
 
     const [WeeklyContents, setContents] = useRecoilState(WeeklyContentAtoms);
 
-    const [WeeklyData, setWeeklyData] = useRecoilState(WeeklyAtoms);
+    const setWeeklyData = useSetRecoilState(WeeklyAtoms);
+    //const [WeeklyData, setWeeklyData] = useRecoilState(WeeklyAtoms);
 
     const onValid = ({ToDoSelect}: I_Forms) => {
        const idx = WeeklyContents.findIndex((data) => data.Name === ToDoSelect);

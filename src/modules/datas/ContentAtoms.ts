@@ -1,15 +1,5 @@
 import { atom } from "recoil";
 
-type WeeklyContents_values = {
-    contentId: string,
-    contentNm: string,
-}
-
-interface I_WeeklyContents {
-    id: string;
-    value: WeeklyContents_values[]
-};
-
 type WeeklyBoss_Values = {
     monsterNm: string,
     monsterRank: string[]
@@ -19,27 +9,6 @@ interface I_WeeklyBoss {
     id: string;
     value: WeeklyBoss_Values[]
 }
-
-export const Contents_data: I_WeeklyContents = {
-    id: "WeeklyContents",
-    value: [
-        {contentId: "Azumos", contentNm: "아즈모스 협곡"},
-        {contentId: "MonsterPark", contentNm: "몬스터파크 익스트림"},
-        {contentId: "epic01", contentNm: "에픽던전: 하이마운틴"},
-        {contentId: "epic02", contentNm: "에픽던전: 앵글러 컴퍼니"},
-        {contentId: "arcane01", contentNm: "에르다 스펙트럼"},
-        {contentId: "arcane02", contentNm: "배고픈 무토"},
-        {contentId: "arcane03", contentNm: "미드나잇 체이서"},
-        {contentId: "arcane04", contentNm: "스피릿 세이비어"},
-        {contentId: "arcane05", contentNm: "엔하임 디펜스"},
-        {contentId: "arcane06", contentNm: "프로텍트 에스페라"},
-        {contentId: "mu_lung", contentNm: "무릉도장"},
-        {contentId: "guild01", contentNm: "지하수로"},
-        {contentId: "guild02", contentNm: "플래그 레이스"},
-        {contentId: "absolute01", contentNm: "타락한 세계수 주간퀘"},
-        {contentId: "absolute02", contentNm: "헤이븐 주간퀘"},
-    ]
-};
 
 export const Boss_data: I_WeeklyBoss = {
     id: "WeeklyBoss",
@@ -107,7 +76,40 @@ export const WeeklyContentAtoms = atom<I_WeeklyContentAtoms[]>({
     default: [...new_WeeklyContent_data]
 });
 
-export const BossContentAtoms = atom({
+export interface I_BossContentAtoms {
+    Id: string;
+    Name: string;
+    Rank: string[];
+};
+
+const new_BossContent_data: I_BossContentAtoms[] = [
+    {Id: "boss01", Name: "시그너스", Rank: ["이지", "노멀"]},
+    {Id: "boss02", Name: "힐라", Rank: ["하드"]},
+    {Id: "boss03", Name: "핑크빈", Rank: ["카오스"]},
+    {Id: "boss04", Name: "자쿰", Rank: ["카오스"]},
+    {Id: "boss05", Name: "반반", Rank: ["카오스"]},
+    {Id: "boss06", Name: "피에르", Rank: ["카오스"]},
+    {Id: "boss07", Name: "블러디퀸", Rank: ["카오스"]},
+    {Id: "boss08", Name: "벨룸", Rank: ["카오스"]},
+    {Id: "boss09", Name: "매그너스", Rank: ["하드"]},
+    {Id: "boss10", Name: "파풀라투스", Rank: ["카오스"]},
+    {Id: "boss11", Name: "스우", Rank: ["노멀", "하드", "익스트림"]},
+    {Id: "boss12", Name: "데미안", Rank: ["노멀", "하드"]},
+    {Id: "boss13", Name: "가디언 엔젤 슬라임", Rank: ["노멀", "카오스"]},
+    {Id: "boss14", Name: "루시드", Rank: ["이지", "노멀", "하드"]},
+    {Id: "boss15", Name: "윌", Rank: ["이지", "노멀", "하드"]},
+    {Id: "boss16", Name: "더스크", Rank: ["노멀", "카오스"]},
+    {Id: "boss17", Name: "듄켈", Rank: ["노멀", "하드"]},
+    {Id: "boss18", Name: "진 힐라", Rank: ["노멀", "하드"]},
+    {Id: "boss19", Name: "검은 마법사", Rank: ["하드", "익스트림"]},
+    {Id: "boss20", Name: "선택받은 세렌", Rank: ["노멀", "하드", "익스트림"]},
+    {Id: "boss21", Name: "감시자 칼로스", Rank: ["이지", "노멀", "카오스", "익스트림"]},
+    {Id: "boss22", Name: "카링", Rank: ["이지", "노멀", "하드", "익스트림"]},
+    {Id: "boss23", Name: "림보", Rank: ["노멀", "하드"]},
+    {Id: "boss24", Name: "발드릭스", Rank: ["노멀", "하드"]},
+];
+
+export const BossContentAtoms = atom<I_BossContentAtoms[]>({
     key: "BossContents_data",
-    default: []
-})
+    default: [...new_BossContent_data]
+});
