@@ -3,6 +3,9 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { CategoriesAtom, I_WeeklyAtoms, WeeklyAtoms } from "../../Atoms";
 import { Boss_data, I_WeeklyContentAtoms, WeeklyContentAtoms } from "../../modules/datas/ContentAtoms";
+import AddWeeklyForm from "./AddForms/AddWeeklys";
+import AddBossForm from "./AddForms/AddBoss";
+import AddCustomForms from "./AddForms/AddCustoms";
 
 const Wrapper = styled.div`
     width: 100vw;
@@ -32,14 +35,14 @@ const ToDoHeader = styled.div`
     padding: 8px;
 `;
 
-const ToDoBody = styled.form`
+const ToDoBody = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
 `;
 
-interface I_AddToDoParams {
+export interface I_AddToDoParams {
     setHide: Function;
 };
 
@@ -78,43 +81,20 @@ function AddToDo({setHide}: I_AddToDoParams){
        setWeeklyData((oldItems) => [...oldItems, AddWeeklyData]);
        setHide(false);
     };
+    
     return (
         <Wrapper>
             <Container>
                 <ToDoHeader>
                     <button onClick={() => setHide(false)}>취소</button>
                 </ToDoHeader>
-                <ToDoBody onSubmit={handleSubmit(onValid)}>
+                <ToDoBody>
                     <div>{NowCategories.name}</div>
                     <div className="ToDoSelect">
-                        <select {...register("ToDoSelect", {required: true})}>
-                            {
-                               NowCategories.Id === "Weeklys"
-                               ? (
-                                WeeklyContents.map((data) => {
-                                    return (
-                                        <option key={data.Id} disabled={data.isAdds}>
-                                            {data.Name}
-                                        </option>
-                                    );
-                                })
-                               ) : null
-                            }
-                            {
-                                NowCategories.Id === "Boss"
-                                ? (
-                                    Boss_data.value.map((data) => {
-                                        return (
-                                            <option key={data.monsterNm}>
-                                                <label>{data.monsterNm}</label>
-                                            </option>
-                                        );
-                                    })
-                                ) : null
-                            }
-                        </select>
+                        {NowCategories.Id === "Weeklys" ? <AddWeeklyForm setHide={setHide}/> : null}
+                        {NowCategories.Id === "Boss" ? <AddBossForm /> : null}
+                        {NowCategories.Id === "Customs" ? <AddCustomForms /> : null}
                     </div>
-                    <button>등록</button>
                 </ToDoBody>
             </Container>
         </Wrapper>

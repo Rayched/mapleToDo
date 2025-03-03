@@ -14,7 +14,7 @@ interface I_CategoryItem {
 const Categorys: I_Categories[] = [
     {Id: "Weeklys", name: "주간 컨텐츠"}, 
     {Id: "Boss", name: "주간 보스"}, 
-    {Id: "ToDos", name: "기타 메할일"}
+    {Id: "Customs", name: "기타 메할일"}
 ];
 
 const Container = styled.div`
