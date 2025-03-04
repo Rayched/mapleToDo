@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { I_WeeklyContentAtoms, WeeklyContentAtoms } from "../../../modules/datas/ContentAtoms";
 import { I_WeeklyAtoms, WeeklyAtoms } from "../../../Atoms";
 import { I_AddToDoParams } from "../AddToDo";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface I_WeeklyForms {
     WeeklyContents?: string;
@@ -76,28 +76,17 @@ function AddWeeklyForm({setHide}: I_AddToDoParams){
 
     const [WeeklyData, setWeeklyData] = useRecoilState(WeeklyContentAtoms);
 
-    const setWeeklyAtoms = useSetRecoilState(WeeklyAtoms);
+    const [WeeklyAtomData, setWeeklyAtoms] = useRecoilState(WeeklyAtoms);
 
     const onValid = ({WeeklyContents}: I_WeeklyForms) => {
         const idx = WeeklyData.findIndex((data) => WeeklyContents === data.Name);
         const SelectedItem = WeeklyData[idx];
 
-        const EditItem: I_WeeklyContentAtoms = {
-            Id: SelectedItem.Id,
-            Name: SelectedItem.Name,
-            isAdds: true
-        };
-
         const AddWeeklyData: I_WeeklyAtoms = {
-            contentsNm: WeeklyContents,
+            contentsNm: SelectedItem.Name,
+            contentsId: SelectedItem.Id,
             isDone: false
         };
-
-        setWeeklyData((oldItems) => [
-            ...oldItems.slice(0, idx),
-            EditItem,
-            ...oldItems.slice(idx + 1)
-        ]);
 
         setItems((oldItems) => [...oldItems, AddWeeklyData]);
     };
@@ -107,11 +96,26 @@ function AddWeeklyForm({setHide}: I_AddToDoParams){
             alert("일정을 등록해주세요.");
             return;
         } else {
-            setWeeklyAtoms((oldItems) => [...oldItems, ...Items]);
+            Items.forEach((todo) => {
+                const targetIdx = WeeklyData.findIndex((elm) => todo.contentsNm === elm.Name);
+                const ConvertData: I_WeeklyContentAtoms = {
+                    Id: WeeklyData[targetIdx].Id,
+                    Name: WeeklyData[targetIdx].Name,
+                    isAdds: true
+                };
+                setWeeklyData((NonTargets) => [
+                    ...NonTargets.slice(0, targetIdx),
+                    ConvertData,
+                    ...NonTargets.slice(targetIdx + 1)
+                ]);
+            });
             setItems([]);
+            setWeeklyAtoms((oldItems) => [...oldItems, ...Items]);
             setHide(false);
         }
     }
+
+    useEffect(() => console.log(WeeklyData), [WeeklyData]);
 
     return (
         <WeeklyWrapper>
@@ -133,7 +137,7 @@ function AddWeeklyForm({setHide}: I_AddToDoParams){
                 {
                     Items.map((todo) => {
                         return (
-                            <WeeklyItem key={todo.contentsNm}>{todo.contentsNm}</WeeklyItem>
+                            <WeeklyItem key={todo.contentsNm} value={todo.contentsId}>{todo.contentsNm}</WeeklyItem>
                         );
                     })
                 }
