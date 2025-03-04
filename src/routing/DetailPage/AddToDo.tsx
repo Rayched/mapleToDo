@@ -1,8 +1,6 @@
-import { useForm } from "react-hook-form";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { CategoriesAtom, I_WeeklyAtoms, WeeklyAtoms } from "../../Atoms";
-import { Boss_data, I_WeeklyContentAtoms, WeeklyContentAtoms } from "../../modules/datas/ContentAtoms";
+import { CategoriesAtom } from "../../Atoms";
 import AddWeeklyForm from "./AddForms/AddWeeklys";
 import AddBossForm from "./AddForms/AddBoss";
 import AddCustomForms from "./AddForms/AddCustoms";
@@ -46,41 +44,8 @@ export interface I_AddToDoParams {
     setHide: Function;
 };
 
-interface I_Forms {
-    ToDoSelect?: string;
-}
-
 function AddToDo({setHide}: I_AddToDoParams){
-    const {register, handleSubmit} = useForm();
     const NowCategories = useRecoilValue(CategoriesAtom);
-
-    const [WeeklyContents, setContents] = useRecoilState(WeeklyContentAtoms);
-
-    const setWeeklyData = useSetRecoilState(WeeklyAtoms);
-    //const [WeeklyData, setWeeklyData] = useRecoilState(WeeklyAtoms);
-
-    const onValid = ({ToDoSelect}: I_Forms) => {
-       const idx = WeeklyContents.findIndex((data) => data.Name === ToDoSelect);
-       const targets = WeeklyContents[idx];
-
-       const ConvertData: I_WeeklyContentAtoms = {
-            Id: targets.Id,
-            Name: targets.Name,
-            isAdds: true
-       };
-       setContents((oldItems) => [
-        ...oldItems.slice(0, idx),
-        ConvertData,
-        ...oldItems.slice(idx + 1)
-       ]);
-
-       const AddWeeklyData: I_WeeklyAtoms = {
-            contentsNm: ToDoSelect,
-            isDone: false
-       };
-       setWeeklyData((oldItems) => [...oldItems, AddWeeklyData]);
-       setHide(false);
-    };
     
     return (
         <Wrapper>
