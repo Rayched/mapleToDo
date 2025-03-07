@@ -26,6 +26,11 @@ export interface I_BossAtoms {
     isDone: boolean;
 }
 
+interface I_ToDoSelector {
+    Id?: string;
+    Name?: string;
+}
+
 //Character ID Save
 export const OcidAtoms = atom<I_Ocids>({
     key: "OcidAtom",
@@ -55,12 +60,19 @@ export const ToDosSelect = selector({
         
         if(NowCategory.Id === "Weeklys"){
             const WeeklyData = get(WeeklyAtoms);
-            return WeeklyData;
+            const convertData: I_ToDoSelector[] = WeeklyData.map((data) => {
+                return {Id: data.contentsId, Name: data.contentsNm}
+            })
+            return convertData;
         } else if(NowCategory.Id === "Boss"){
             const BossData = get(BossAtoms);
-            return BossData;
-        } else if(NowCategory.Id === "Customs"){
 
+            const convertData: I_ToDoSelector[] = BossData.map(((data) => {
+                return {Id: data.monsterId, Name: data.monsterNm}
+            }))
+            return convertData;
+        } else if(NowCategory.Id === "Customs"){
+            return;
         } else {
             return;
         }

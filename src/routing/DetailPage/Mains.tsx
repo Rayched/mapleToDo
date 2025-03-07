@@ -1,7 +1,7 @@
 //Detail Page, Main Part Components
 
 import styled from "styled-components";
-import { BossAtoms, CategoriesAtom, I_Categories, WeeklyAtoms } from "../../Atoms";
+import { BossAtoms, CategoriesAtom, I_Categories, ToDosSelect, WeeklyAtoms } from "../../Atoms";
 import React, { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import AddToDo from "./AddToDo";
@@ -58,6 +58,8 @@ function Mains(){
     const Weeklys = useRecoilValue(WeeklyAtoms);
     const BossContents = useRecoilValue(BossAtoms);
 
+    const ToDoDatas = useRecoilValue(ToDosSelect);
+
     const ChangeCategory = (targetId: string) => {
         const Idx = Categorys.findIndex((item) => item.Id === targetId);
 
@@ -92,14 +94,7 @@ function Mains(){
                 {isHide ? <AddToDo setHide={setHide} />: null}
                 <ul>
                     {
-                        Weeklys.map((item) => {
-                            return (
-                                <li>
-                                    <input type="checkbox" />
-                                    {item.contentsNm}
-                                </li>
-                            );
-                        })
+                        ToDoDatas?.map((data) => <li key={data.Id}>{data.Name}</li>)
                     }
                 </ul>
             </ToDoWrapper>
