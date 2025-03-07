@@ -1,8 +1,8 @@
 //Detail Page, Main Part Components
 
 import styled from "styled-components";
-import { CategoriesAtom, I_Categories, WeeklyAtoms } from "../../Atoms";
-import React, { useState } from "react";
+import { BossAtoms, CategoriesAtom, I_Categories, WeeklyAtoms } from "../../Atoms";
+import React, { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import AddToDo from "./AddToDo";
 
@@ -56,6 +56,7 @@ function Mains(){
 
     const [NowCategories, setCategories] = useRecoilState(CategoriesAtom);
     const Weeklys = useRecoilValue(WeeklyAtoms);
+    const BossContents = useRecoilValue(BossAtoms);
 
     const ChangeCategory = (targetId: string) => {
         const Idx = Categorys.findIndex((item) => item.Id === targetId);
@@ -67,6 +68,8 @@ function Mains(){
 
         setCategories(newCategories);
     };
+
+    useEffect(() => console.log(BossContents), [BossContents]);
 
     return (
         <Container>

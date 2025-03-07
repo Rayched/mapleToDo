@@ -1,4 +1,4 @@
-import { atom } from "recoil";
+import { atom, selector } from "recoil";
 
 interface I_Ocids {
     ocid: string;
@@ -19,6 +19,13 @@ export interface I_WeeklyAtoms {
     isDone?: boolean;
 };
 
+export interface I_BossAtoms {
+    monsterId: string;
+    monsterNm: string;
+    ranks: string;
+    isDone: boolean;
+}
+
 //Character ID Save
 export const OcidAtoms = atom<I_Ocids>({
     key: "OcidAtom",
@@ -34,4 +41,28 @@ export const CategoriesAtom = atom<I_Categories>({
 export const WeeklyAtoms = atom<I_WeeklyAtoms[]>({
     key: "WeeklyAtom",
     default: []
+})
+
+export const BossAtoms = atom<I_BossAtoms[]>({
+    key: "BossAtom",
+    default: [],
+});
+
+export const ToDosSelect = selector({
+    key: "ToDosSelector",
+    get: ({get}) => {
+        const NowCategory = get(CategoriesAtom);
+        
+        if(NowCategory.Id === "Weeklys"){
+            const WeeklyData = get(WeeklyAtoms);
+            return WeeklyData;
+        } else if(NowCategory.Id === "Boss"){
+            const BossData = get(BossAtoms);
+            return BossData;
+        } else if(NowCategory.Id === "Customs"){
+
+        } else {
+            return;
+        }
+    }
 })

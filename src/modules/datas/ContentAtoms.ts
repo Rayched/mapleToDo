@@ -10,38 +10,6 @@ interface I_WeeklyBoss {
     value: WeeklyBoss_Values[]
 }
 
-export const Boss_data: I_WeeklyBoss = {
-    id: "WeeklyBoss",
-    value: [
-        {monsterNm: "시그너스", monsterRank: ["이지", "노말"]},
-        {monsterNm: "힐라", monsterRank: ["하드"]},
-        {monsterNm: "핑크빈", monsterRank: ["카오스"]},
-        {monsterNm: "자쿰", monsterRank: ["카오스"]},
-        {monsterNm: "반반", monsterRank: ["카오스"]},
-        {monsterNm: "피에르", monsterRank: ["카오스"]},
-        {monsterNm: "블러디퀸", monsterRank: ["카오스"]},
-        {monsterNm: "벨룸", monsterRank: ["카오스"]},
-        {monsterNm: "매그너스", monsterRank: ["하드"]},
-        {monsterNm: "파풀라투스", monsterRank: ["카오스"]},
-        {monsterNm: "스우", monsterRank: ["노말", "하드", "익스트림"]},
-        {monsterNm: "데미안", monsterRank: ["노말", "하드"]},
-        {monsterNm: "가디언 엔젤 슬라임", monsterRank: ["노말", "카오스"]},
-        {monsterNm: "루시드", monsterRank: ["이지", "노말", "하드"]},
-        {monsterNm: "윌", monsterRank: ["이지", "노말", "하드"]},
-        {monsterNm: "더스크", monsterRank: ["노말", "카오스"]},
-        {monsterNm: "듄켈", monsterRank: ["노말", "하드"]},
-        {monsterNm: "진 힐라", monsterRank: ["노말", "하드"]},
-        {monsterNm: "검은 마법사", monsterRank: ["하드", "익스트림"]},
-        {monsterNm: "선택받은 세렌", monsterRank: ["노말", "하드", "익스트림"]},
-        {monsterNm: "감시자 칼로스", monsterRank: ["이지", "노말", "카오스", "익스트림"]},
-        {monsterNm: "카링", monsterRank: ["이지", "노말", "하드", "익스트림"]},
-        {monsterNm: "림보", monsterRank: ["노말", "하드"]},
-        /**
-         * {monsterNm: "발드릭스", monsterRank: ["노말", "하드"]}
-         */
-    ]
-};
-
 /**
  * AddToDo에서 To Do 추가할 때 관리하기 편하게 하기 위해서
  * Contents Data를 Atom으로 관리하도록 변경하였음.
@@ -80,33 +48,34 @@ export interface I_BossContentAtoms {
     Id: string;
     Name: string;
     Rank: string[];
+    isAdds: boolean;
 };
 
 const new_BossContent_data: I_BossContentAtoms[] = [
-    {Id: "boss01", Name: "시그너스", Rank: ["이지", "노멀"]},
-    {Id: "boss02", Name: "힐라", Rank: ["하드"]},
-    {Id: "boss03", Name: "핑크빈", Rank: ["카오스"]},
-    {Id: "boss04", Name: "자쿰", Rank: ["카오스"]},
-    {Id: "boss05", Name: "반반", Rank: ["카오스"]},
-    {Id: "boss06", Name: "피에르", Rank: ["카오스"]},
-    {Id: "boss07", Name: "블러디퀸", Rank: ["카오스"]},
-    {Id: "boss08", Name: "벨룸", Rank: ["카오스"]},
-    {Id: "boss09", Name: "매그너스", Rank: ["하드"]},
-    {Id: "boss10", Name: "파풀라투스", Rank: ["카오스"]},
-    {Id: "boss11", Name: "스우", Rank: ["노멀", "하드", "익스트림"]},
-    {Id: "boss12", Name: "데미안", Rank: ["노멀", "하드"]},
-    {Id: "boss13", Name: "가디언 엔젤 슬라임", Rank: ["노멀", "카오스"]},
-    {Id: "boss14", Name: "루시드", Rank: ["이지", "노멀", "하드"]},
-    {Id: "boss15", Name: "윌", Rank: ["이지", "노멀", "하드"]},
-    {Id: "boss16", Name: "더스크", Rank: ["노멀", "카오스"]},
-    {Id: "boss17", Name: "듄켈", Rank: ["노멀", "하드"]},
-    {Id: "boss18", Name: "진 힐라", Rank: ["노멀", "하드"]},
-    {Id: "boss19", Name: "검은 마법사", Rank: ["하드", "익스트림"]},
-    {Id: "boss20", Name: "선택받은 세렌", Rank: ["노멀", "하드", "익스트림"]},
-    {Id: "boss21", Name: "감시자 칼로스", Rank: ["이지", "노멀", "카오스", "익스트림"]},
-    {Id: "boss22", Name: "카링", Rank: ["이지", "노멀", "하드", "익스트림"]},
-    {Id: "boss23", Name: "림보", Rank: ["노멀", "하드"]},
-    {Id: "boss24", Name: "발드릭스", Rank: ["노멀", "하드"]},
+    {Id: "boss01", Name: "시그너스", Rank: ["이지", "노멀"], isAdds: false},
+    {Id: "boss02", Name: "힐라", Rank: ["하드"], isAdds: false},
+    {Id: "boss03", Name: "핑크빈", Rank: ["카오스"], isAdds: false},
+    {Id: "boss04", Name: "자쿰", Rank: ["카오스"], isAdds: false},
+    {Id: "boss05", Name: "반반", Rank: ["카오스"], isAdds: false},
+    {Id: "boss06", Name: "피에르", Rank: ["카오스"], isAdds: false},
+    {Id: "boss07", Name: "블러디퀸", Rank: ["카오스"], isAdds: false},
+    {Id: "boss08", Name: "벨룸", Rank: ["카오스"], isAdds: false},
+    {Id: "boss09", Name: "매그너스", Rank: ["하드"], isAdds: false},
+    {Id: "boss10", Name: "파풀라투스", Rank: ["카오스"], isAdds: false},
+    {Id: "boss11", Name: "스우", Rank: ["노멀", "하드", "익스트림"], isAdds: false},
+    {Id: "boss12", Name: "데미안", Rank: ["노멀", "하드"], isAdds: false},
+    {Id: "boss13", Name: "가디언 엔젤 슬라임", Rank: ["노멀", "카오스"], isAdds: false},
+    {Id: "boss14", Name: "루시드", Rank: ["이지", "노멀", "하드"], isAdds: false},
+    {Id: "boss15", Name: "윌", Rank: ["이지", "노멀", "하드"], isAdds: false},
+    {Id: "boss16", Name: "더스크", Rank: ["노멀", "카오스"], isAdds: false},
+    {Id: "boss17", Name: "듄켈", Rank: ["노멀", "하드"], isAdds: false},
+    {Id: "boss18", Name: "진 힐라", Rank: ["노멀", "하드"], isAdds: false},
+    {Id: "boss19", Name: "검은 마법사", Rank: ["하드", "익스트림"], isAdds: false},
+    {Id: "boss20", Name: "선택받은 세렌", Rank: ["노멀", "하드", "익스트림"], isAdds: false},
+    {Id: "boss21", Name: "감시자 칼로스", Rank: ["이지", "노멀", "카오스", "익스트림"], isAdds: false},
+    {Id: "boss22", Name: "카링", Rank: ["이지", "노멀", "하드", "익스트림"], isAdds: false},
+    {Id: "boss23", Name: "림보", Rank: ["노멀", "하드"], isAdds: false},
+    {Id: "boss24", Name: "발드릭스", Rank: ["노멀", "하드"], isAdds: false},
 ];
 
 export const BossContentAtoms = atom<I_BossContentAtoms[]>({
