@@ -16,9 +16,9 @@ interface I_ContentsItem {
     isAdds: boolean;
 };
 
-interface I_WeeklyItemBox {
-    ItemsLength: number;
-};
+interface I_DelBtn {
+    isHide: boolean;
+}
 
 const WeeklyWrapper = styled.div`
     display: flex;
@@ -48,31 +48,72 @@ const ContentsItem = styled.option<I_ContentsItem>`
     font-weight: ${(props) => props.isAdds ? "none" : "bold"};
 `;
 
-const WeeklyItemBox = styled.ul<I_WeeklyItemBox>`
+const WeeklyItemBox = styled.div`
     width: 15em;
+    height: 20em;
     background-color: rgb(216, 213, 213);
     border-radius: 15px;
     margin-top: 10px;
-    display: ${(props) => props.ItemsLength === 0 ? "none" : "flex"};
+    display: flex;
     flex-direction: column;
-    justify-content: center;
+    align-items: center;
+`;
+
+const WeeklyItemHeader = styled.div`
+    width: inherit;
+    padding: 5px 0px;
+    font-size: 15px;
+    font-weight: bold;
+    background-color: rgb(230, 225, 225);
+    text-align: center;
+    border-top-right-radius: inherit;
+    border-top-left-radius: inherit;
+`;
+
+const WeeklyItemList = styled.ul`
+    width: 100%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
     align-items: center;
 `;
 
 const WeeklyItem = styled.li`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
     background-color: rgb(251, 240, 240);
     padding: 3px;
     font-weight: bold;
     margin: 3px 0px;
-    border-radius: 15px;
-    width: 10em;
-    text-align: center;
+    border-radius: 5px;
+    width: 12em;
+    height: 1.5em;
+
+    label {
+        padding: 0px 1px;
+        font-size: 15.5px;
+    }
+`;
+
+const DelBtn = styled.button<I_DelBtn>`
+    display: ${(props) => props.isHide ? "flex" : "none"};
+    margin: 0px 3px;
+`;
+
+const BtnContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 `;
 
 function AddWeeklyForm({setHide}: I_AddToDoParams){
     const {register, handleSubmit} = useForm();
 
     const [Items, setItems] = useState<I_WeeklyAtoms[]>([]);
+    const [ShowDelBtn, setShowDelBtn] = useState(false);
 
     const [WeeklyData, setWeeklyData] = useRecoilState(WeeklyContentAtoms);
 
@@ -115,6 +156,21 @@ function AddWeeklyForm({setHide}: I_AddToDoParams){
         }
     }
 
+    const ItemDelete = (ItemId?: string) => {
+        const idx = Items.findIndex((elm) => ItemId === elm.contentsId);
+        const DeleteCheck = window.confirm(`{contentsNm: ${Items[idx].contentsNm}}을 삭제하시겠습니까?`);
+
+        if(DeleteCheck){
+            setItems((oldItems) => [
+                ...oldItems.slice(0, idx),
+                ...oldItems.slice(idx + 1)
+            ]);
+            setShowDelBtn(false)
+        } else {
+            return;
+        }
+    };
+
     useEffect(() => console.log(WeeklyData), [WeeklyData]);
 
     return (
@@ -133,15 +189,24 @@ function AddWeeklyForm({setHide}: I_AddToDoParams){
                 </SelectBox>
                 <button>할 일 추가</button>
             </AddWeeklyForms>
-            <WeeklyItemBox ItemsLength={Items.length}>
-                {
-                    Items.map((todo) => {
-                        return (
-                            <WeeklyItem key={todo.contentsNm} value={todo.contentsId}>{todo.contentsNm}</WeeklyItem>
-                        );
-                    })
-                }
-                <button onClick={WeeklySubmit}>최종 등록</button>
+            <WeeklyItemBox>
+                <WeeklyItemHeader>주간 컨텐츠 목록</WeeklyItemHeader>
+                <WeeklyItemList>
+                    {
+                        Items.map((todo) => {
+                            return (
+                                <WeeklyItem key={todo.contentsNm} value={todo.contentsId}>
+                                    <label>{todo.contentsNm}</label>
+                                    <DelBtn isHide={ShowDelBtn} onClick={() => ItemDelete(todo.contentsId)}>삭제</DelBtn>
+                                </WeeklyItem>
+                            );
+                        })
+                    }
+                </WeeklyItemList>
+                <BtnContainer>
+                    <button onClick={WeeklySubmit}>등록</button>
+                    <button onClick={() => setShowDelBtn(true)}>삭제</button>
+                </BtnContainer>
             </WeeklyItemBox>
         </WeeklyWrapper>
     );
