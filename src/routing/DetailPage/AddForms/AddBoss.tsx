@@ -1,21 +1,22 @@
 //Boss Contents ToDo Form Component
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { BossContentAtoms, I_BossContentAtoms } from "../../../modules/datas/originDatas";
+import { BossContentAtoms, I_BossContentAtoms, OriginData } from "../../../modules/datas/originDatas";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { BossAtoms, I_BossAtoms } from "../../../Atoms";
 import { watch } from "fs";
+import { I_DelBtn } from "./AddWeeklys";
 
 interface I_forms {
-    BossContents?: string;
+    BossName?: string;
 }
 
 interface I_Items {
     Id: string;
     Name: string;
-    RankList?: string[];
     Rank?: string;
+    Ranks?: string[];
 };
 
 interface I_RankSelectParams {
@@ -104,36 +105,50 @@ const BossItem = styled.li`
     }
 `;
 
+const BtnContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+`;
+
+const DelBtn = styled.button<I_DelBtn>`
+    display: ${(props) => props.isHide ? "flex" : "none"};
+    margin: 0px 3px;
+`;
+
 function AddBossForm(){
-    const [BossData, setBossData] = useRecoilState(BossContentAtoms);
-    const setBossAtoms = useSetRecoilState(BossAtoms);
+    const [BossAtomData, setBossAtoms] = useRecoilState(BossAtoms);
+
+    const BossDatas = OriginData.BossContents;
+
     const [Items, setItems] = useState<I_Items[]>([]);
+
+    const [ShowBtn, setShowBtn] = useState(false);
+
     const {register, handleSubmit} = useForm();
 
-    const onValid = ({BossContents}: I_forms) => {
-        const idx = BossData.findIndex((elm) => BossContents === elm.Name);
-        const Targets = BossData[idx];
+    const onValid = ({BossName}: I_forms) => {
+        const idx = BossDatas.findIndex((elm) => BossName === elm.Name);
+        const Targets = BossDatas[idx];
 
+        //난이도 1개 이상/이하 구분
         if(Targets.Rank.length === 1){
-            setItems((oldItems) => {
-                const Convert: I_Items = {
-                    Id: Targets.Id,
-                    Name: Targets.Name,
-                    Rank: Targets.Rank[0]
-                };
-
-                return [...oldItems, Convert];
-            });
+            const TypeA: I_Items = {
+                Id: Targets.Id,
+                Name: Targets.Name,
+                Rank: Targets.Rank[0],
+                Ranks: []
+            };
+            setItems((oldItems) => [...oldItems, TypeA]);            
         } else {
-            setItems((oldItems) => {
-                const Convert: I_Items = {
-                    Id: Targets.Id,
-                    Name: Targets.Name,
-                    Rank: "",
-                    RankList: [...Targets.Rank]
-                };
-                return [...oldItems, Convert];
-            })
+            const TypeB: I_Items = {
+                Id: Targets.Id,
+                Name: Targets.Name,
+                Rank: "",
+                Ranks: Targets.Rank
+            };
+            setItems((oldItems) => [...oldItems, TypeB]);
         }
     };
 
@@ -146,8 +161,8 @@ function AddBossForm(){
         const EditData: I_Items = {
             Id: Items[idx].Id,
             Name: Items[idx].Name,
-            RankList: undefined,
-            Rank: value
+            Rank: value,
+            Ranks: Items[idx].Ranks
         };
 
         setItems((oldItems) => [
@@ -157,46 +172,40 @@ function AddBossForm(){
         ]);
     };
 
-    const BossSubmit = () => {
+    const DataSubmit = () => {
         if(Items.length === 0){
             alert("등록된 주간 보스가 없습니다.");
             return;
         } else {
-            Items.forEach((contents) => {
-                const idx = BossData.findIndex((origin) => contents.Id === origin.Id);
-                setBossData((NonTargets) => {
-                    const convert: I_BossContentAtoms = {
-                        Id: BossData[idx].Id,
-                        Name: BossData[idx].Name,
-                        Rank: [...BossData[idx].Rank],
-                        isAdds: true
-                    };
-                    return [
-                        ...NonTargets.slice(0, idx),
-                        convert,
-                        ...NonTargets.slice(idx + 1)
-                    ];
-                });
-                setItems([]);
-                setBossAtoms((oldData) => {
-                    const Convert: I_BossAtoms = {
-                        monsterId: contents.Id,
-                        monsterNm: contents.Name,
-                        ranks: String(contents.Rank),
-                        isDone: false
-                    };
-                    return [...oldData, Convert]
-                });
-            })
+           Items.forEach((bossItems) => {
+            const SaveDatas: I_BossAtoms = {
+                monsterId: bossItems.Id,
+                monsterNm: bossItems.Name,
+                ranks: String(bossItems.Rank),
+                isDone: false
+            };
+            setBossAtoms((oldData) => [...oldData, SaveDatas]);
+           })
         }
+    };
+
+    const ToDoDelete = (targetId: string) => {
+        const idx = Items.findIndex((item) => targetId === item.Id);
+
+        setItems((oldItems) => [
+            ...oldItems.slice(0, idx),
+            ...oldItems.slice(idx + 1)
+        ]);
+        setShowBtn(false);
     };
 
     return (
         <Wrapper>
             <AddForm onSubmit={handleSubmit(onValid)}>
-                <SelectBox {...register("BossContents", {required: true})}>
+                <SelectBox {...register("BossName", {required: true})}>
                     {
-                        BossData.map((data) => {
+                        BossDatas.map((data) => {
+                            
                             return <option key={data.Id}>{data.Name}</option>
                         })
                     }
@@ -211,19 +220,24 @@ function AddBossForm(){
                             return (
                                 <BossItem key={data.Id}>
                                     <label>{data.Name}</label>
-                                    {data.Rank !== "" ? <span>{data.Rank}</span> : null}
-                                    {data.Rank === "" ? (
-                                        <select key={data.Id} name={data.Name} onChange={RankChange}>
-                                            {data.RankList?.map((elm) => <option key={elm} value={elm}>{elm}</option>)}
-                                        </select>
-                                    ): null}
+                                    {
+                                        data.Ranks?.length === 0 ? <div>{data?.Rank}</div>
+                                        : (
+                                            <select key={data.Id} name={data.Name} onChange={RankChange}>
+                                                {data.Ranks?.map((elm) => <option key={elm} value={elm}>{elm}</option>)}
+                                            </select>
+                                        ) 
+                                    }
+                                    <DelBtn isHide={ShowBtn} onClick={() => ToDoDelete(data.Id)}>삭제</DelBtn>
                                 </BossItem>
                             );
                         })
                     }
                 </ul>
-                <button onClick={BossSubmit}>등록</button>
-                <button>삭제</button>
+                <BtnContainer>
+                    <button onClick={DataSubmit}>등록</button>
+                    <button onClick={() => setShowBtn((prev) => !prev)}>삭제</button>
+                </BtnContainer>
             </ItemBox>
         </Wrapper>
     );

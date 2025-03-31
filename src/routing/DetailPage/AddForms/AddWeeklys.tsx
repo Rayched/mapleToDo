@@ -12,7 +12,7 @@ interface I_WeeklyForms {
     WeeklyContents?: string;
 };
 
-interface I_DelBtn {
+export interface I_DelBtn {
     isHide: boolean;
 };
 
@@ -163,6 +163,14 @@ function AddWeeklyForm({setHide}: I_AddToDoParams){
                 <SelectBox {...register("WeeklyContents", {required: true})}>
                     {
                         Weeklys.map((data) => {
+                            /**
+                             * WeeklyContents data를 atoms로 관리하지 않고
+                             * 직접적으로 원본 데이터를 참조하게 변경
+                             * 이미 등록된 contents를 중복 등록 방지하기 위해
+                             * findIndex() 통해 등록 여부를 확인하고
+                             * 등록된 todo는 disable된 형태로 return되게
+                             * logic 수정
+                             */
                             const isSame = WeeklyAtomData.findIndex((atomData) => data.Id === atomData.contentsId);
 
                             if(isSame === -1){
@@ -191,7 +199,7 @@ function AddWeeklyForm({setHide}: I_AddToDoParams){
                 </WeeklyItemList>
                 <BtnContainer>
                     <button onClick={WeeklySubmit}>등록</button>
-                    <button onClick={() => setShowDelBtn(true)}>삭제</button>
+                    <button onClick={() => setShowDelBtn((prev) => !prev)}>삭제</button>
                 </BtnContainer>
             </WeeklyItemBox>
         </WeeklyWrapper>
