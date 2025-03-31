@@ -3,7 +3,7 @@
 import { useForm } from "react-hook-form";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { I_WeeklyContentAtoms, WeeklyContentAtoms } from "../../../modules/datas/ContentAtoms";
+import {OriginData} from "../../../modules/datas/originDatas";
 import { I_WeeklyAtoms, WeeklyAtoms } from "../../../Atoms";
 import { I_AddToDoParams } from "../AddToDo";
 import React, { useEffect, useState } from "react";
@@ -12,13 +12,13 @@ interface I_WeeklyForms {
     WeeklyContents?: string;
 };
 
+interface I_DelBtn {
+    isHide: boolean;
+};
+
 interface I_ContentsItem {
     isAdds: boolean;
 };
-
-interface I_DelBtn {
-    isHide: boolean;
-}
 
 const WeeklyWrapper = styled.div`
     display: flex;
@@ -45,7 +45,7 @@ const SelectBox = styled.select`
 
 const ContentsItem = styled.option<I_ContentsItem>`
     background-color: ${(props) => props.isAdds ? "lightgray" : "white"};
-    font-weight: ${(props) => props.isAdds ? "none" : "bold"};
+    font-weight: bold;
 `;
 
 const WeeklyItemBox = styled.div`
@@ -115,18 +115,17 @@ function AddWeeklyForm({setHide}: I_AddToDoParams){
     const [Items, setItems] = useState<I_WeeklyAtoms[]>([]);
     const [ShowDelBtn, setShowDelBtn] = useState(false);
 
-    const [WeeklyData, setWeeklyData] = useRecoilState(WeeklyContentAtoms);
+    const Weeklys = OriginData.WeeklyContents;
 
     const [WeeklyAtomData, setWeeklyAtoms] = useRecoilState(WeeklyAtoms);
 
     const onValid = ({WeeklyContents}: I_WeeklyForms) => {
-        const idx = WeeklyData.findIndex((data) => WeeklyContents === data.Name);
-        const SelectedItem = WeeklyData[idx];
+        const idx = Weeklys.findIndex((data) => WeeklyContents === data.Name);
+        const SelectedItem = Weeklys[idx];
 
         const AddWeeklyData: I_WeeklyAtoms = {
             contentsNm: SelectedItem.Name,
             contentsId: SelectedItem.Id,
-            isDone: false
         };
 
         setItems((oldItems) => [...oldItems, AddWeeklyData]);
@@ -137,21 +136,8 @@ function AddWeeklyForm({setHide}: I_AddToDoParams){
             alert("일정을 등록해주세요.");
             return;
         } else {
-            Items.forEach((todo) => {
-                const targetIdx = WeeklyData.findIndex((elm) => todo.contentsNm === elm.Name);
-                const ConvertData: I_WeeklyContentAtoms = {
-                    Id: WeeklyData[targetIdx].Id,
-                    Name: WeeklyData[targetIdx].Name,
-                    isAdds: true
-                };
-                setWeeklyData((NonTargets) => [
-                    ...NonTargets.slice(0, targetIdx),
-                    ConvertData,
-                    ...NonTargets.slice(targetIdx + 1)
-                ]);
-            });
-            setItems([]);
             setWeeklyAtoms((oldItems) => [...oldItems, ...Items]);
+            setItems([]);
             setHide(false);
         }
     }
@@ -171,23 +157,23 @@ function AddWeeklyForm({setHide}: I_AddToDoParams){
         }
     };
 
-    useEffect(() => console.log(WeeklyData), [WeeklyData]);
-
     return (
         <WeeklyWrapper>
             <AddWeeklyForms onSubmit={handleSubmit(onValid)}>
                 <SelectBox {...register("WeeklyContents", {required: true})}>
                     {
-                        WeeklyData.map((data) => {
-                            return (
-                                <ContentsItem key={data.Id} disabled={data.isAdds} isAdds={data.isAdds}>
-                                    {data.Name}
-                                </ContentsItem>
-                            );
+                        Weeklys.map((data) => {
+                            const isSame = WeeklyAtomData.findIndex((atomData) => data.Id === atomData.contentsId);
+
+                            if(isSame === -1){
+                                return <ContentsItem key={data.Id} isAdds={false}>{data.Name}</ContentsItem>
+                            } else {
+                                return <ContentsItem key={data.Id} isAdds={true} disabled>{data.Name}</ContentsItem>
+                            }
                         })
                     }
                 </SelectBox>
-                <button>할 일 추가</button>
+                <button>등록</button>
             </AddWeeklyForms>
             <WeeklyItemBox>
                 <WeeklyItemHeader>주간 컨텐츠 목록</WeeklyItemHeader>

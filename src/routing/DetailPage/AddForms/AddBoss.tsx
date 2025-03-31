@@ -1,7 +1,7 @@
 //Boss Contents ToDo Form Component
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { BossContentAtoms, I_BossContentAtoms } from "../../../modules/datas/ContentAtoms";
+import { BossContentAtoms, I_BossContentAtoms } from "../../../modules/datas/originDatas";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { BossAtoms, I_BossAtoms } from "../../../Atoms";
@@ -201,7 +201,7 @@ function AddBossForm(){
                         })
                     }
                 </SelectBox>
-                <button>추가</button>
+                <button>등록</button>
             </AddForm>
             <ItemBox>
                 <ItemHeader>주간 보스 목록</ItemHeader>

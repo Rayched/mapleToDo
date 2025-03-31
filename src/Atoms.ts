@@ -77,4 +77,40 @@ export const ToDosSelect = selector({
             return;
         }
     }
-})
+});
+
+//localStorage 저장할 데이터 type sample
+interface I_LocalDatas {
+    charNm: string;
+    WeeklyData: {
+        key: "WeeklyData",
+        values: [
+            {
+                BossId: string,
+                BossNm: string,
+                BossRank: string,
+                isDone: boolean
+            }
+        ]
+    };
+    BossData: {
+        key: "BossData",
+        values: [
+            {
+                ContentsId: string,
+                ContentsNm: string,
+                isDone: boolean
+            }
+        ]
+    };
+    ToDoData: {
+        key: "ToDoData",
+        values: [
+            {
+                ToDoId: string,
+                ToDoNm: string,
+                isDone: boolean
+            }
+        ]
+    };
+}
