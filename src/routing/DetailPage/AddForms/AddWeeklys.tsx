@@ -16,7 +16,7 @@ export interface I_DelBtn {
     isHide: boolean;
 };
 
-interface I_ContentsItem {
+export interface I_ContentsItem {
     isAdds: boolean;
 };
 

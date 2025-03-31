@@ -1,12 +1,13 @@
 //Boss Contents ToDo Form Component
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { atomFamily, useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { BossContentAtoms, I_BossContentAtoms, OriginData } from "../../../modules/datas/originDatas";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { BossAtoms, I_BossAtoms } from "../../../Atoms";
 import { watch } from "fs";
-import { I_DelBtn } from "./AddWeeklys";
+import { I_ContentsItem, I_DelBtn } from "./AddWeeklys";
+import { I_AddToDoParams } from "../AddToDo";
 
 interface I_forms {
     BossName?: string;
@@ -46,6 +47,12 @@ const SelectBox = styled.select`
     align-items: center;
     text-align: center;
 `;
+
+const ContentsItem = styled.option<I_ContentsItem>`
+    background-color: ${(props) => props.isAdds ? "lightgray" : "white"};
+    font-weight: bold;
+`;
+
 
 const ItemBox = styled.div`
     width: 15em;
@@ -94,15 +101,15 @@ const BossItem = styled.li`
         padding: 0px 1px;
         font-size: 14px;
     };
+`;
 
-    .singleRanks {
-        display: flex;
-        background-color: white;
-        padding: 3px;
-        border: 1px solid black;
-        border-radius: 5px;
-        font-size: 13px;
-    }
+const RankBox = styled.div`
+    display: flex;
+    background-color: white;
+    padding: 3px;
+    border: 1px solid black;
+    border-radius: 5px;
+    font-size: 13px;
 `;
 
 const BtnContainer = styled.div`
@@ -117,7 +124,7 @@ const DelBtn = styled.button<I_DelBtn>`
     margin: 0px 3px;
 `;
 
-function AddBossForm(){
+function AddBossForm({setHide}: I_AddToDoParams){
     const [BossAtomData, setBossAtoms] = useRecoilState(BossAtoms);
 
     const BossDatas = OriginData.BossContents;
@@ -178,14 +185,15 @@ function AddBossForm(){
             return;
         } else {
            Items.forEach((bossItems) => {
-            const SaveDatas: I_BossAtoms = {
-                monsterId: bossItems.Id,
-                monsterNm: bossItems.Name,
-                ranks: String(bossItems.Rank),
-                isDone: false
-            };
-            setBossAtoms((oldData) => [...oldData, SaveDatas]);
-           })
+                const SaveDatas: I_BossAtoms = {
+                    monsterId: bossItems.Id,
+                    monsterNm: bossItems.Name,
+                    ranks: String(bossItems.Rank),
+                    isDone: false
+                };
+                setBossAtoms((oldData) => [...oldData, SaveDatas]);
+           });
+           setHide(false);
         }
     };
 
@@ -205,8 +213,15 @@ function AddBossForm(){
                 <SelectBox {...register("BossName", {required: true})}>
                     {
                         BossDatas.map((data) => {
-                            
-                            return <option key={data.Id}>{data.Name}</option>
+                            //Boss 중복 등록 방지 logic
+
+                            const isSame = BossAtomData.findIndex((atomData) => atomData.monsterId === data.Id);
+
+                            if(isSame === -1){
+                                return <ContentsItem key={data.Id} isAdds={false}>{data.Name}</ContentsItem>
+                            } else {
+                                return <ContentsItem key={data.Id} isAdds={true} disabled>{data.Name}</ContentsItem>
+                            }
                         })
                     }
                 </SelectBox>
@@ -221,7 +236,7 @@ function AddBossForm(){
                                 <BossItem key={data.Id}>
                                     <label>{data.Name}</label>
                                     {
-                                        data.Ranks?.length === 0 ? <div>{data?.Rank}</div>
+                                        data.Ranks?.length === 0 ? <RankBox>{data?.Rank}</RankBox>
                                         : (
                                             <select key={data.Id} name={data.Name} onChange={RankChange}>
                                                 {data.Ranks?.map((elm) => <option key={elm} value={elm}>{elm}</option>)}

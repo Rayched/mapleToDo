@@ -57,7 +57,7 @@ function AddToDo({setHide}: I_AddToDoParams){
                     <div>{NowCategories.name}</div>
                     <div className="ToDoSelect">
                         {NowCategories.Id === "Weeklys" ? <AddWeeklyForm setHide={setHide}/> : null}
-                        {NowCategories.Id === "Boss" ? <AddBossForm /> : null}
+                        {NowCategories.Id === "Boss" ? <AddBossForm setHide={setHide}/> : null}
                         {NowCategories.Id === "Customs" ? <AddCustomForms /> : null}
                     </div>
                 </ToDoBody>
