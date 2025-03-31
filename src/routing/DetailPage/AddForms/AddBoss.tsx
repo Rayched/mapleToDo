@@ -1,11 +1,10 @@
 //Boss Contents ToDo Form Component
-import { atomFamily, useRecoilState, useSetRecoilState } from "recoil";
+import {useRecoilState} from "recoil";
 import styled from "styled-components";
-import { BossContentAtoms, I_BossContentAtoms, OriginData } from "../../../modules/datas/originDatas";
+import { OriginData } from "../../../modules/datas/originDatas";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { BossAtoms, I_BossAtoms } from "../../../Atoms";
-import { watch } from "fs";
 import { I_ContentsItem, I_DelBtn } from "./AddWeeklys";
 import { I_AddToDoParams } from "../AddToDo";
 

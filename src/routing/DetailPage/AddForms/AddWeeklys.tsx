@@ -1,12 +1,12 @@
 //Weekly Contents To Do form components
 
 import { useForm } from "react-hook-form";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState} from "recoil";
 import styled from "styled-components";
 import {OriginData} from "../../../modules/datas/originDatas";
 import { I_WeeklyAtoms, WeeklyAtoms } from "../../../Atoms";
 import { I_AddToDoParams } from "../AddToDo";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 interface I_WeeklyForms {
     WeeklyContents?: string;
