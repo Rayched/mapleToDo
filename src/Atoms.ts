@@ -50,7 +50,7 @@ export const WeeklyAtoms = atom<I_WeeklyAtoms[]>({
 
 export const BossAtoms = atom<I_BossAtoms[]>({
     key: "BossAtom",
-    default: [],
+    default: []
 });
 
 export const ToDosSelect = selector({
@@ -114,3 +114,9 @@ interface I_LocalDatas {
         ]
     };
 }
+
+//전체 ToDo 관리하는 ScheduleAtoms
+const ScheduleAtoms = atom({
+    key: "ScheduleAtoms",
+    default: []
+});

@@ -1,13 +1,18 @@
-import { atom } from "recoil";
-
 //주간 컨텐츠, 주간보스 데이터 모아둔 file
 
-export interface I_WeeklyContentAtoms {
+export interface I_WeeklyContent {
     Id: string;
     Name: string;
 };
 
-const new_WeeklyContent_data: I_WeeklyContentAtoms[] = [
+export interface I_BossContent {
+    Id: string;
+    Name: string;
+    Rank: string[];
+    isAdds: boolean;
+};
+
+const new_WeeklyContent_data: I_WeeklyContent[] = [
     {Id: "azumos", Name: "아즈모스 협곡"},
     {Id: "monsterpark", Name: "몬스터파크 익스트림"},
     {Id: "epic01", Name: "하이마운틴"},
@@ -25,14 +30,7 @@ const new_WeeklyContent_data: I_WeeklyContentAtoms[] = [
     {Id: "abs02", Name: "헤이븐 주간퀘"},
 ];
 
-export interface I_BossContentAtoms {
-    Id: string;
-    Name: string;
-    Rank: string[];
-    isAdds: boolean;
-};
-
-const new_BossContent_data: I_BossContentAtoms[] = [
+const new_BossContent_data: I_BossContent[] = [
     {Id: "boss01", Name: "시그너스", Rank: ["이지", "노멀"], isAdds: false},
     {Id: "boss02", Name: "힐라", Rank: ["하드"], isAdds: false},
     {Id: "boss03", Name: "핑크빈", Rank: ["카오스"], isAdds: false},
@@ -58,11 +56,6 @@ const new_BossContent_data: I_BossContentAtoms[] = [
     {Id: "boss23", Name: "림보", Rank: ["노멀", "하드"], isAdds: false},
     {Id: "boss24", Name: "발드릭스", Rank: ["노멀", "하드"], isAdds: false},
 ];
-
-export const BossContentAtoms = atom<I_BossContentAtoms[]>({
-    key: "BossContents_data",
-    default: [...new_BossContent_data]
-});
 
 export const OriginData = {
     WeeklyContents: [...new_WeeklyContent_data],

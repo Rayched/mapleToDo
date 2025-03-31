@@ -182,6 +182,10 @@ function AddBossForm({setHide}: I_AddToDoParams){
         if(Items.length === 0){
             alert("등록된 주간 보스가 없습니다.");
             return;
+        } else if(BossAtomData.length === 12){
+            alert("주간 보스는 최대 12개까지만 등록할 수 있습니다.");
+            setItems([]);
+            setHide(false);
         } else {
            Items.forEach((bossItems) => {
                 const SaveDatas: I_BossAtoms = {
