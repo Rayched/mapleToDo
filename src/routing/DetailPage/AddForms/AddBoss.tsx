@@ -50,6 +50,7 @@ const SelectBox = styled.select`
 const ContentsItem = styled.option<I_ContentsItem>`
     background-color: ${(props) => props.isAdds ? "lightgray" : "white"};
     font-weight: bold;
+    text-decoration: ${(props) => props.isAdds ? "line-through" : "none"};
 `;
 
 

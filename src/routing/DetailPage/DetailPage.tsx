@@ -98,7 +98,7 @@ function Details(){
                                 <DataItem key="charInfos">
                                     {CharInfo?.character_name}
                                     <div className="worlds">
-                                        <img src={`logos/icon_${targetIdx}.png`} /> 
+                                        <img src={`logos/world_icons/icon_${targetIdx}.png`} /> 
                                         {CharInfo?.world_name}
                                     </div>
                                 </DataItem>
