@@ -26,6 +26,13 @@ export interface I_BossAtoms {
     isDone: boolean;
 }
 
+export interface I_CustomToDoAtoms {
+    ToDo_Title: string;
+    ToDo_Bodys?: string;
+    StartDate?: string;
+    EndDate?: string;
+}
+
 interface I_ToDoSelector {
     Id?: string;
     Name?: string;
@@ -53,6 +60,11 @@ export const BossAtoms = atom<I_BossAtoms[]>({
     default: []
 });
 
+export const CustomToDoAtoms = atom<I_CustomToDoAtoms[]>({
+    key: "CustomToDoAtom",
+    default: []
+})
+
 export const ToDosSelect = selector({
     key: "ToDosSelector",
     get: ({get}) => {
@@ -72,7 +84,13 @@ export const ToDosSelect = selector({
             }))
             return convertData;
         } else if(NowCategory.Id === "Customs"){
-            return;
+            const ToDoDatas = get(CustomToDoAtoms);
+
+            const convertData: I_ToDoSelector[] = ToDoDatas.map((data) => {
+                return {Id: data.ToDo_Title, Name: data.ToDo_Title}
+            })
+
+            return convertData;
         } else {
             return;
         }

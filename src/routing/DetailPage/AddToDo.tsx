@@ -38,6 +38,10 @@ const ToDoBody = styled.div`
     align-items: center;
     justify-content: center;
     flex-direction: column;
+
+    .CategoryNm {
+        font-size: 1.2rem;
+    };
 `;
 
 export interface I_AddToDoParams {
@@ -54,11 +58,11 @@ function AddToDo({setHide}: I_AddToDoParams){
                     <button onClick={() => setHide(false)}>취소</button>
                 </ToDoHeader>
                 <ToDoBody>
-                    <div>{NowCategories.name}</div>
+                    <div className="CategoryNm">{NowCategories.name}</div>
                     <div className="ToDoSelect">
                         {NowCategories.Id === "Weeklys" ? <AddWeeklyForm setHide={setHide}/> : null}
                         {NowCategories.Id === "Boss" ? <AddBossForm setHide={setHide}/> : null}
-                        {NowCategories.Id === "Customs" ? <AddCustomForms /> : null}
+                        {NowCategories.Id === "Customs" ? <AddCustomForms setHide={setHide}/> : null}
                     </div>
                 </ToDoBody>
             </Container>
