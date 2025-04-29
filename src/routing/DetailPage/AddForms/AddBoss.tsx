@@ -127,6 +127,7 @@ function AddBossForm({setHide}: I_AddToDoParams){
     const [BossAtomData, setBossAtoms] = useRecoilState(BossAtoms);
 
     const BossDatas = OriginData.BossContents;
+    //원본 보스 컨텐츠 데이터
 
     const [Items, setItems] = useState<I_Items[]>([]);
 
@@ -217,13 +218,16 @@ function AddBossForm({setHide}: I_AddToDoParams){
                     {
                         BossDatas.map((data) => {
                             //Boss 중복 등록 방지 logic
+                            const isItem = Items.findIndex((item) => data.Id === item.Id);
+                            const isBossAtom = BossAtomData.findIndex((atomData) => atomData.monsterId === data.Id);
+                            //BossAtom에 해당 보스 콘텐츠가 등록됐는 지 여부 확인
+                            //등록된게 없으면 -1을 return
+                            //이를 통해서 중복 등록을 방지한다.
 
-                            const isSame = BossAtomData.findIndex((atomData) => atomData.monsterId === data.Id);
-
-                            if(isSame === -1){
-                                return <ContentsItem key={data.Id} isAdds={false}>{data.Name}</ContentsItem>
-                            } else {
+                            if(isItem !== -1 || isBossAtom !== -1){
                                 return <ContentsItem key={data.Id} isAdds={true} disabled>{data.Name}</ContentsItem>
+                            } else {
+                                return <ContentsItem key={data.Id} isAdds={false}>{data.Name}</ContentsItem>
                             }
                         })
                     }

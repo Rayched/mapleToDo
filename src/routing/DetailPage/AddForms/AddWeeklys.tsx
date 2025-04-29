@@ -171,12 +171,13 @@ function AddWeeklyForm({setHide}: I_AddToDoParams){
                              * 등록된 todo는 disable된 형태로 return되게
                              * logic 수정
                              */
-                            const isSame = WeeklyAtomData.findIndex((atomData) => data.Id === atomData.contentsId);
+                            const isItems = Items.findIndex((itemData) => data.Id === itemData.contentsId);
+                            const isWeeklys = WeeklyAtomData.findIndex((atomData) => data.Id === atomData.contentsId);
 
-                            if(isSame === -1){
-                                return <ContentsItem key={data.Id} isAdds={false}>{data.Name}</ContentsItem>
-                            } else {
+                            if(isItems !== -1 || isWeeklys !== -1){
                                 return <ContentsItem key={data.Id} isAdds={true} disabled>{data.Name}</ContentsItem>
+                            } else {
+                                return <ContentsItem key={data.Id} isAdds={false}>{data.Name}</ContentsItem>
                             }
                         })
                     }

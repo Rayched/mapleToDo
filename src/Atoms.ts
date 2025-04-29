@@ -115,8 +115,15 @@ interface I_LocalDatas {
     };
 }
 
+interface I_Schedules {
+    charNm: string;
+    WeeklyContents: I_WeeklyAtoms[];
+    BossContents: I_BossAtoms[];
+    CustomToDos: [];
+};
+
 //전체 ToDo 관리하는 ScheduleAtoms
-const ScheduleAtoms = atom({
+const ScheduleAtoms = atom<I_Schedules[]>({
     key: "ScheduleAtoms",
     default: []
 });
