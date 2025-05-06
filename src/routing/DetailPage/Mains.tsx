@@ -50,6 +50,24 @@ const ToDoWrapper = styled.div`
     align-items: center;
 `;
 
+const ToDoItem = styled.li`
+    margin: 3px 0px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    border: 2px solid black;
+    border-radius: 10px;
+    width: 10em;
+    height: 1.2em;
+`;
+
+const ToDoText = styled.span`
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    width: 80%;
+`;
+
 function Mains(){
     const [isHide, setHide] = useState(false);
     //AddToDo Render 여부 관리용 state
@@ -90,11 +108,19 @@ function Mains(){
                 }
             </Categories>
             <ToDoWrapper>
-                <button onClick={() => setHide((prev) => !prev)}>할 일 추가</button>
-                {isHide ? <AddToDo setHide={setHide} />: null}
-                <ul>
+                <div className="AddToDoContainer">
+                    <button onClick={() => setHide((prev) => !prev)}>할 일 추가</button>
+                    {isHide ? <AddToDo setHide={setHide} />: null}
+                </div>
+                <ul className="ToDoItemContainer">
                     {
-                        ToDoDatas?.map((data) => <li key={data.Id}>{data.Name}</li>)
+                        ToDoDatas?.map((data) => {
+                            return (
+                                <ToDoItem key={data.Id}>
+                                    <input type="checkbox"/>
+                                    <ToDoText>{data.Name}</ToDoText>
+                                </ToDoItem>
+                            )})
                     }
                 </ul>
             </ToDoWrapper>
