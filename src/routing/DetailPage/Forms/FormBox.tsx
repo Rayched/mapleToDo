@@ -1,9 +1,9 @@
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { CategoriesAtom } from "../../Atoms";
-import AddWeeklyForm from "./AddForms/AddWeeklys";
-import AddBossForm from "./AddForms/AddBoss";
-import AddCustomForms from "./AddForms/AddCustoms";
+import { CategoriesAtom } from "../../../Atoms";
+import AddWeeklyForm from "./WeeklyForms";
+import AddBossForm from "./BossForms";
+import AddCustomForms from "./ToDoForms";
 
 const Wrapper = styled.div`
     width: 100vw;
@@ -48,7 +48,7 @@ export interface I_AddToDoParams {
     setHide: Function;
 };
 
-function AddToDo({setHide}: I_AddToDoParams){
+function FormBox({setHide}: I_AddToDoParams){
     const NowCategories = useRecoilValue(CategoriesAtom);
     
     return (
@@ -70,4 +70,4 @@ function AddToDo({setHide}: I_AddToDoParams){
     );
 };
 
-export default AddToDo;
+export default FormBox;

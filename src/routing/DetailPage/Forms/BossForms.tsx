@@ -5,8 +5,8 @@ import { OriginData } from "../../../modules/datas/originDatas";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { BossAtoms, I_BossAtoms } from "../../../Atoms";
-import { I_ContentsItem, I_DelBtn } from "./AddWeeklys";
-import { I_AddToDoParams } from "../AddToDo";
+import { I_ContentsItem, I_DelBtn } from "./WeeklyForms";
+import { I_AddToDoParams } from "./FormBox";
 
 interface I_forms {
     BossName?: string;
@@ -124,7 +124,7 @@ const DelBtn = styled.button<I_DelBtn>`
     margin: 0px 3px;
 `;
 
-function AddBossForm({setHide}: I_AddToDoParams){
+function BossForm({setHide}: I_AddToDoParams){
     const [BossAtomData, setBossAtoms] = useRecoilState(BossAtoms);
 
     const BossDatas = OriginData.BossContents;
@@ -233,7 +233,7 @@ function AddBossForm({setHide}: I_AddToDoParams){
                         })
                     }
                 </SelectBox>
-                <button>등록</button>
+                <button>임시 등록</button>
             </AddForm>
             <ItemBox>
                 <ItemHeader>주간 보스 목록</ItemHeader>
@@ -266,4 +266,4 @@ function AddBossForm({setHide}: I_AddToDoParams){
     );
 };
 
-export default AddBossForm;
+export default BossForm;

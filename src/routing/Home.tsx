@@ -152,7 +152,7 @@ function Home(){
             alert(`입력하신 닉네임을 다시 확인해주세요.\n{${Outputs.error?.message}, ${Outputs.error.name}}`);
             setValue("charNm", "");
         } else {
-            await setCharID(Outputs);
+            await setCharID({charNm: data.charNm, ocid: Outputs.ocid});
             Navigate("/charToDo");
         }
     };

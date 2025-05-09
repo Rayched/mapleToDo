@@ -1,8 +1,21 @@
 import { atom, selector } from "recoil";
 
-interface I_Ocids {
+export interface I_Ocids {
     ocid: string;
+    charNm?: string;
 }
+
+//Character ID Save
+export const OcidAtoms = atom<I_Ocids>({
+    key: "OcidAtom",
+    default: {ocid: "", charNm: ""}
+});
+
+//사용자가 선택한 Category 기억해두는 atom
+export const CategoriesAtom = atom<I_Categories>({
+    key: "CategoriesAtom",
+    default: { Id: "", name: "" }
+});
 
 export interface I_ToDos {
     category?: string;
@@ -33,23 +46,6 @@ export interface I_CustomToDoAtoms {
     EndDate?: string;
 }
 
-interface I_ToDoSelector {
-    Id?: string;
-    Name?: string;
-}
-
-//Character ID Save
-export const OcidAtoms = atom<I_Ocids>({
-    key: "OcidAtom",
-    default: undefined
-});
-
-//사용자가 선택한 Category 기억해두는 atom
-export const CategoriesAtom = atom<I_Categories>({
-    key: "CategoriesAtom",
-    default: { Id: "", name: "" }
-});
-
 export const WeeklyAtoms = atom<I_WeeklyAtoms[]>({
     key: "WeeklyAtom",
     default: []
@@ -64,6 +60,11 @@ export const CustomToDoAtoms = atom<I_CustomToDoAtoms[]>({
     key: "CustomToDoAtom",
     default: []
 })
+
+interface I_ToDoSelector {
+    Id?: string;
+    Name?: string;
+}
 
 export const ToDosSelect = selector({
     key: "ToDosSelector",
@@ -97,51 +98,40 @@ export const ToDosSelect = selector({
     }
 });
 
-//localStorage 저장할 데이터 type sample
-interface I_LocalDatas {
-    charNm: string;
-    WeeklyData: {
-        key: "WeeklyData",
-        values: [
-            {
-                BossId: string,
-                BossNm: string,
-                BossRank: string,
-                isDone: boolean
-            }
-        ]
-    };
-    BossData: {
-        key: "BossData",
-        values: [
-            {
-                ContentsId: string,
-                ContentsNm: string,
-                isDone: boolean
-            }
-        ]
-    };
-    ToDoData: {
-        key: "ToDoData",
-        values: [
-            {
-                ToDoId: string,
-                ToDoNm: string,
-                isDone: boolean
-            }
-        ]
-    };
-}
-
-interface I_Schedules {
-    charNm: string;
-    WeeklyContents: I_WeeklyAtoms[];
-    BossContents: I_BossAtoms[];
-    CustomToDos: [];
+export interface I_WeeklyToDos {
+    ContentsId: string;
+    ContentsNm: string;
+    IsDone: boolean;
 };
 
-//전체 ToDo 관리하는 ScheduleAtoms
-const ScheduleAtoms = atom<I_Schedules[]>({
-    key: "ScheduleAtoms",
+export interface I_BossToDos {
+    BossId: string;
+    BossNm: string;
+    Rank: string;
+    IsDone: boolean;
+};
+
+export interface I_CustomToDos {
+    Title: string;
+    Bodys?: string;
+    openDts?: string;
+    endDts?: string;
+};
+
+export interface I_MapleToDos {
+    charNm: string;
+    ocids: string;
+    WeeklyToDos?: I_WeeklyToDos[];
+    BossToDos?: I_BossToDos[];
+    CustomToDos?: I_CustomToDos[];
+};
+
+export const A_MapleToDos = atom<I_MapleToDos[]>({
+    key: "A_MapleToDos",
     default: []
+});
+
+export const ToDos = selector({
+    key: "ToDos",
+    get: ({get}) => {}
 });

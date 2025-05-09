@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { CustomToDoAtoms, I_CustomToDoAtoms } from "../../../Atoms";
 import { useRecoilState } from "recoil";
-import { I_AddToDoParams } from "../AddToDo";
+import { I_AddToDoParams } from "./FormBox";
 
 interface I_FormData {
     Title?: string;
@@ -45,7 +45,7 @@ const InputBox = styled.div`
 
 const SubmitBtn = styled.button``;
 
-function AddCustomForms({setHide}: I_AddToDoParams){
+function ToDoForms({setHide}: I_AddToDoParams){
     const {register, handleSubmit, setValue} = useForm();
 
     const [ToDoAtoms, setToDoAtoms] = useRecoilState(CustomToDoAtoms);
@@ -97,4 +97,4 @@ function AddCustomForms({setHide}: I_AddToDoParams){
     );
 };
 
-export default AddCustomForms;
+export default ToDoForms;

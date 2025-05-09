@@ -1,12 +1,12 @@
 //Weekly Contents To Do form components
 
 import { useForm } from "react-hook-form";
-import { useRecoilState} from "recoil";
+import { useRecoilState, useRecoilValue} from "recoil";
 import styled from "styled-components";
 import {OriginData} from "../../../modules/datas/originDatas";
-import { I_WeeklyAtoms, WeeklyAtoms } from "../../../Atoms";
-import { I_AddToDoParams } from "../AddToDo";
-import React, { useState } from "react";
+import { I_AddToDoParams } from "./FormBox";
+import React, { useEffect, useState } from "react";
+import { A_MapleToDos, I_MapleToDos, I_WeeklyToDos, OcidAtoms } from "../../../Atoms";
 
 interface I_WeeklyForms {
     WeeklyContents?: string;
@@ -109,42 +109,77 @@ const BtnContainer = styled.div`
     align-items: center;
 `;
 
-function AddWeeklyForm({setHide}: I_AddToDoParams){
+function WeeklyForm({setHide}: I_AddToDoParams){
     const {register, handleSubmit} = useForm();
 
-    const [Items, setItems] = useState<I_WeeklyAtoms[]>([]);
+    const [Items, setItems] = useState<I_WeeklyToDos[]>([]);
     const [ShowDelBtn, setShowDelBtn] = useState(false);
 
-    const Weeklys = OriginData.WeeklyContents;
+    const CharId = useRecoilValue(OcidAtoms);
+    const [ToDos, setToDos] = useRecoilState(A_MapleToDos);
 
-    const [WeeklyAtomData, setWeeklyAtoms] = useRecoilState(WeeklyAtoms);
+    const WeeklyOriginData = OriginData.WeeklyContents;
 
     const onValid = ({WeeklyContents}: I_WeeklyForms) => {
-        const idx = Weeklys.findIndex((data) => WeeklyContents === data.Name);
-        const SelectedItem = Weeklys[idx];
+        const idx = WeeklyOriginData.findIndex((data) => WeeklyContents === data.Name);
+        const SelectedItem = WeeklyOriginData[idx];
 
-        const AddWeeklyData: I_WeeklyAtoms = {
-            contentsNm: SelectedItem.Name,
-            contentsId: SelectedItem.Id,
+        const AddWeeklyData: I_WeeklyToDos = {
+            ContentsId: SelectedItem.Id,
+            ContentsNm: SelectedItem.Name,
+            IsDone: false
         };
 
-        setItems((oldItems) => [...oldItems, AddWeeklyData]);
+        setItems((oldItems) => [
+            ...oldItems,
+            AddWeeklyData
+        ]);
     };
 
     const WeeklySubmit = () => {
+        const TargetIdx = ToDos.findIndex((data) => data.charNm === CharId.charNm);
+
         if(Items.length === 0){
             alert("일정을 등록해주세요.");
             return;
-        } else {
-            setWeeklyAtoms((oldItems) => [...oldItems, ...Items]);
+        } else if(Items.length !== 0 && TargetIdx === -1){
+            const newCharData: I_MapleToDos = {
+                charNm: String(CharId.charNm),
+                ocids: CharId.ocid,
+                WeeklyToDos: [...Items],
+                BossToDos: [],
+                CustomToDos: []
+            };
+            setToDos((oldToDos) => [...oldToDos, newCharData]);
+            setItems([]);
+            setHide(false);
+        } else if(Items.length !== 0 && TargetIdx !== -1){
+            const Targets = ToDos[TargetIdx];
+
+            const EditWeeklys = Targets.WeeklyToDos?.concat(Items);
+            
+            const EditCharData: I_MapleToDos = {
+                charNm: Targets.charNm,
+                ocids: Targets.ocids,
+                WeeklyToDos: EditWeeklys,
+                BossToDos: Targets.BossToDos,
+                CustomToDos: Targets.CustomToDos
+            };
+
+            setToDos((oldToDos) => [
+                ...oldToDos.slice(0, TargetIdx),
+                EditCharData,
+                ...oldToDos.slice(TargetIdx + 1)
+            ]);
+
             setItems([]);
             setHide(false);
         }
     }
 
     const ItemDelete = (ItemId?: string) => {
-        const idx = Items.findIndex((elm) => ItemId === elm.contentsId);
-        const DeleteCheck = window.confirm(`{contentsNm: ${Items[idx].contentsNm}}을 삭제하시겠습니까?`);
+        const idx = Items.findIndex((elm) => ItemId === elm.ContentsId);
+        const DeleteCheck = window.confirm(`{contentsNm: ${Items[idx].ContentsNm}}을 삭제하시겠습니까?`);
 
         if(DeleteCheck){
             setItems((oldItems) => [
@@ -157,32 +192,32 @@ function AddWeeklyForm({setHide}: I_AddToDoParams){
         }
     };
 
+    useEffect(() => console.log(ToDos), [ToDos]);
+
     return (
         <WeeklyWrapper>
             <AddWeeklyForms onSubmit={handleSubmit(onValid)}>
                 <SelectBox {...register("WeeklyContents", {required: true})}>
                     {
-                        Weeklys.map((data) => {
-                            /**
-                             * WeeklyContents data를 atoms로 관리하지 않고
-                             * 직접적으로 원본 데이터를 참조하게 변경
-                             * 이미 등록된 contents를 중복 등록 방지하기 위해
-                             * findIndex() 통해 등록 여부를 확인하고
-                             * 등록된 todo는 disable된 형태로 return되게
-                             * logic 수정
-                             */
-                            const isItems = Items.findIndex((itemData) => data.Id === itemData.contentsId);
-                            const isWeeklys = WeeklyAtomData.findIndex((atomData) => data.Id === atomData.contentsId);
+                        WeeklyOriginData.map((originData) => {
+                            const idx = ToDos.findIndex((data) => data.charNm === CharId.charNm);
+                            //해당 캐릭터한테 할당된 파트가 있냐, 없냐 여부 체크
+                            //있는 경우와 없는 경우 두 가지로 나눠서 생각했어야 했음.
 
-                            if(isItems !== -1 || isWeeklys !== -1){
-                                return <ContentsItem key={data.Id} isAdds={true} disabled>{data.Name}</ContentsItem>
-                            } else {
-                                return <ContentsItem key={data.Id} isAdds={false}>{data.Name}</ContentsItem>
-                            }
+                            const isItems = Items.findIndex((itemData) => originData.Id === itemData.ContentsId);
+                            //Items 배열에 임시 저장된게 있냐 없냐 체크
+
+                            //idx !== -1인 경우, 즉 할당된 파트가 있는 경우에서
+                            //추가하려는 컨텐츠와 동일한게 있는지도 체크 해야함
+
+                            //캐릭터 할당 파트 유무 
+                            //Items 배열 임시저장 유무
+
+                            return <ContentsItem key={originData.Id} isAdds={true} disabled>{originData.Name}</ContentsItem>
                         })
                     }
                 </SelectBox>
-                <button>등록</button>
+                <button>임시 등록</button>
             </AddWeeklyForms>
             <WeeklyItemBox>
                 <WeeklyItemHeader>주간 컨텐츠 목록</WeeklyItemHeader>
@@ -190,9 +225,9 @@ function AddWeeklyForm({setHide}: I_AddToDoParams){
                     {
                         Items.map((todo) => {
                             return (
-                                <WeeklyItem key={todo.contentsNm} value={todo.contentsId}>
-                                    <label>{todo.contentsNm}</label>
-                                    <DelBtn isHide={ShowDelBtn} onClick={() => ItemDelete(todo.contentsId)}>삭제</DelBtn>
+                                <WeeklyItem key={todo.ContentsNm} value={todo.ContentsId}>
+                                    <label>{todo.ContentsNm}</label>
+                                    <DelBtn isHide={ShowDelBtn} onClick={() => ItemDelete(todo.ContentsId)}>삭제</DelBtn>
                                 </WeeklyItem>
                             );
                         })
@@ -207,4 +242,4 @@ function AddWeeklyForm({setHide}: I_AddToDoParams){
     );
 };
 
-export default AddWeeklyForm;
+export default WeeklyForm;

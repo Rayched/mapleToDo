@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { BossAtoms, CategoriesAtom, I_Categories, ToDosSelect, WeeklyAtoms } from "../../Atoms";
 import React, { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import AddToDo from "./AddToDo";
+import AddToDo from "./Forms/FormBox";
 
 interface I_CategoryItem {
     Id: string;
@@ -68,7 +68,7 @@ const ToDoText = styled.span`
     width: 80%;
 `;
 
-function Mains(){
+function ToDoList(){
     const [isHide, setHide] = useState(false);
     //AddToDo Render 여부 관리용 state
 
@@ -128,4 +128,4 @@ function Mains(){
     );
 };
 
-export default Mains;
+export default ToDoList;

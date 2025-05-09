@@ -1,9 +1,10 @@
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { OcidAtoms } from "../../Atoms";
+import { A_MapleToDos, I_MapleToDos, OcidAtoms } from "../../Atoms";
 import { useQuery } from "react-query";
 import { getCharData } from "../../modules/Fetchs";
-import Mains from "./Mains";
+import Mains from "./ToDoList";
+import { useEffect } from "react";
 
 /**
  * Nexon api 통해 캐릭터 정보를 보여주고
@@ -77,11 +78,11 @@ const DataItem = styled.div`
 `;
 
 function Details(){
-    const CharId = useRecoilValue(OcidAtoms);
+    const [charID, setCharID] = useRecoilState(OcidAtoms);
 
     const {isLoading, data: CharInfo} = useQuery<I_CharInfo>(
         "charData",
-        () => getCharData(CharId)
+        () => getCharData(charID)
     );
 
     const targetIdx = WorldNms.findIndex((names) => CharInfo?.world_name === names);
