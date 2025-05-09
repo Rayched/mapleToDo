@@ -200,6 +200,7 @@ function WeeklyForm({setHide}: I_AddToDoParams){
                 <SelectBox {...register("WeeklyContents", {required: true})}>
                     {
                         WeeklyOriginData.map((originData) => {
+                            let isActive: boolean = true;
                             const idx = ToDos.findIndex((data) => data.charNm === CharId.charNm);
                             //해당 캐릭터한테 할당된 파트가 있냐, 없냐 여부 체크
                             //있는 경우와 없는 경우 두 가지로 나눠서 생각했어야 했음.
@@ -213,7 +214,33 @@ function WeeklyForm({setHide}: I_AddToDoParams){
                             //캐릭터 할당 파트 유무 
                             //Items 배열 임시저장 유무
 
-                            return <ContentsItem key={originData.Id} isAdds={true} disabled>{originData.Name}</ContentsItem>
+                            //사용자가 입력한 캐릭터 명과 일치하는 항목 존재 여부 체크
+                            if(idx === -1){
+                                //임시 저장용인 Items에 해당 콘텐츠 저장 여부 체크
+                                if(isItems === -1){
+                                    //없으면 활성화 유지
+                                    isActive = true;
+                                } else {
+                                    //있으면 비활성화
+                                    isActive = false;
+                                }
+                            } else {
+                                const Targets = ToDos[idx].WeeklyToDos;
+                                const isContents = Targets?.findIndex((data) => data.ContentsId === originData.Id);
+                                //기존 항목에서 추가하려는 콘텐츠 존재 여부 체크
+
+                                if(isItems === -1 && isContents === -1){
+                                    //Items, Targets 모두 없는 경우
+                                    isActive = true;
+                                } else {
+                                    isActive = false;
+                                }
+                            }
+
+                            return (
+                                isActive ? <ContentsItem key={originData.Id} isAdds={false}>{originData.Name}</ContentsItem>
+                                : <ContentsItem key={originData.Id} isAdds={true} disabled>{originData.Name}</ContentsItem>
+                            );
                         })
                     }
                 </SelectBox>
