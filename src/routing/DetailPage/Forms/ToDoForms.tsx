@@ -5,13 +5,6 @@ import { A_MapleToDos, I_CustomToDos, I_MapleToDos, OcidAtoms } from "../../../A
 import { useRecoilState, useRecoilValue } from "recoil";
 import { I_AddToDoParams } from "./FormBox";
 
-interface I_FormData {
-    Title?: string;
-    Bodys?: string;
-    startDt?: string;
-    endDt?: string;
-}
-
 const CustomWrapper = styled.div`
     margin-top: 10px;
     width: 25em;

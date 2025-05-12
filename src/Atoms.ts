@@ -122,7 +122,7 @@ export const ToDos = selector({
 
                 const Conversion = CustomToDos?.map((todoData, idx) => {
                     const SetFormat: I_DataFormat = {
-                        ContentsId: `todo${"0" + idx}`,
+                        ContentsId: String(todoData.Title),
                         ContentsNm: String(todoData.Title),
                         IsDone: false,
                         ToDoBodys: todoData.Bodys,

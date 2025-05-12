@@ -41,7 +41,6 @@ const ContentsItem = styled.option<I_ContentsItem>`
     text-decoration: ${(props) => props.isAdds ? "line-through" : "none"};
 `;
 
-
 const ItemBox = styled.div`
     width: 15em;
     height: 20em;
@@ -119,7 +118,6 @@ function BossForm({setHide}: I_AddToDoParams){
     const [ShowBtn, setShowBtn] = useState(false);
 
     const [ToDos, setToDos] = useRecoilState(A_MapleToDos);
-
     const CharId = useRecoilValue(OcidAtoms);
 
     const BossOriginData = OriginData.BossContents;
@@ -129,12 +127,21 @@ function BossForm({setHide}: I_AddToDoParams){
         const idx = BossOriginData.findIndex((elm) => BossName === elm.Name);
         const Targets = BossOriginData[idx];
 
+        //주간보스 12회 이상 등록 방지 logic
+        const CharIdx = ToDos.findIndex((data) => data.charNm === CharId.charNm);
+
+        if(CharIdx !== -1){
+            const CharBossToDos = ToDos[CharIdx].BossToDos;
+            if(CharBossToDos?.length === 12) return;
+        }
+
         //난이도 1개 이상/이하 구분
         if(Targets.Rank.length === 1){
             const TypeA: I_BossToDos = {
                 BossId: Targets.Id,
                 BossNm: Targets.Name,
                 Rank: Targets.Rank[0],
+                Ranks: Targets.Rank,
                 IsDone: false
             };
             setItems((oldItems) => [...oldItems, TypeA]);            
@@ -142,6 +149,7 @@ function BossForm({setHide}: I_AddToDoParams){
             const TypeB: I_BossToDos = {
                 BossId: Targets.Id,
                 BossNm: Targets.Name,
+                Rank: Targets.Rank[0],
                 Ranks: Targets.Rank,
                 IsDone: false
             };
@@ -173,13 +181,15 @@ function BossForm({setHide}: I_AddToDoParams){
     const DataSubmit = () => {
         //임시 저장소, Items에 저장된 ToDo가 0개 미만인 경우
         //해당 캐릭터 이름의 ToDo 저장소 없을 경우, 있을 경우
+        //주간 보스 등록 12개로 제한하기 (결정 판매 제한)
+
         if(Items.length === 0){
             alert("보스 컨텐츠를 추가하지 않았습니다!");
             return;
         } else {
+            /**Items에 임시 저장한 Boss ToDo가 1개 이상 */
             const TargetIdx = ToDos.findIndex((data) => data.charNm === CharId.charNm);
-            
-            //해당 캐릭터에게 할당된 저장소가 없는 경우
+            //해당 캐릭터 이름이 ToDo 저장소 유무 확인용
             if(TargetIdx === -1){
                 const newCharData: I_MapleToDos = {
                     charNm: String(CharId.charNm),
@@ -190,19 +200,14 @@ function BossForm({setHide}: I_AddToDoParams){
                 };
                 setToDos((oldToDos) => [...oldToDos, newCharData]);
             } else {
-                //해당 캐릭터 명의 저장소가 존재하는 경우
-                //기존 데이터 + 새로 추가한 데이터 합차는 식으로 구현
-                //Array.concat()
+                //기존 저장소 있는 경우
                 const Targets = ToDos[TargetIdx];
-                //해당 캐릭터 명의 저장소 가져옴
-
-                const EditBossContents = Targets.BossToDos?.concat(Items);
 
                 const UpdateCharData: I_MapleToDos = {
                     charNm: Targets.charNm,
                     ocids: Targets.ocids,
                     WeeklyToDos: Targets.WeeklyToDos,
-                    BossToDos: EditBossContents,
+                    BossToDos: Targets.BossToDos?.concat(Items),
                     CustomToDos: Targets.CustomToDos
                 };
 
@@ -211,9 +216,10 @@ function BossForm({setHide}: I_AddToDoParams){
                     UpdateCharData,
                     ...oldToDos.slice(TargetIdx + 1)
                 ]);
+
+                setItems([]);
+                setHide(false);
             }
-            setItems([]);
-            setHide(false);
         }
     };
 
@@ -282,7 +288,7 @@ function BossForm({setHide}: I_AddToDoParams){
                                 <BossItem key={data.BossId}>
                                     <label>{data.BossNm}</label>
                                     {
-                                        data.Ranks?.length === 0 ? <RankBox>{data?.Ranks[0]}</RankBox>
+                                        data.Ranks?.length === 1 ? <RankBox>{data?.Rank}</RankBox>
                                         : (
                                             <select key={data.BossId} name={data.BossNm} onChange={RankChange}>
                                                 {data.Ranks?.map((elm) => <option key={elm} value={elm}>{elm}</option>)}
