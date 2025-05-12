@@ -107,15 +107,16 @@ export interface I_WeeklyToDos {
 export interface I_BossToDos {
     BossId: string;
     BossNm: string;
-    Rank: string;
+    Rank?: string;
+    Ranks?: string[];
     IsDone: boolean;
 };
 
 export interface I_CustomToDos {
-    Title: string;
+    Title?: string;
     Bodys?: string;
-    openDts?: string;
-    endDts?: string;
+    openDt?: string;
+    endDt?: string;
 };
 
 export interface I_MapleToDos {

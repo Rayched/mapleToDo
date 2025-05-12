@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
-import { CustomToDoAtoms, I_CustomToDoAtoms } from "../../../Atoms";
-import { useRecoilState } from "recoil";
+import { A_MapleToDos, CustomToDoAtoms, I_CustomToDoAtoms, I_CustomToDos, I_MapleToDos, OcidAtoms } from "../../../Atoms";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { I_AddToDoParams } from "./FormBox";
 
 interface I_FormData {
@@ -48,18 +48,50 @@ const SubmitBtn = styled.button``;
 function ToDoForms({setHide}: I_AddToDoParams){
     const {register, handleSubmit, setValue} = useForm();
 
-    const [ToDoAtoms, setToDoAtoms] = useRecoilState(CustomToDoAtoms);
+    const [ToDos, setToDos] = useRecoilState(A_MapleToDos);
+    const CharId = useRecoilValue(OcidAtoms);
 
-    const onValid = ({Title, Bodys, startDt, endDt}: I_FormData) => {
-        const ToDoData: I_CustomToDoAtoms= {
-            ToDo_Title: String(Title),
-            ToDo_Bodys: Bodys,
-            StartDate: startDt,
-            EndDate: endDt
+    const onValid = ({Title, Bodys, openDt, endDt}: I_CustomToDos) => {
+        const ToDoData: I_CustomToDos = {
+            Title: String(Title),
+            Bodys: Bodys,
+            openDt: openDt,
+            endDt: endDt
         };
 
-        setToDoAtoms((oldToDo) => [...oldToDo, ToDoData]);
+        const TargetIdx = ToDos.findIndex((targetData) => targetData.charNm === CharId.charNm);
 
+        if(TargetIdx === -1){
+            const DataConversion: I_CustomToDos[] = [ToDoData];
+
+            const NewCharData: I_MapleToDos = {
+                charNm: String(CharId.charNm),
+                ocids: CharId.ocid,
+                WeeklyToDos: [],
+                BossToDos: [],
+                CustomToDos: DataConversion
+            };
+
+            setToDos((oldToDos) => [...oldToDos, NewCharData]);
+        } else {
+            const Targets = ToDos[TargetIdx];
+
+            const UpdateCustomToDo = Targets.CustomToDos?.concat(ToDoData);
+
+            const ModifyData: I_MapleToDos = {
+                charNm: Targets.charNm,
+                ocids: Targets.ocids,
+                WeeklyToDos: Targets.WeeklyToDos,
+                BossToDos: Targets.BossToDos,
+                CustomToDos: UpdateCustomToDo
+            };
+
+            setToDos((oldToDos) => [
+                ...oldToDos.slice(0, TargetIdx),
+                ModifyData,
+                ...oldToDos.slice(TargetIdx + 1)
+            ]);
+        }
         setValue("Title", "");
         setValue("Bodys", "");
         setValue("startDt", "");
@@ -67,6 +99,8 @@ function ToDoForms({setHide}: I_AddToDoParams){
 
         setHide(false);
     };
+
+    useEffect(() => console.log(ToDos), [ToDos]);
 
     return (
         <CustomWrapper>
@@ -82,7 +116,7 @@ function ToDoForms({setHide}: I_AddToDoParams){
                 <InputBox>
                     <span className="Labels">시작일 ~ 종료일</span>
                     <div>
-                        <input type="date" {...register("startDt")}/>
+                        <input type="date" {...register("openDt")}/>
                         ~
                         <input type="date" {...register("endDt")}/>
                     </div>

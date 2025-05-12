@@ -1,28 +1,16 @@
 //Boss Contents ToDo Form Component
-import {useRecoilState} from "recoil";
+import {useRecoilState, useRecoilValue} from "recoil";
 import styled from "styled-components";
 import { OriginData } from "../../../modules/datas/originDatas";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
-import { BossAtoms, I_BossAtoms } from "../../../Atoms";
+import { useEffect, useState } from "react";
+import { A_MapleToDos, BossAtoms, I_BossAtoms, I_BossToDos, I_MapleToDos, OcidAtoms } from "../../../Atoms";
 import { I_ContentsItem, I_DelBtn } from "./WeeklyForms";
 import { I_AddToDoParams } from "./FormBox";
 
 interface I_forms {
     BossName?: string;
 }
-
-interface I_Items {
-    Id: string;
-    Name: string;
-    Rank?: string;
-    Ranks?: string[];
-};
-
-interface I_RankSelectParams {
-    targetId: string;
-    rank: string;
-};
 
 const Wrapper = styled.div`
     display: flex;
@@ -125,36 +113,37 @@ const DelBtn = styled.button<I_DelBtn>`
 `;
 
 function BossForm({setHide}: I_AddToDoParams){
-    const [BossAtomData, setBossAtoms] = useRecoilState(BossAtoms);
-
-    const BossDatas = OriginData.BossContents;
-    //원본 보스 컨텐츠 데이터
-
-    const [Items, setItems] = useState<I_Items[]>([]);
-
-    const [ShowBtn, setShowBtn] = useState(false);
-
     const {register, handleSubmit} = useForm();
 
+    const [Items, setItems] = useState<I_BossToDos[]>([]);
+    const [ShowBtn, setShowBtn] = useState(false);
+
+    const [ToDos, setToDos] = useRecoilState(A_MapleToDos);
+
+    const CharId = useRecoilValue(OcidAtoms);
+
+    const BossOriginData = OriginData.BossContents;
+    //OriginData, 보스 컨텐츠 정보 가져오는 용도
+
     const onValid = ({BossName}: I_forms) => {
-        const idx = BossDatas.findIndex((elm) => BossName === elm.Name);
-        const Targets = BossDatas[idx];
+        const idx = BossOriginData.findIndex((elm) => BossName === elm.Name);
+        const Targets = BossOriginData[idx];
 
         //난이도 1개 이상/이하 구분
         if(Targets.Rank.length === 1){
-            const TypeA: I_Items = {
-                Id: Targets.Id,
-                Name: Targets.Name,
+            const TypeA: I_BossToDos = {
+                BossId: Targets.Id,
+                BossNm: Targets.Name,
                 Rank: Targets.Rank[0],
-                Ranks: []
+                IsDone: false
             };
             setItems((oldItems) => [...oldItems, TypeA]);            
         } else {
-            const TypeB: I_Items = {
-                Id: Targets.Id,
-                Name: Targets.Name,
-                Rank: "",
-                Ranks: Targets.Rank
+            const TypeB: I_BossToDos = {
+                BossId: Targets.Id,
+                BossNm: Targets.Name,
+                Ranks: Targets.Rank,
+                IsDone: false
             };
             setItems((oldItems) => [...oldItems, TypeB]);
         }
@@ -164,13 +153,14 @@ function BossForm({setHide}: I_AddToDoParams){
         const {currentTarget: {name}} = event;
         const {currentTarget: {value}} = event;
 
-        const idx = Items.findIndex((data) => data.Name === name);
+        const idx = Items.findIndex((data) => data.BossNm === name);
 
-        const EditData: I_Items = {
-            Id: Items[idx].Id,
-            Name: Items[idx].Name,
+        const EditData: I_BossToDos = {
+            BossId: Items[idx].BossId,
+            BossNm: Items[idx].BossNm,
             Rank: value,
-            Ranks: Items[idx].Ranks
+            Ranks: Items[idx].Ranks,
+            IsDone: Items[idx].IsDone
         };
 
         setItems((oldItems) => [
@@ -181,55 +171,103 @@ function BossForm({setHide}: I_AddToDoParams){
     };
 
     const DataSubmit = () => {
+        //임시 저장소, Items에 저장된 ToDo가 0개 미만인 경우
+        //해당 캐릭터 이름의 ToDo 저장소 없을 경우, 있을 경우
         if(Items.length === 0){
-            alert("등록된 주간 보스가 없습니다.");
+            alert("보스 컨텐츠를 추가하지 않았습니다!");
             return;
-        } else if(BossAtomData.length === 12){
-            alert("주간 보스는 최대 12개까지만 등록할 수 있습니다.");
+        } else {
+            const TargetIdx = ToDos.findIndex((data) => data.charNm === CharId.charNm);
+            
+            //해당 캐릭터에게 할당된 저장소가 없는 경우
+            if(TargetIdx === -1){
+                const newCharData: I_MapleToDos = {
+                    charNm: String(CharId.charNm),
+                    ocids: CharId.ocid,
+                    WeeklyToDos: [],
+                    BossToDos: [...Items],
+                    CustomToDos: []
+                };
+                setToDos((oldToDos) => [...oldToDos, newCharData]);
+            } else {
+                //해당 캐릭터 명의 저장소가 존재하는 경우
+                //기존 데이터 + 새로 추가한 데이터 합차는 식으로 구현
+                //Array.concat()
+                const Targets = ToDos[TargetIdx];
+                //해당 캐릭터 명의 저장소 가져옴
+
+                const EditBossContents = Targets.BossToDos?.concat(Items);
+
+                const UpdateCharData: I_MapleToDos = {
+                    charNm: Targets.charNm,
+                    ocids: Targets.ocids,
+                    WeeklyToDos: Targets.WeeklyToDos,
+                    BossToDos: EditBossContents,
+                    CustomToDos: Targets.CustomToDos
+                };
+
+                setToDos((oldToDos) => [
+                    ...oldToDos.slice(0, TargetIdx),
+                    UpdateCharData,
+                    ...oldToDos.slice(TargetIdx + 1)
+                ]);
+            }
             setItems([]);
             setHide(false);
-        } else {
-           Items.forEach((bossItems) => {
-                const SaveDatas: I_BossAtoms = {
-                    monsterId: bossItems.Id,
-                    monsterNm: bossItems.Name,
-                    ranks: String(bossItems.Rank),
-                    isDone: false
-                };
-                setBossAtoms((oldData) => [...oldData, SaveDatas]);
-           });
-           setHide(false);
         }
     };
 
     const ToDoDelete = (targetId: string) => {
-        const idx = Items.findIndex((item) => targetId === item.Id);
+        const idx = Items.findIndex((item) => targetId === item.BossId);
 
         setItems((oldItems) => [
             ...oldItems.slice(0, idx),
             ...oldItems.slice(idx + 1)
         ]);
+
         setShowBtn(false);
     };
+
+    useEffect(() => console.log(ToDos), [ToDos]);
 
     return (
         <Wrapper>
             <AddForm onSubmit={handleSubmit(onValid)}>
                 <SelectBox {...register("BossName", {required: true})}>
                     {
-                        BossDatas.map((data) => {
-                            //Boss 중복 등록 방지 logic
-                            const isItem = Items.findIndex((item) => data.Id === item.Id);
-                            const isBossAtom = BossAtomData.findIndex((atomData) => atomData.monsterId === data.Id);
-                            //BossAtom에 해당 보스 콘텐츠가 등록됐는 지 여부 확인
-                            //등록된게 없으면 -1을 return
-                            //이를 통해서 중복 등록을 방지한다.
+                        BossOriginData.map((originData) => {
+                            let isActive: boolean = true;
 
-                            if(isItem !== -1 || isBossAtom !== -1){
-                                return <ContentsItem key={data.Id} isAdds={true} disabled>{data.Name}</ContentsItem>
+                            //해당 캐릭터 이름의 저장소 유무 체크
+                            const idx = ToDos.findIndex((todoData) => todoData.charNm === CharId.charNm);
+
+                            //임시 저장소, Items에 저장해둔 컨텐츠 유무 체크
+                            const isItems = Items.findIndex((itemData) => itemData.BossId === originData.Id);
+
+                            if(idx === -1){
+                                if(isItems === -1){
+                                    isActive = true;
+                                } else {
+                                    isActive = false;
+                                }
                             } else {
-                                return <ContentsItem key={data.Id} isAdds={false}>{data.Name}</ContentsItem>
+                                const getTargets = ToDos[idx].BossToDos;
+                                const isSameContents = getTargets?.findIndex((targetData) => targetData.BossId === originData.Id);
+
+                                if(isItems === -1 && isSameContents === -1){
+                                    isActive = true;
+                                } else {
+                                    isActive = false;
+                                }
                             }
+
+                            return (
+                                <ContentsItem 
+                                    key={originData.Id} 
+                                    isAdds={isActive ? false : true}
+                                    disabled={isActive ? false : true}
+                                >{originData.Name}</ContentsItem>
+                            );
                         })
                     }
                 </SelectBox>
@@ -241,17 +279,17 @@ function BossForm({setHide}: I_AddToDoParams){
                     {
                         Items.map((data) => {
                             return (
-                                <BossItem key={data.Id}>
-                                    <label>{data.Name}</label>
+                                <BossItem key={data.BossId}>
+                                    <label>{data.BossNm}</label>
                                     {
-                                        data.Ranks?.length === 0 ? <RankBox>{data?.Rank}</RankBox>
+                                        data.Ranks?.length === 0 ? <RankBox>{data?.Ranks[0]}</RankBox>
                                         : (
-                                            <select key={data.Id} name={data.Name} onChange={RankChange}>
+                                            <select key={data.BossId} name={data.BossNm} onChange={RankChange}>
                                                 {data.Ranks?.map((elm) => <option key={elm} value={elm}>{elm}</option>)}
                                             </select>
                                         ) 
                                     }
-                                    <DelBtn isHide={ShowBtn} onClick={() => ToDoDelete(data.Id)}>삭제</DelBtn>
+                                    <DelBtn isHide={ShowBtn} onClick={() => ToDoDelete(data.BossId)}>삭제</DelBtn>
                                 </BossItem>
                             );
                         })
