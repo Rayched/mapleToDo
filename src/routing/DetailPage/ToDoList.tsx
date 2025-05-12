@@ -1,7 +1,7 @@
 //Detail Page, Main Part Components
 
 import styled from "styled-components";
-import { BossAtoms, CategoriesAtom, I_Categories, ToDosSelect, WeeklyAtoms } from "../../Atoms";
+import {CategoriesAtom, I_Categories, ToDos} from "../../Atoms";
 import React, { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import AddToDo from "./Forms/FormBox";
@@ -73,10 +73,8 @@ function ToDoList(){
     //AddToDo Render 여부 관리용 state
 
     const [NowCategories, setCategories] = useRecoilState(CategoriesAtom);
-    const Weeklys = useRecoilValue(WeeklyAtoms);
-    const BossContents = useRecoilValue(BossAtoms);
 
-    const ToDoDatas = useRecoilValue(ToDosSelect);
+    const ToDoDatas = useRecoilValue(ToDos);
 
     const ChangeCategory = (targetId: string) => {
         const Idx = Categorys.findIndex((item) => item.Id === targetId);
@@ -88,8 +86,6 @@ function ToDoList(){
 
         setCategories(newCategories);
     };
-
-    useEffect(() => console.log(BossContents), [BossContents]);
 
     return (
         <Container>
@@ -116,9 +112,9 @@ function ToDoList(){
                     {
                         ToDoDatas?.map((data) => {
                             return (
-                                <ToDoItem key={data.Id}>
+                                <ToDoItem key={data.ContentsId}>
                                     <input type="checkbox"/>
-                                    <ToDoText>{data.Name}</ToDoText>
+                                    <ToDoText>{data.ContentsNm}</ToDoText>
                                 </ToDoItem>
                             )})
                     }

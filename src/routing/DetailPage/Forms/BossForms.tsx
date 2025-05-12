@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { OriginData } from "../../../modules/datas/originDatas";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
-import { A_MapleToDos, BossAtoms, I_BossAtoms, I_BossToDos, I_MapleToDos, OcidAtoms } from "../../../Atoms";
+import { A_MapleToDos, I_BossToDos, I_MapleToDos, OcidAtoms } from "../../../Atoms";
 import { I_ContentsItem, I_DelBtn } from "./WeeklyForms";
 import { I_AddToDoParams } from "./FormBox";
 
