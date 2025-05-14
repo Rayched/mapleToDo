@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import AddToDo from "./Forms/FormBox";
 import { I_DelBtn } from "./Forms/WeeklyForms";
+import BossItem from "./ToDoItems/BossItem";
 
 interface I_CategoryItem {
     category_id: string;
@@ -188,6 +189,7 @@ function ToDoList(){
                 </div>
                 <ul className="ToDoItemContainer">
                     {
+                        NowCategories.Id !== "Boss" ?
                         ToDoDatas?.map((data) => {
                             return (
                                 <ToDoItem key={data.ContentsId}>
@@ -195,7 +197,11 @@ function ToDoList(){
                                     <ToDoText>{data.ContentsNm}</ToDoText>
                                     <DelBtn isHide={DelBtnHide} onClick={() => ToDoDelete({targetId: data.ContentsId, charNm: CharId})}>삭제</DelBtn>
                                 </ToDoItem>
-                            )})
+                            )
+                        }) : null
+                    }
+                    {
+                        NowCategories.Id === "Boss" ? <BossItem /> : null
                     }
                 </ul>
             </ToDoWrapper>

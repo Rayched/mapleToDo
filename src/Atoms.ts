@@ -134,5 +134,14 @@ export const ToDos = selector({
                 return Conversion;
             }
         }
+    },
+    set: ({set, get}) => {
+        /**
+         * 기존 삭제 로직은 Atom, A_MapleToDos 직접적으로 조작했다.
+         * 삭제 기능만 구현한다고 생각하면 나쁘진 않을 것 같다.
+         */
+        const NowCategory = get(CategoriesAtom);
+        const ToDoDatas = get(A_MapleToDos);
+
     }
 });
