@@ -22,48 +22,22 @@ export const CategoriesAtom = atom<I_Categories>({
     default: { Id: "", name: "" }
 });
 
-export interface I_WeeklyToDos {
-    ContentsId: string;
-    ContentsNm: string;
-    IsDone: boolean;
-};
-
-export interface I_BossToDos {
-    BossId: string;
-    BossNm: string;
+export interface I_DataFormat {
+    ContentsId?: string;
+    ContentsNm?: string;
+    IsDone?: boolean;
     Rank?: string;
     Ranks?: string[];
-    IsDone: boolean;
-};
-
-export interface I_CustomToDos {
-    Title?: string;
-    Bodys?: string;
     openDt?: string;
     endDt?: string;
-};
+}
 
 export interface I_MapleToDos {
     charNm: string;
     ocids: string;
-    WeeklyToDos?: I_WeeklyToDos[];
-    BossToDos?: I_BossToDos[];
-    CustomToDos?: I_CustomToDos[];
-};
-
-export interface I_DataFormat {
-    //Data Format 기본 사항들
-    //ContentsId => {ContentsId, BossId, todo(idx)}
-    //ContentsNm => {ContentsNm, BossNm, Title}
-    ContentsId: string;
-    ContentsNm: string;
-    IsDone: boolean;
-
-    //선택 사항 (카테고리: 주간보스 / 기타 메할일)
-    Rank?: string;
-    ToDoBodys?: string;
-    openDt?: string;
-    endDt?: string; 
+    WeeklyToDos?: I_DataFormat[];
+    BossToDos?: I_DataFormat[];
+    CustomToDos?: I_DataFormat[];
 };
 
 enum Categories {
@@ -82,7 +56,7 @@ export const ToDos = selector({
     get: ({get}) => {
         const CharId = get(OcidAtoms);
         const MapleToDos = get(A_MapleToDos);
-        const NowCategories = get(CategoriesAtom);
+        const NowCategory = get(CategoriesAtom).Id;
 
         const Idx = MapleToDos.findIndex((data) => data.charNm === CharId.charNm);
 
@@ -91,6 +65,17 @@ export const ToDos = selector({
         } else {
             const CharData = MapleToDos[Idx];
 
+            if(NowCategory === Categories.Weeklys){
+                const WeeklyDatas = CharData.WeeklyToDos;
+                return WeeklyDatas;
+            } else if(NowCategory === Categories.Boss){
+                const BossDatas = CharData.BossToDos;
+                return BossDatas;
+            } else {
+                const CustomToDos = CharData.CustomToDos;
+                return CustomToDos;
+            }
+            /*
             if(NowCategories.Id === Categories.Weeklys){
                 const WeeklyDatas = CharData.WeeklyToDos;
 
@@ -133,15 +118,63 @@ export const ToDos = selector({
                 });
                 return Conversion;
             }
+            */
         }
     },
-    set: ({set, get}) => {
-        /**
-         * 기존 삭제 로직은 Atom, A_MapleToDos 직접적으로 조작했다.
-         * 삭제 기능만 구현한다고 생각하면 나쁘진 않을 것 같다.
-         */
-        const NowCategory = get(CategoriesAtom);
-        const ToDoDatas = get(A_MapleToDos);
+    set: ({set, get}, newValue) => {
+        const CharNm = get(OcidAtoms).charNm;
+        const Idx = get(A_MapleToDos).findIndex((data) => data.charNm === CharNm);
+        const CharData = get(A_MapleToDos)[Idx];
 
+        const NowCategory = get(CategoriesAtom).Id;
+
+        if(NowCategory === Categories.Weeklys){
+            set(A_MapleToDos, (oldData) => {
+                const Convert: I_MapleToDos = {
+                    charNm: CharData.charNm,
+                    ocids: CharData.ocids,
+                    WeeklyToDos: newValue as I_DataFormat[],
+                    BossToDos: CharData.BossToDos,
+                    CustomToDos: CharData.CustomToDos
+                };
+
+                return [
+                    ...oldData.slice(0, Idx),
+                    Convert,
+                    ...oldData.slice(Idx + 1)
+                ];
+            })
+        } else if(NowCategory === Categories.Boss){
+            set(A_MapleToDos, (oldData) => {
+                const Convert: I_MapleToDos = {
+                    charNm: CharData.charNm,
+                    ocids: CharData.ocids,
+                    WeeklyToDos: CharData.WeeklyToDos,
+                    BossToDos: newValue as I_DataFormat[],
+                    CustomToDos: CharData.CustomToDos
+                };
+
+                return [
+                    ...oldData.slice(0, Idx),
+                    Convert,
+                    ...oldData.slice(Idx + 1)
+                ];
+            });
+        } else if(NowCategory === Categories.Customs){
+            set(A_MapleToDos, (oldData) => {
+                const Convert: I_MapleToDos = {
+                    charNm: CharData.charNm,
+                    ocids: CharData.ocids,
+                    WeeklyToDos: CharData.WeeklyToDos,
+                    BossToDos: CharData.BossToDos,
+                    CustomToDos: newValue as I_DataFormat[]
+                };
+                return [
+                    ...oldData.slice(0, Idx),
+                    Convert,
+                    ...oldData.slice(Idx + 1)
+                ];
+            })
+        }
     }
 });

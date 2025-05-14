@@ -6,7 +6,7 @@ import styled from "styled-components";
 import {OriginData} from "../../../modules/datas/originDatas";
 import { I_AddToDoParams } from "./FormBox";
 import React, { useEffect, useState } from "react";
-import { A_MapleToDos, I_MapleToDos, I_WeeklyToDos, OcidAtoms } from "../../../Atoms";
+import { A_MapleToDos, I_DataFormat, I_MapleToDos, OcidAtoms } from "../../../Atoms";
 
 interface I_WeeklyForms {
     WeeklyContents?: string;
@@ -112,7 +112,7 @@ const BtnContainer = styled.div`
 function WeeklyForm({setHide}: I_AddToDoParams){
     const {register, handleSubmit} = useForm();
 
-    const [Items, setItems] = useState<I_WeeklyToDos[]>([]);
+    const [Items, setItems] = useState<I_DataFormat[]>([]);
     const [ShowDelBtn, setShowDelBtn] = useState(false);
 
     const CharId = useRecoilValue(OcidAtoms);
@@ -124,7 +124,7 @@ function WeeklyForm({setHide}: I_AddToDoParams){
         const idx = WeeklyOriginData.findIndex((data) => WeeklyContents === data.Name);
         const SelectedItem = WeeklyOriginData[idx];
 
-        const AddWeeklyData: I_WeeklyToDos = {
+        const AddWeeklyData: I_DataFormat = {
             ContentsId: SelectedItem.Id,
             ContentsNm: SelectedItem.Name,
             IsDone: false

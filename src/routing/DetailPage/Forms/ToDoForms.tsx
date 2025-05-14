@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
-import { A_MapleToDos, I_CustomToDos, I_MapleToDos, OcidAtoms } from "../../../Atoms";
+import { A_MapleToDos, I_DataFormat, I_MapleToDos, OcidAtoms } from "../../../Atoms";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { I_AddToDoParams } from "./FormBox";
 
@@ -44,10 +44,11 @@ function ToDoForms({setHide}: I_AddToDoParams){
     const [ToDos, setToDos] = useRecoilState(A_MapleToDos);
     const CharId = useRecoilValue(OcidAtoms);
 
-    const onValid = ({Title, Bodys, openDt, endDt}: I_CustomToDos) => {
-        const ToDoData: I_CustomToDos = {
-            Title: String(Title),
-            Bodys: Bodys,
+    const onValid = ({ContentsId, ContentsNm, openDt, endDt}: I_DataFormat) => {
+        const ToDoData: I_DataFormat = {
+            ContentsId: ContentsId,
+            ContentsNm: ContentsNm,
+            IsDone: false,
             openDt: openDt,
             endDt: endDt
         };
@@ -55,7 +56,7 @@ function ToDoForms({setHide}: I_AddToDoParams){
         const TargetIdx = ToDos.findIndex((targetData) => targetData.charNm === CharId.charNm);
 
         if(TargetIdx === -1){
-            const DataConversion: I_CustomToDos[] = [ToDoData];
+            const DataConversion: I_DataFormat[] = [ToDoData];
 
             const NewCharData: I_MapleToDos = {
                 charNm: String(CharId.charNm),
@@ -85,10 +86,10 @@ function ToDoForms({setHide}: I_AddToDoParams){
                 ...oldToDos.slice(TargetIdx + 1)
             ]);
         }
-        setValue("Title", "");
-        setValue("Bodys", "");
-        setValue("startDt", "");
-        setValue("EndDt", "");
+        setValue("ContentsId", "");
+        setValue("ContentsNm", "");
+        setValue("openDt", "");
+        setValue("endDt", "");
 
         setHide(false);
     };
@@ -103,7 +104,7 @@ function ToDoForms({setHide}: I_AddToDoParams){
                     <input 
                         type="text" 
                         placeholder="일정의 제목을 입력해주세요."
-                        {...register("Title", {required: true})}
+                        {...register("ContentsId", {required: true})}
                     />
                 </InputBox>
                 <InputBox>
@@ -116,7 +117,7 @@ function ToDoForms({setHide}: I_AddToDoParams){
                 </InputBox>
                 <InputBox>
                     <span className="Labels">일정 상세 내용</span>
-                    <input type="text" placeholder="일정의 상세 내용을 입력해주세요." {...register("Bodys")}/>
+                    <input type="text" placeholder="일정의 상세 내용을 입력해주세요." {...register("ContentsNm")}/>
                 </InputBox>
                 <SubmitBtn>등록하기</SubmitBtn>
             </CustomForms>

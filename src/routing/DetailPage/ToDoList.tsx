@@ -1,7 +1,7 @@
 //Detail Page, Main Part Components
 
 import styled from "styled-components";
-import {A_MapleToDos, CategoriesAtom, I_Categories, I_MapleToDos, I_WeeklyToDos, OcidAtoms, ToDos} from "../../Atoms";
+import {A_MapleToDos, CategoriesAtom, I_Categories, I_MapleToDos, OcidAtoms, ToDos} from "../../Atoms";
 import React, { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import AddToDo from "./Forms/FormBox";
@@ -17,6 +17,11 @@ interface I_DeleteTarget {
     targetId: string;
     charNm?: string;
 };
+
+export interface I_ToDoItemProps {
+    Delete: boolean;
+    setDelete: Function;
+}
 
 const Categorys: I_Categories[] = [
     {Id: "Weeklys", name: "주간 컨텐츠"}, 
@@ -132,7 +137,7 @@ function ToDoList(){
                     ...oldToDos.slice(Idx + 1)
                 ]);
             } else if(NowCategories.Id === Categorys[1].Id){
-                const UpdateBossContents = CharData.BossToDos?.filter((data) => data.BossId !== targetId);
+                const UpdateBossContents = CharData.BossToDos?.filter((data) => data.ContentsId !== targetId);
                 const ModifyData: I_MapleToDos = {
                     charNm: CharData.charNm,
                     ocids: CharData.ocids,
@@ -146,7 +151,7 @@ function ToDoList(){
                     ...oldToDos.slice(Idx + 1)
                 ]);
             } else {
-                const UpdateCustomToDos = CharData.CustomToDos?.filter((data) => data.Title !== targetId);
+                const UpdateCustomToDos = CharData.CustomToDos?.filter((data) => data.ContentsId !== targetId);
                 const ModifyData: I_MapleToDos = {
                     charNm: CharData.charNm,
                     ocids: CharData.ocids,
@@ -195,13 +200,13 @@ function ToDoList(){
                                 <ToDoItem key={data.ContentsId}>
                                     <input type="checkbox"/>
                                     <ToDoText>{data.ContentsNm}</ToDoText>
-                                    <DelBtn isHide={DelBtnHide} onClick={() => ToDoDelete({targetId: data.ContentsId, charNm: CharId})}>삭제</DelBtn>
+                                    <DelBtn isHide={DelBtnHide} onClick={() => ToDoDelete({targetId: String(data.ContentsId), charNm: CharId})}>삭제</DelBtn>
                                 </ToDoItem>
                             )
                         }) : null
                     }
                     {
-                        NowCategories.Id === "Boss" ? <BossItem /> : null
+                        NowCategories.Id === "Boss" ? <BossItem Delete={DelBtnHide} setDelete={setDelBtnHide}/> : null
                     }
                 </ul>
             </ToDoWrapper>

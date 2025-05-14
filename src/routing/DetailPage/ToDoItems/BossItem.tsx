@@ -1,6 +1,7 @@
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { ToDos } from "../../../Atoms";
+import { OcidAtoms, ToDos } from "../../../Atoms";
+import { I_ToDoItemProps } from "../ToDoList";
 
 /**
  * 주간 보스 카테고리에 해당하는
@@ -18,6 +19,10 @@ interface I_Ranks {
     rankInfo?: string;
     ColorInfo?: I_ColorInfos;
 };
+
+interface I_DelBtn {
+    isHide: boolean;
+}
 
 const Container = styled.ul`
     display: flex;
@@ -66,6 +71,10 @@ const Ranks = styled.div<I_Ranks>`
     text-align: center;
 `;
 
+const DelBtn = styled.button<I_DelBtn>`
+    display: ${(props) => props.isHide ? "flex" : "none"};
+`;
+
 const ColorInfos: I_ColorInfos[]= [
     {
         key: "이지",
@@ -99,13 +108,35 @@ const ColorInfos: I_ColorInfos[]= [
     }
 ];
 
-function BossItem(){
-    const A_BossData = useRecoilValue(ToDos);
+function BossItem({Delete, setDelete}: I_ToDoItemProps){
+    const [BossData, setBossData] = useRecoilState(ToDos);
+
+    const ToDoDelete = (contentsId?: string) => {
+        const Targets = BossData?.find((data) => data.ContentsId === contentsId);
+        const isDelete = window.confirm(`{ 보스 명: ${Targets?.ContentsNm} / 난이도: ${Targets?.Rank} }'을 삭제하겠습니까?`);
+
+        if(isDelete){
+            const ModifyData = BossData?.filter((data) => {
+                if(data.ContentsId !== contentsId){
+                    return data;
+                } else {
+                    return;
+                }
+            });
+            setBossData(ModifyData);
+            alert("일정을 삭제하였습니다.");
+            setDelete(false);
+        } else {
+            alert("일정을 삭제하지 않았습니다.");
+            setDelete(false);
+            return;
+        }
+    }
 
     return (
         <Container>
             {
-                A_BossData?.map((todoData) => {
+                BossData?.map((todoData) => {
                     const idx = ColorInfos.findIndex((colors) => colors.key === todoData.Rank);
                     const ColorSelect = ColorInfos[idx];
 
@@ -115,8 +146,9 @@ function BossItem(){
                             <ContentsBox>
                                 <Icons src={`logos/boss_icons/${todoData.ContentsId}.png`}/>
                                 <BossName>{todoData.ContentsNm}</BossName>
-                                <Ranks rankInfo={todoData?.Rank} ColorInfo={ColorSelect}>{todoData.Rank}</Ranks>
+                                <Ranks rankInfo={todoData.Rank} ColorInfo={ColorSelect}>{todoData.Rank}</Ranks>
                             </ContentsBox>
+                            <DelBtn isHide={Delete} onClick={() => ToDoDelete(todoData.ContentsId)}>X</DelBtn>
                         </ToDoItem>
                     );
                 })

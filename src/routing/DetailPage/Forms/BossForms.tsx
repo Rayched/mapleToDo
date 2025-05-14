@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { OriginData } from "../../../modules/datas/originDatas";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
-import { A_MapleToDos, I_BossToDos, I_MapleToDos, OcidAtoms } from "../../../Atoms";
+import { A_MapleToDos, I_DataFormat, I_MapleToDos, OcidAtoms } from "../../../Atoms";
 import { I_ContentsItem, I_DelBtn } from "./WeeklyForms";
 import { I_AddToDoParams } from "./FormBox";
 
@@ -114,7 +114,7 @@ const DelBtn = styled.button<I_DelBtn>`
 function BossForm({setHide}: I_AddToDoParams){
     const {register, handleSubmit} = useForm();
 
-    const [Items, setItems] = useState<I_BossToDos[]>([]);
+    const [Items, setItems] = useState<I_DataFormat[]>([]);
     const [ShowBtn, setShowBtn] = useState(false);
 
     const [ToDos, setToDos] = useRecoilState(A_MapleToDos);
@@ -137,18 +137,18 @@ function BossForm({setHide}: I_AddToDoParams){
 
         //난이도 1개 이상/이하 구분
         if(Targets.Rank.length === 1){
-            const TypeA: I_BossToDos = {
-                BossId: Targets.Id,
-                BossNm: Targets.Name,
+            const TypeA: I_DataFormat = {
+                ContentsId: Targets.Id,
+                ContentsNm: Targets.Name,
                 Rank: Targets.Rank[0],
                 Ranks: Targets.Rank,
                 IsDone: false
             };
             setItems((oldItems) => [...oldItems, TypeA]);            
         } else {
-            const TypeB: I_BossToDos = {
-                BossId: Targets.Id,
-                BossNm: Targets.Name,
+            const TypeB: I_DataFormat = {
+                ContentsId: Targets.Id,
+                ContentsNm: Targets.Name,
                 Rank: Targets.Rank[0],
                 Ranks: Targets.Rank,
                 IsDone: false
@@ -161,11 +161,11 @@ function BossForm({setHide}: I_AddToDoParams){
         const {currentTarget: {name}} = event;
         const {currentTarget: {value}} = event;
 
-        const idx = Items.findIndex((data) => data.BossNm === name);
+        const idx = Items.findIndex((data) => data.ContentsNm === name);
 
-        const EditData: I_BossToDos = {
-            BossId: Items[idx].BossId,
-            BossNm: Items[idx].BossNm,
+        const EditData: I_DataFormat = {
+            ContentsId: Items[idx].ContentsId,
+            ContentsNm: Items[idx].ContentsNm,
             Rank: value,
             Ranks: Items[idx].Ranks,
             IsDone: Items[idx].IsDone
@@ -224,7 +224,7 @@ function BossForm({setHide}: I_AddToDoParams){
     };
 
     const ToDoDelete = (targetId: string) => {
-        const idx = Items.findIndex((item) => targetId === item.BossId);
+        const idx = Items.findIndex((item) => targetId === item.ContentsId);
 
         setItems((oldItems) => [
             ...oldItems.slice(0, idx),
@@ -248,7 +248,7 @@ function BossForm({setHide}: I_AddToDoParams){
                             const idx = ToDos.findIndex((todoData) => todoData.charNm === CharId.charNm);
 
                             //임시 저장소, Items에 저장해둔 컨텐츠 유무 체크
-                            const isItems = Items.findIndex((itemData) => itemData.BossId === originData.Id);
+                            const isItems = Items.findIndex((itemData) => itemData.ContentsId === originData.Id);
 
                             if(idx === -1){
                                 if(isItems === -1){
@@ -258,7 +258,7 @@ function BossForm({setHide}: I_AddToDoParams){
                                 }
                             } else {
                                 const getTargets = ToDos[idx].BossToDos;
-                                const isSameContents = getTargets?.findIndex((targetData) => targetData.BossId === originData.Id);
+                                const isSameContents = getTargets?.findIndex((targetData) => targetData.ContentsId === originData.Id);
 
                                 if(isItems === -1 && isSameContents === -1){
                                     isActive = true;
@@ -266,7 +266,6 @@ function BossForm({setHide}: I_AddToDoParams){
                                     isActive = false;
                                 }
                             }
-
                             return (
                                 <ContentsItem 
                                     key={originData.Id} 
@@ -285,17 +284,17 @@ function BossForm({setHide}: I_AddToDoParams){
                     {
                         Items.map((data) => {
                             return (
-                                <BossItem key={data.BossId}>
-                                    <label>{data.BossNm}</label>
+                                <BossItem key={data.ContentsId}>
+                                    <label>{data.ContentsNm}</label>
                                     {
                                         data.Ranks?.length === 1 ? <RankBox>{data?.Rank}</RankBox>
                                         : (
-                                            <select key={data.BossId} name={data.BossNm} onChange={RankChange}>
+                                            <select key={data.ContentsId} name={data.ContentsNm} onChange={RankChange}>
                                                 {data.Ranks?.map((elm) => <option key={elm} value={elm}>{elm}</option>)}
                                             </select>
                                         ) 
                                     }
-                                    <DelBtn isHide={ShowBtn} onClick={() => ToDoDelete(data.BossId)}>삭제</DelBtn>
+                                    <DelBtn isHide={ShowBtn} onClick={() => ToDoDelete(String(data.ContentsId))}>삭제</DelBtn>
                                 </BossItem>
                             );
                         })
