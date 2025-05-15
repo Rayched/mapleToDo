@@ -7,6 +7,8 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import AddToDo from "./Forms/FormBox";
 import { I_DelBtn } from "./Forms/WeeklyForms";
 import BossItem from "./ToDoItems/BossItem";
+import WeeklyItem from "./ToDoItems/WeeklyItem";
+import CustomToDoItem from "./ToDoItems/ToDoItem";
 
 interface I_CategoryItem {
     category_id: string;
@@ -193,21 +195,9 @@ function ToDoList(){
                     <button onClick={() => setDelBtnHide((prev) => !prev)}>일정 삭제</button>
                 </div>
                 <ul className="ToDoItemContainer">
-                    {
-                        NowCategories.Id !== "Boss" ?
-                        ToDoDatas?.map((data) => {
-                            return (
-                                <ToDoItem key={data.ContentsId}>
-                                    <input type="checkbox"/>
-                                    <ToDoText>{data.ContentsNm}</ToDoText>
-                                    <DelBtn isHide={DelBtnHide} onClick={() => ToDoDelete({targetId: String(data.ContentsId), charNm: CharId})}>삭제</DelBtn>
-                                </ToDoItem>
-                            )
-                        }) : null
-                    }
-                    {
-                        NowCategories.Id === "Boss" ? <BossItem Delete={DelBtnHide} setDelete={setDelBtnHide}/> : null
-                    }
+                    {NowCategories.Id === "Weeklys" ? <WeeklyItem Delete={DelBtnHide} setDelete={setDelBtnHide}/> : null}
+                    {NowCategories.Id === "Boss" ? <BossItem Delete={DelBtnHide} setDelete={setDelBtnHide}/> : null}
+                    {NowCategories.Id === "Customs" ? <CustomToDoItem Delete={DelBtnHide} setDelete={setDelBtnHide}/> : null}
                 </ul>
             </ToDoWrapper>
         </Container>
