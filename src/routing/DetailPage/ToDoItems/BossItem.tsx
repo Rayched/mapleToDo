@@ -1,6 +1,6 @@
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { OcidAtoms, ToDos } from "../../../Atoms";
+import { OcidAtoms, S_MapleToDos } from "../../../Atoms";
 import { I_ToDoItemProps } from "../ToDoList";
 
 /**
@@ -109,7 +109,7 @@ const ColorInfos: I_ColorInfos[]= [
 ];
 
 function BossItem({Delete, setDelete}: I_ToDoItemProps){
-    const [BossData, setBossData] = useRecoilState(ToDos);
+    const [BossData, setBossData] = useRecoilState(S_MapleToDos);
 
     const ToDoDelete = (contentsId?: string) => {
         const Targets = BossData?.find((data) => data.ContentsId === contentsId);

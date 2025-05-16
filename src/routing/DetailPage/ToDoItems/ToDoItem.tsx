@@ -1,6 +1,6 @@
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { ToDos } from "../../../Atoms";
+import { S_MapleToDos} from "../../../Atoms";
 import { I_ToDoItemProps } from "../ToDoList";
 
 interface I_DelBtn {
@@ -47,7 +47,7 @@ const DelBtn = styled.button<I_DelBtn>`
 `;
 
 function CustomToDoItem({Delete, setDelete}: I_ToDoItemProps){
-    const [Customs, setCustoms] = useRecoilState(ToDos);
+    const [Customs, setCustoms] = useRecoilState(S_MapleToDos);
 
     const ToDoDelete = (TargetId?: string) => {
         const Targets = Customs?.find((data) => data.ContentsId === TargetId);

@@ -2,8 +2,8 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Keys } from "../modules/Fetchs";
-import { useSetRecoilState } from "recoil";
-import { OcidAtoms } from "../Atoms";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { A_CharNmSaves, OcidAtoms } from "../Atoms";
 
 interface I_Charactors {
     charNm: string;
@@ -131,6 +131,7 @@ const Bookmark_Item = styled.li`
 function Home(){
     const Navigate = useNavigate();
 
+    const SaveNms = useRecoilValue(A_CharNmSaves);
     const setCharID = useSetRecoilState(OcidAtoms);
 
     const {register, handleSubmit, setValue} = useForm<I_Charactors>();
@@ -160,8 +161,8 @@ function Home(){
     return (
         <Homes>
             <Headers>
-                <Icons src="logos/maple_icons.png"/>
-                <Titles>메이플 스케줄러 in Web</Titles>
+                <Icons src={`${process.env.PUBLIC_URL}/MapleICon.png`} />
+                <Titles>메이플 To Do</Titles>
             </Headers>
             <Mains>
                 <CharacterForm onSubmit={handleSubmit(onValid)}>
@@ -181,6 +182,19 @@ function Home(){
             <Bookmark_Box>
                 <B_Title>북마크</B_Title>
                 <Bookmarks>
+                    {
+                        SaveNms.map((data) => {
+                            const Converts: I_Charactors = {
+                                charNm: data
+                            };
+
+                            return (
+                                <Bookmark_Item key={data} onClick={() => onValid(Converts)}>
+                                    {data}
+                                </Bookmark_Item>
+                            );
+                        })
+                    }
                 </Bookmarks>
             </Bookmark_Box>
         </Homes>

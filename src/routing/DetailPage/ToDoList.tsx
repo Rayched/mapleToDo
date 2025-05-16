@@ -1,8 +1,8 @@
 //Detail Page, Main Part Components
 
 import styled from "styled-components";
-import {A_MapleToDos, CategoriesAtom, I_Categories, I_MapleToDos, OcidAtoms, ToDos} from "../../Atoms";
-import React, { useEffect, useState } from "react";
+import {A_MapleToDos, CategoriesAtom, I_Categories, OcidAtoms, S_MapleToDos} from "../../Atoms";
+import React, { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import AddToDo from "./Forms/FormBox";
 import { I_DelBtn } from "./Forms/WeeklyForms";
@@ -98,10 +98,6 @@ function ToDoList(){
     const [DelBtnHide, setDelBtnHide] = useState(false);
 
     const [NowCategories, setCategories] = useRecoilState(CategoriesAtom);
-    const ToDoDatas = useRecoilValue(ToDos);
-
-    const CharId = useRecoilValue(OcidAtoms).charNm;
-    const [MapleToDos, setMapleToDos] = useRecoilState(A_MapleToDos);
 
     const ChangeCategory = (targetId: string) => {
         const Idx = Categorys.findIndex((item) => item.Id === targetId);
@@ -112,64 +108,6 @@ function ToDoList(){
         };
 
         setCategories(newCategories);
-    };
-
-
-    const ToDoDelete = (Targets: I_DeleteTarget) => {
-        const {targetId, charNm} = Targets;
-
-        const IsDelete = window.confirm(`' ${charNm} / ${targetId}' 일정을 삭제하겠습니까?`);
-        const Idx = MapleToDos.findIndex((data) => data.charNm === charNm);
-
-        if(IsDelete && Idx !== -1){
-            const CharData = MapleToDos[Idx];
-
-            if(NowCategories.Id === Categorys[0].Id){
-                const UpdateWeekly = CharData.WeeklyToDos?.filter((data) => data.ContentsId !== targetId);
-                const ModifyData: I_MapleToDos = {
-                    charNm: CharData.charNm,
-                    ocids: CharData.ocids,
-                    WeeklyToDos: UpdateWeekly,
-                    BossToDos: CharData.BossToDos,
-                    CustomToDos: CharData.CustomToDos
-                };
-                setMapleToDos((oldToDos) => [
-                    ...oldToDos.slice(0, Idx),
-                    ModifyData,
-                    ...oldToDos.slice(Idx + 1)
-                ]);
-            } else if(NowCategories.Id === Categorys[1].Id){
-                const UpdateBossContents = CharData.BossToDos?.filter((data) => data.ContentsId !== targetId);
-                const ModifyData: I_MapleToDos = {
-                    charNm: CharData.charNm,
-                    ocids: CharData.ocids,
-                    WeeklyToDos: CharData.WeeklyToDos,
-                    BossToDos: UpdateBossContents,
-                    CustomToDos: CharData.CustomToDos
-                }
-                setMapleToDos((oldToDos) => [
-                    ...oldToDos.slice(0, Idx),
-                    ModifyData,
-                    ...oldToDos.slice(Idx + 1)
-                ]);
-            } else {
-                const UpdateCustomToDos = CharData.CustomToDos?.filter((data) => data.ContentsId !== targetId);
-                const ModifyData: I_MapleToDos = {
-                    charNm: CharData.charNm,
-                    ocids: CharData.ocids,
-                    WeeklyToDos: CharData.WeeklyToDos,
-                    BossToDos: CharData.BossToDos,
-                    CustomToDos: UpdateCustomToDos
-                }
-                setMapleToDos((oldToDos) => [
-                    ...oldToDos.slice(0, Idx),
-                    ModifyData,
-                    ...oldToDos.slice(Idx + 1)
-                ]);
-            }
-        } else {
-            return;
-        }
     };
 
     return (

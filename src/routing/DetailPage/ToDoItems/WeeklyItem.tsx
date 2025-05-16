@@ -1,6 +1,6 @@
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { ToDos } from "../../../Atoms";
+import { S_MapleToDos } from "../../../Atoms";
 import { I_ToDoItemProps } from "../ToDoList";
 
 interface I_DelBtn {
@@ -46,7 +46,7 @@ const DelBtn = styled.button<I_DelBtn>`
 `;
 
 function WeeklyItem({Delete, setDelete}: I_ToDoItemProps){
-    const [WeeklyData, setWeeklyData] = useRecoilState(ToDos);
+    const [WeeklyData, setWeeklyData] = useRecoilState(S_MapleToDos);
 
     const ToDoDelete = (TargetId?: string) => {
         const FindTarget = WeeklyData?.find((data) => data.ContentsId === TargetId);

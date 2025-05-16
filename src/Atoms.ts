@@ -1,12 +1,12 @@
 import { atom, selector } from "recoil";
 import {recoilPersist} from "recoil-persist";
 
+const {persistAtom} = recoilPersist();
+
 export interface I_Ocids {
     ocid: string;
     charNm?: string;
 }
-
-const {persistAtom} = recoilPersist();
 
 //Character ID Save
 export const OcidAtoms = atom<I_Ocids>({
@@ -17,6 +17,12 @@ export const OcidAtoms = atom<I_Ocids>({
 export interface I_Categories {
     Id: string;
     name: string;
+};
+
+enum Categories {
+    Weeklys = "Weeklys",
+    Boss = "Boss",
+    Customs = "Customs"
 };
 
 //사용자가 선택한 Category 기억해두는 atom
@@ -43,20 +49,14 @@ export interface I_MapleToDos {
     CustomToDos?: I_DataFormat[];
 };
 
-enum Categories {
-    Weeklys = "Weeklys",
-    Boss = "Boss",
-    Customs = "Customs"
-};
-
 export const A_MapleToDos = atom<I_MapleToDos[]>({
     key: "A_MapleToDos",
     default: [],
     effects_UNSTABLE: [persistAtom]
 });
 
-export const ToDos = selector({
-    key: "ToDos",
+export const S_MapleToDos = selector({
+    key: "MapleToDos_Selector",
     get: ({get}) => {
         const CharId = get(OcidAtoms);
         const MapleToDos = get(A_MapleToDos);
@@ -181,4 +181,12 @@ export const ToDos = selector({
             })
         }
     }
+});
+
+const {persistAtom: charNmPersist} = recoilPersist()
+
+export const A_CharNmSaves = atom<string[]>({
+    key: "SaveCharacterNm",
+    default: [],
+    effects_UNSTABLE: [charNmPersist]
 });

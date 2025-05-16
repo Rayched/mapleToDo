@@ -1,6 +1,6 @@
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { A_MapleToDos, I_MapleToDos, OcidAtoms } from "../../Atoms";
+import { A_CharNmSaves, A_MapleToDos, I_MapleToDos, OcidAtoms } from "../../Atoms";
 import { useQuery } from "react-query";
 import { getCharData } from "../../modules/Fetchs";
 import Mains from "./ToDoList";
@@ -77,15 +77,49 @@ const DataItem = styled.div`
     }
 `;
 
+const BtnBox = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 0px 5px;
+`;
+
 function Details(){
     const [charID, setCharID] = useRecoilState(OcidAtoms);
+
+    const [CharNmSave, setCharNmSave] = useRecoilState(A_CharNmSaves);
 
     const {isLoading, data: CharInfo} = useQuery<I_CharInfo>(
         "charData",
         () => getCharData(charID)
     );
 
+    const SaveCharNm = async() => {
+        const CharNms = charID.charNm;
+        const isSames = CharNmSave.findIndex((data) => data === charID.charNm);
+
+        if(CharNms !== "" && isSames === -1){
+            if(CharNmSave.length === 3){
+                const isDeletes = window.confirm("캐릭터는 총 3개까지만 저장 가능합니다.\n첫번째 캐릭터 데이터를 삭제하시겠습니까?");
+
+                if(isDeletes){
+                    await setCharNmSave((oldDatas) => [
+                        ...oldDatas.slice(1),
+                        String(CharNms)
+                    ]);
+                } else {
+                    return;
+                }
+            } else {
+                await setCharNmSave((oldDatas) => [...oldDatas, String(CharNms)]);   
+            }
+        }
+    };
+
     const targetIdx = WorldNms.findIndex((names) => CharInfo?.world_name === names);
+
+    useEffect(() => console.log(CharNmSave), [CharNmSave]);
 
     return (
         <Wrapper>
@@ -106,6 +140,9 @@ function Details(){
                                 <DataItem>LV {CharInfo?.character_level}</DataItem>
                                 <DataItem>{CharInfo?.character_class}</DataItem>
                             </CharDatas>
+                            <BtnBox>
+                                <button onClick={SaveCharNm}>☆</button>
+                            </BtnBox>
                         </Headers>
                         <Mains />
                     </>
