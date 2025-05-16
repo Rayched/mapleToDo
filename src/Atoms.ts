@@ -1,9 +1,12 @@
 import { atom, selector } from "recoil";
+import {recoilPersist} from "recoil-persist";
 
 export interface I_Ocids {
     ocid: string;
     charNm?: string;
 }
+
+const {persistAtom} = recoilPersist();
 
 //Character ID Save
 export const OcidAtoms = atom<I_Ocids>({
@@ -48,7 +51,8 @@ enum Categories {
 
 export const A_MapleToDos = atom<I_MapleToDos[]>({
     key: "A_MapleToDos",
-    default: []
+    default: [],
+    effects_UNSTABLE: [persistAtom]
 });
 
 export const ToDos = selector({

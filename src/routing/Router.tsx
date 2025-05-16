@@ -4,7 +4,7 @@ import NewDetail from "./DetailPage/Details";
 
 function Routers(){
     return (
-        <BrowserRouter>
+        <BrowserRouter basename={process.env.PUBLIC_URL}>
             <Routes>
                 <Route path="/" element={<Home />}/>
                 <Route path="/charToDo" element={<NewDetail />}/>
