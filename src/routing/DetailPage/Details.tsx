@@ -108,11 +108,13 @@ function Details(){
                         ...oldDatas.slice(1),
                         String(CharNms)
                     ]);
+                    alert(`'1번 슬롯 : ${CharNmSave[0]}'을 삭제하고\n'${CharNms}'을 새로 등록했습니다.`);
                 } else {
                     return;
                 }
             } else {
                 await setCharNmSave((oldDatas) => [...oldDatas, String(CharNms)]);   
+                alert(`'캐릭터 명: ${CharNms}' 저장 완료!`);
             }
         }
     };

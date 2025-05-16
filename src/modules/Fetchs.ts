@@ -2,7 +2,7 @@ import { I_Ocids } from "../Atoms";
 import { getDateTimes } from "./Dates";
 
 const Basic_URLs = "https://open.api.nexon.com/maplestory/v1";
-export const Keys = "test_f9ce4c7a085ed69bb5ef5d0d3b21357108ddddce8dbccfe8ecd4ed6db3cf9d32e9083e276f87ffa64730923916d0d710";
+export const Keys = "test_9541dd4a161d499a14421efc454b8f04231afa9997783b8f8cb44996c0dab3f9efe8d04e6d233bd35cf2fabdeb93fb0d";
 
 export async function TestFetch(charID: string) {
     return charID;
