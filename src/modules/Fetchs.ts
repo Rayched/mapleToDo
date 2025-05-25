@@ -1,8 +1,10 @@
 import { I_Ocids } from "../Atoms";
+import { API_Keys } from "./datas/APIs";
 import { getDateTimes } from "./Dates";
 
 const Basic_URLs = "https://open.api.nexon.com/maplestory/v1";
-export const Keys = "test_9541dd4a161d499a14421efc454b8f04231afa9997783b8f8cb44996c0dab3f9efe8d04e6d233bd35cf2fabdeb93fb0d";
+
+const APIKeys = API_Keys
 
 export async function TestFetch(charID: string) {
     return charID;
@@ -16,7 +18,7 @@ export async function getCharData(charID: I_Ocids){
     const CharacterData = await(await(
         await fetch(characterURLs, {
             headers: {
-                "x-nxopen-api-key": Keys
+                "x-nxopen-api-key": APIKeys
             }
         })
     ).json());

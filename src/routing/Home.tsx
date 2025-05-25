@@ -1,9 +1,9 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { Keys } from "../modules/Fetchs";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { A_CharNmSaves, OcidAtoms } from "../Atoms";
+import { API_Keys } from "../modules/datas/APIs";
 
 interface I_Charactors {
     charNm: string;
@@ -138,11 +138,11 @@ function Home(){
 
     const onValid = async(data: I_Charactors) => {
         const API_URLs = `https://open.api.nexon.com/maplestory/v1/id?character_name=${data.charNm}`;
-        const API_Keys = Keys;
+        const APIKeys = API_Keys;
 
         const FindCharacterID = fetch(API_URLs, {
             headers: {
-                "x-nxopen-api-key" : API_Keys
+                "x-nxopen-api-key" : APIKeys
             }
         }).then((resp) => resp.json());
 
@@ -161,7 +161,7 @@ function Home(){
     return (
         <Homes>
             <Headers>
-                <Icons src={`${process.env.PUBLIC_URL}/MapleICon.png`} />
+                <Icons src={`${process.env.PUBLIC_URL}/MapleIcon.png`} />
                 <Titles>메이플 To Do</Titles>
             </Headers>
             <Mains>
