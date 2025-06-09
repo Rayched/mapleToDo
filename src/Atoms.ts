@@ -79,50 +79,6 @@ export const S_MapleToDos = selector({
                 const CustomToDos = CharData.CustomToDos;
                 return CustomToDos;
             }
-            /*
-            if(NowCategories.Id === Categories.Weeklys){
-                const WeeklyDatas = CharData.WeeklyToDos;
-
-                const Conversion = WeeklyDatas?.map((weeklyData) => {
-                    const SetFormat: I_DataFormat = {
-                        ContentsId: weeklyData.ContentsId,
-                        ContentsNm: weeklyData.ContentsNm,
-                        IsDone: weeklyData.IsDone
-                    };
-                    return SetFormat;
-                });
-                return Conversion;
-            } else if(NowCategories.Id === Categories.Boss){
-                const BossDatas = CharData.BossToDos;
-
-                const Conversion = BossDatas?.map((bossData) => {
-                    const SetFormat: I_DataFormat = {
-                        ContentsId: bossData.BossId,
-                        ContentsNm: bossData.BossNm,
-                        IsDone: bossData.IsDone,
-                        Rank: bossData.Rank
-                    };
-                    return SetFormat;
-                })
-
-                return Conversion;
-            } else if(NowCategories.Id === Categories.Customs){
-                const CustomToDos = CharData.CustomToDos;
-
-                const Conversion = CustomToDos?.map((todoData, idx) => {
-                    const SetFormat: I_DataFormat = {
-                        ContentsId: String(todoData.Title),
-                        ContentsNm: String(todoData.Title),
-                        IsDone: false,
-                        ToDoBodys: todoData.Bodys,
-                        openDt: todoData.openDt,
-                        endDt: todoData.endDt
-                    };
-                    return SetFormat;
-                });
-                return Conversion;
-            }
-            */
         }
     },
     set: ({set, get}, newValue) => {

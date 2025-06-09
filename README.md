@@ -1,4 +1,4 @@
-## Maple Scheduler in Web
+## 메 ToDo (Maple To Do)
 
 #### 📆 개발 기간
 - 2025.01.31 ~ 2025.00.00 / 총 00일
