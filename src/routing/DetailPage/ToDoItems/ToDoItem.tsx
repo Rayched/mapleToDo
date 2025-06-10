@@ -2,6 +2,7 @@ import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { S_MapleToDos} from "../../../Atoms";
 import { I_ToDoItemProps } from "../ToDoList";
+import BasedToDo from "./BasedToDo";
 
 interface I_DelBtn {
     isDelete: boolean;
@@ -33,8 +34,10 @@ const ContentsBox = styled.div`
 
 const ToDoText = styled.div`
     display: flex;
+    justify-content: center;
     font-size: 17px;
     font-weight: bold;
+    margin-bottom: 3px;
 `;
 
 const DateBox = styled.div`
@@ -77,8 +80,7 @@ function CustomToDoItem({Delete, setDelete}: I_ToDoItemProps){
             {
                 Customs?.map((todoData) => {
                     return (
-                        <ToDoItem key={todoData.ContentsId}>
-                            <input type="checkbox"/>
+                        <BasedToDo key={todoData.ContentsId} ToDoId={todoData.ContentsId} isDones={todoData.IsDone}>
                             <ContentsBox>
                                 <ToDoText>{todoData.ContentsId}</ToDoText>
                                 {
@@ -86,8 +88,7 @@ function CustomToDoItem({Delete, setDelete}: I_ToDoItemProps){
                                     ? <DateBox>{todoData.openDt} ~ {todoData.endDt}</DateBox> : null
                                 }
                             </ContentsBox>
-                            <DelBtn isDelete={Delete} onClick={() => ToDoDelete(todoData.ContentsId)}>X</DelBtn>
-                        </ToDoItem>
+                        </BasedToDo>
                     );
                 })
             }

@@ -48,29 +48,7 @@ function WeeklyItem({Delete, setDelete}: I_ToDoItemProps){
             return;
         }
     };
-    
-    /*
-    return (
-        <Container>
-            {
-                WeeklyData?.map((weeklys) => {
-                    return (
-                        <ToDoItem key={weeklys.ContentsId} isDones={weeklys.IsDone}>
-                            <input 
-                                type="checkbox" 
-                                onChange={() => onChange(weeklys.ContentsId)}
-                                checked={weeklys.IsDone}
-                            />
-                            <ContentsBox>
-                                <WeeklyText isDones={weeklys.IsDone}>{weeklys.ContentsNm}</WeeklyText>
-                            </ContentsBox>
-                            <DelBtn isDelete={Delete} onClick={() => ToDoDelete(weeklys.ContentsId)}>X</DelBtn>
-                        </ToDoItem>
-                    );
-                })
-            }
-        </Container>
-    );*/
+ 
     return (
         <Container>
             {

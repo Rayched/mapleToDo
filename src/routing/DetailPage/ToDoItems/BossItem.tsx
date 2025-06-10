@@ -2,6 +2,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { OcidAtoms, S_MapleToDos } from "../../../Atoms";
 import { I_ToDoItemProps } from "../ToDoList";
+import BasedToDo from "./BasedToDo";
 
 /**
  * 주간 보스 카테고리에 해당하는
@@ -43,7 +44,6 @@ const ToDoItem = styled.li`
 `;
 
 const ContentsBox = styled.div`
-    width: 80%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -141,15 +141,13 @@ function BossItem({Delete, setDelete}: I_ToDoItemProps){
                     const ColorSelect = ColorInfos[idx];
 
                     return (
-                        <ToDoItem>
-                            <input type="checkbox"/>
+                        <BasedToDo key={todoData.ContentsId} ToDoId={todoData.ContentsId} isDones={todoData.IsDone}>
                             <ContentsBox>
                                 <Icons src={`logos/boss_icons/${todoData.ContentsId}.png`}/>
                                 <BossName>{todoData.ContentsNm}</BossName>
                                 <Ranks rankInfo={todoData.Rank} ColorInfo={ColorSelect}>{todoData.Rank}</Ranks>
                             </ContentsBox>
-                            <DelBtn isHide={Delete} onClick={() => ToDoDelete(todoData.ContentsId)}>X</DelBtn>
-                        </ToDoItem>
+                        </BasedToDo>
                     );
                 })
             }
