@@ -2,6 +2,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { I_DataFormat, S_MapleToDos } from "../../../Atoms";
 import { I_ToDoItemProps } from "../ToDoList";
+import BasedToDo from "./BasedToDo";
 
 interface I_DelBtn {
     isDelete: boolean;
@@ -14,33 +15,9 @@ const Container = styled.ul`
     align-items: center;
 `;
 
-const ToDoItem = styled.li<{isDones?: boolean}>`
-    display: flex;
-    align-items: center;
-    width: 18em;
-    background-color: ${(props) => props.isDones ? "rgb(85, 85, 85)" : "rgb(220, 221, 225)"};
-    border: 2px solid rgb(220, 221, 225);
-    border-radius: 12px;
-    padding: 3px;
-    margin: 3px 0px;
-`;
-
-const ContentsBox = styled.div`
-    width: 85%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-`;
-
-const WeeklyText = styled.div<{isDones?: boolean}>`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    font-size: 17px;
-    font-weight: bold;
-    color: ${(props) => props.isDones ? "lightgray" : "black"};
-    text-decoration: ${(props) => props.isDones ? "line-through" : "none"};
+const WeeklyText = styled.div`
+    color: inherit;
+    text-decoration: inherit;
 `;
 
 const DelBtn = styled.button<I_DelBtn>`
@@ -71,46 +48,37 @@ function WeeklyItem({Delete, setDelete}: I_ToDoItemProps){
             return;
         }
     };
-
-    const onChange = (ContentsId?: string) => {
-        const Idx = WeeklyData?.findIndex((data) => data.ContentsId === ContentsId);
-        const getWeeklyDatas = WeeklyData?.find((data) => data.ContentsId === ContentsId);
-        
-        if(Idx !== -1 && getWeeklyDatas !== undefined){
-            const ModifyData = WeeklyData?.map((data) => {
-                if(data.ContentsId === ContentsId){
-                    const IsDoneToDos: I_DataFormat = {
-                        ContentsId: getWeeklyDatas.ContentsId,
-                        ContentsNm: getWeeklyDatas.ContentsNm,
-                        IsDone: !(getWeeklyDatas.IsDone) ? true : false,
-                        Rank: getWeeklyDatas.Rank,
-                        Ranks: getWeeklyDatas.Ranks,
-                        openDt: getWeeklyDatas.openDt,
-                        endDt: getWeeklyDatas.endDt
-                    };
-                    return IsDoneToDos;
-                } else {
-                    return data;
-                }
-            });
-            setWeeklyData(ModifyData);
-        } else {
-            return;
-        }
-    };
-
+    
+    /*
     return (
         <Container>
             {
                 WeeklyData?.map((weeklys) => {
                     return (
                         <ToDoItem key={weeklys.ContentsId} isDones={weeklys.IsDone}>
-                            <input type="checkbox" onChange={() => onChange(weeklys.ContentsId)}/>
+                            <input 
+                                type="checkbox" 
+                                onChange={() => onChange(weeklys.ContentsId)}
+                                checked={weeklys.IsDone}
+                            />
                             <ContentsBox>
                                 <WeeklyText isDones={weeklys.IsDone}>{weeklys.ContentsNm}</WeeklyText>
                             </ContentsBox>
                             <DelBtn isDelete={Delete} onClick={() => ToDoDelete(weeklys.ContentsId)}>X</DelBtn>
                         </ToDoItem>
+                    );
+                })
+            }
+        </Container>
+    );*/
+    return (
+        <Container>
+            {
+                WeeklyData?.map((weeklys) => {
+                    return (
+                        <BasedToDo key={weeklys.ContentsId} ToDoId={weeklys.ContentsId} isDones={weeklys.IsDone}>
+                            <WeeklyText>{weeklys.ContentsNm}</WeeklyText>
+                        </BasedToDo>
                     );
                 })
             }
