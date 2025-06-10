@@ -1,19 +1,18 @@
 import { atom, selector } from "recoil";
 import {recoilPersist} from "recoil-persist";
 
-const {persistAtom} = recoilPersist();
-
+//ocid 관련 (ocid => 일종의 캐릭터 고유 id)
 export interface I_Ocids {
     ocid: string;
     charNm?: string;
 }
 
-//Character ID Save
 export const OcidAtoms = atom<I_Ocids>({
     key: "OcidAtom",
     default: {ocid: "", charNm: ""}
 });
 
+//Category 관련
 export interface I_Categories {
     Id: string;
     name: string;
@@ -25,11 +24,13 @@ enum Categories {
     Customs = "Customs"
 };
 
-//사용자가 선택한 Category 기억해두는 atom
 export const CategoriesAtom = atom<I_Categories>({
     key: "CategoriesAtom",
     default: { Id: "", name: "" }
 });
+
+//ToDo Data 관련
+const {persistAtom: ToDoSave} = recoilPersist();
 
 export interface I_DataFormat {
     ContentsId?: string;
@@ -52,7 +53,7 @@ export interface I_MapleToDos {
 export const A_MapleToDos = atom<I_MapleToDos[]>({
     key: "A_MapleToDos",
     default: [],
-    effects_UNSTABLE: [persistAtom]
+    effects_UNSTABLE: [ToDoSave]
 });
 
 export const S_MapleToDos = selector({
@@ -139,6 +140,8 @@ export const S_MapleToDos = selector({
     }
 });
 
+//캐릭터 닉네임 저장, 북마크 관련
+
 const {persistAtom: charNmPersist} = recoilPersist()
 
 export const A_CharNmSaves = atom<string[]>({
@@ -146,3 +149,21 @@ export const A_CharNmSaves = atom<string[]>({
     default: [],
     effects_UNSTABLE: [charNmPersist]
 });
+
+//사용자가 '일정 편집' 모드에 들어갔는지 여부를 관장하는 atom
+export const IsEditMode = atom({
+    key: "IsEditModeAtoms",
+    default: false
+});
+
+/**
+ * 해당 atom은 전체 ToDoItem을 묶어서 보여주는 <ToDoList />와
+ * 각 ToDoItem에서 공통된 부분을 모아둔 추상 컴포넌트 <BasedToDo />
+ * 총 두 개의 컴포넌트에서 참조
+ * 
+ * 편집모드 진입 여부를 관리하는 state를
+ * props로 전달하면 props drilling 이슈가 발생할 것이기에
+ * 전역 상태로 관리하는 편이 더 좋겠다는 생각이 들어서
+ * 해당 상태를 atom으로 정의해서 관리한다.
+ * (편집모드 진입 여부 관리하는 state)
+ */

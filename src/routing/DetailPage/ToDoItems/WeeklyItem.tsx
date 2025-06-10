@@ -24,7 +24,7 @@ const DelBtn = styled.button<I_DelBtn>`
     display: ${(props) => props.isDelete ? "flex" : "none"};
 `;
 
-function WeeklyItem({Delete, setDelete}: I_ToDoItemProps){
+function WeeklyItem(){
     const [WeeklyData, setWeeklyData] = useRecoilState(S_MapleToDos);
 
     const ToDoDelete = (TargetId?: string) => {
@@ -41,10 +41,10 @@ function WeeklyItem({Delete, setDelete}: I_ToDoItemProps){
             });
             setWeeklyData(ModifyData);
             alert(`주간 컨텐츠, ${FindTarget?.ContentsNm}을 삭제했습니다.`);
-            setDelete(false);
+            //setDelete(false);
         } else {
             alert("일정 삭제를 취소했습니다.");
-            setDelete(false);
+            //setDelete(false);
             return;
         }
     };

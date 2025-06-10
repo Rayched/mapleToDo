@@ -32,17 +32,6 @@ const Container = styled.ul`
     align-items: center;
 `;
 
-const ToDoItem = styled.li`
-    display: flex;
-    align-items: center;
-    width: 18em;
-    background-color: rgb(220, 221, 225);
-    border: 2px solid rgb(220, 221, 225);
-    border-radius: 12px;
-    padding: 3px;
-    margin: 3px 0px;
-`;
-
 const ContentsBox = styled.div`
     display: flex;
     justify-content: center;
@@ -55,7 +44,6 @@ const Icons = styled.img`
 `;
 
 const BossName = styled.div`
-    font-size: 17px;
     font-weight: bold;
     margin: 0px 5px;
 `;
@@ -108,7 +96,7 @@ const ColorInfos: I_ColorInfos[]= [
     }
 ];
 
-function BossItem({Delete, setDelete}: I_ToDoItemProps){
+function BossItem(){
     const [BossData, setBossData] = useRecoilState(S_MapleToDos);
 
     const ToDoDelete = (contentsId?: string) => {
@@ -125,10 +113,10 @@ function BossItem({Delete, setDelete}: I_ToDoItemProps){
             });
             setBossData(ModifyData);
             alert("일정을 삭제하였습니다.");
-            setDelete(false);
+            //setDelete(false);
         } else {
             alert("일정을 삭제하지 않았습니다.");
-            setDelete(false);
+            //setDelete(false);
             return;
         }
     }

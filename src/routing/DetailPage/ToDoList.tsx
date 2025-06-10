@@ -1,7 +1,7 @@
 //Detail Page, Main Part Components
 
 import styled from "styled-components";
-import {A_MapleToDos, CategoriesAtom, I_Categories, OcidAtoms, S_MapleToDos} from "../../Atoms";
+import {A_MapleToDos, CategoriesAtom, I_Categories, IsEditMode, OcidAtoms, S_MapleToDos} from "../../Atoms";
 import React, { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import AddToDo from "./Forms/FormBox";
@@ -95,7 +95,7 @@ function ToDoList(){
     const [isHide, setHide] = useState(false);
     //AddToDo Render 여부 관리용 state
 
-    const [DelBtnHide, setDelBtnHide] = useState(false);
+    const [IsEdits, setEdits] = useRecoilState(IsEditMode);
 
     const [NowCategories, setCategories] = useRecoilState(CategoriesAtom);
 
@@ -130,12 +130,12 @@ function ToDoList(){
                 <div className="AddToDoContainer">
                     <button onClick={() => setHide((prev) => !prev)}>할 일 추가</button>
                     {isHide ? <AddToDo setHide={setHide} />: null}
-                    <button onClick={() => setDelBtnHide((prev) => !prev)}>일정 삭제</button>
+                    <button onClick={() => setEdits((prev) => !prev)}>일정 삭제</button>
                 </div>
                 <ul className="ToDoItemContainer">
-                    {NowCategories.Id === "Weeklys" ? <WeeklyItem Delete={DelBtnHide} setDelete={setDelBtnHide}/> : null}
-                    {NowCategories.Id === "Boss" ? <BossItem Delete={DelBtnHide} setDelete={setDelBtnHide}/> : null}
-                    {NowCategories.Id === "Customs" ? <CustomToDoItem Delete={DelBtnHide} setDelete={setDelBtnHide}/> : null}
+                    {NowCategories.Id === "Weeklys" ? <WeeklyItem /> : null}
+                    {NowCategories.Id === "Boss" ? <BossItem /> : null}
+                    {NowCategories.Id === "Customs" ? <CustomToDoItem /> : null}
                 </ul>
             </ToDoWrapper>
         </Container>

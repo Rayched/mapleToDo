@@ -3,9 +3,9 @@
  * 모아둔 추상 컴포넌트 BasedToDo
  */
 
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {styled} from "styled-components";
-import { I_DataFormat, S_MapleToDos } from "../../../Atoms";
+import { I_DataFormat, IsEditMode, S_MapleToDos } from "../../../Atoms";
 import { useEffect, useState } from "react";
 
 interface I_BasedToDo {
@@ -45,10 +45,16 @@ const ContentsBody = styled.div<I_Checked>`
     text-decoration: ${(props) => props.isDone ? "line-through" : "none"};
 `;
 
-const DeleteBtn = styled.div``;
+const DeleteBtn = styled.button`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+`;
 
 function BasedToDo({ToDoId, isDones, children}: I_BasedToDo){
     const [ToDos, setToDos] = useRecoilState(S_MapleToDos);
+    const IsEdits = useRecoilValue(IsEditMode);
 
     //일정 완료 여부를 설정하는 onChange Event Handler
     const onChange = (targetId?: string) => {
@@ -77,6 +83,25 @@ function BasedToDo({ToDoId, isDones, children}: I_BasedToDo){
         }
     };
 
+    const onDelete = (targetId?: string) => {
+        const Targets = ToDos?.find((data) => data.ContentsId === targetId);
+        const isDelete = window.confirm(`'${Targets?.ContentsNm}'을 삭제하겠습니까?`);
+
+        if(isDelete){
+            const Modify = ToDos?.filter((data) => {
+                if(data.ContentsId !== targetId){
+                    return data;
+                } else {
+                    return;
+                }
+            });
+            alert(`'일정: ${Targets?.ContentsNm}' 삭제 완료`);
+            setToDos(Modify);
+        } else {
+            alert(`'일정: ${Targets?.ContentsNm}' 삭제 취소`);
+        }
+    };
+
     return (
         <ToDoItem isDone={isDones}>
             <CheckBox
@@ -88,7 +113,7 @@ function BasedToDo({ToDoId, isDones, children}: I_BasedToDo){
                 {children}
             </ContentsBody>
             {
-                false ? <DeleteBtn>삭제</DeleteBtn> : null
+                IsEdits ? <DeleteBtn onClick={() => onDelete(ToDoId)}>삭제</DeleteBtn> : null
             }
         </ToDoItem>
     );
