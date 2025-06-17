@@ -27,9 +27,10 @@ const Footers = styled.footer`
     display: flex;
     justify-content: center;
     text-align: center;
-    font-size: 13px;
+    font-size: 11px;
     width: 100%;
     height: 1%;
+    padding: 1px 0px;
 `;
 
 function App(){

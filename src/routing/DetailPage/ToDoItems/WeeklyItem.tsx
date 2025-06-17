@@ -1,12 +1,7 @@
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { I_DataFormat, S_MapleToDos } from "../../../Atoms";
-import { I_ToDoItemProps } from "../ToDoList";
+import { S_MapleToDos } from "../../../Atoms";
 import BasedToDo from "./BasedToDo";
-
-interface I_DelBtn {
-    isDelete: boolean;
-};
 
 const Container = styled.ul`
     display: flex;
@@ -20,34 +15,8 @@ const WeeklyText = styled.div`
     text-decoration: inherit;
 `;
 
-const DelBtn = styled.button<I_DelBtn>`
-    display: ${(props) => props.isDelete ? "flex" : "none"};
-`;
-
 function WeeklyItem(){
-    const [WeeklyData, setWeeklyData] = useRecoilState(S_MapleToDos);
-
-    const ToDoDelete = (TargetId?: string) => {
-        const FindTarget = WeeklyData?.find((data) => data.ContentsId === TargetId);
-        const isDelete = window.confirm(`'{ Id: ${FindTarget?.ContentsId} / Name: ${FindTarget?.ContentsNm} }'을 삭제하겠습니까?`);
-
-        if(isDelete){
-            const ModifyData = WeeklyData?.filter((data) => {
-                if(data.ContentsId === FindTarget?.ContentsId){
-                    return;
-                } else {
-                    return data;
-                }
-            });
-            setWeeklyData(ModifyData);
-            alert(`주간 컨텐츠, ${FindTarget?.ContentsNm}을 삭제했습니다.`);
-            //setDelete(false);
-        } else {
-            alert("일정 삭제를 취소했습니다.");
-            //setDelete(false);
-            return;
-        }
-    };
+    const WeeklyData = useRecoilValue(S_MapleToDos);
  
     return (
         <Container>

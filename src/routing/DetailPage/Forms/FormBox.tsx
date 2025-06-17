@@ -5,18 +5,6 @@ import AddWeeklyForm from "./WeeklyForms";
 import AddBossForm from "./BossForms";
 import AddCustomForms from "./ToDoForms";
 
-const Wrapper = styled.div`
-    width: 100vw;
-    height: 100vh;
-    top: 0%;
-    right: 0%;
-    position: absolute;
-    background-color: rgba(10, 10, 10, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-`;
-
 const Container = styled.div`
     width: 30em;
     height: 38em;
@@ -30,7 +18,26 @@ const ToDoHeader = styled.div`
     display: flex;
     justify-content: right;
     align-items: center;
+    position: relative;
     padding: 8px;
+`;
+
+const CloseBtn = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    border: 1px solid rgb(83, 92, 104);
+    border-radius: 25px;
+    width: 1em;
+    height: 1em;
+    padding: 2px;
+    color: rgb(250, 250, 250);
+    background-color: rgb(83, 92, 104);
 `;
 
 const ToDoBody = styled.div`
@@ -52,21 +59,19 @@ function FormBox({setHide}: I_AddToDoParams){
     const NowCategories = useRecoilValue(CategoriesAtom);
     
     return (
-        <Wrapper>
-            <Container>
-                <ToDoHeader>
-                    <button onClick={() => setHide(false)}>취소</button>
-                </ToDoHeader>
-                <ToDoBody>
-                    <div className="CategoryNm">{NowCategories.name}</div>
-                    <div className="ToDoSelect">
-                        {NowCategories.Id === "Weeklys" ? <AddWeeklyForm setHide={setHide}/> : null}
-                        {NowCategories.Id === "Boss" ? <AddBossForm setHide={setHide}/> : null}
-                        {NowCategories.Id === "Customs" ? <AddCustomForms setHide={setHide}/> : null}
-                    </div>
-                </ToDoBody>
-            </Container>
-        </Wrapper>
+        <Container>
+            <ToDoHeader>
+                <CloseBtn onClick={() => setHide(false)}>×</CloseBtn>
+            </ToDoHeader>
+            <ToDoBody>
+                <div className="CategoryNm">{NowCategories.name}</div>
+                <div className="ToDoSelect">
+                    {NowCategories.Id === "Weeklys" ? <AddWeeklyForm setHide={setHide}/> : null}
+                    {NowCategories.Id === "Boss" ? <AddBossForm setHide={setHide}/> : null}
+                    {NowCategories.Id === "Customs" ? <AddCustomForms setHide={setHide}/> : null}
+                </div>
+            </ToDoBody>
+        </Container>
     );
 };
 

@@ -1,7 +1,6 @@
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { OcidAtoms, S_MapleToDos } from "../../../Atoms";
-import { I_ToDoItemProps } from "../ToDoList";
+import { S_MapleToDos } from "../../../Atoms";
 import BasedToDo from "./BasedToDo";
 
 /**
@@ -20,10 +19,6 @@ interface I_Ranks {
     rankInfo?: string;
     ColorInfo?: I_ColorInfos;
 };
-
-interface I_DelBtn {
-    isHide: boolean;
-}
 
 const Container = styled.ul`
     display: flex;
@@ -45,6 +40,7 @@ const Icons = styled.img`
 
 const BossName = styled.div`
     font-weight: bold;
+    font-size: 15px;
     margin: 0px 5px;
 `;
 
@@ -57,10 +53,6 @@ const Ranks = styled.div<I_Ranks>`
     color: ${(props) => `${props.ColorInfo?.textColor}`};
     font-weight: bold;
     text-align: center;
-`;
-
-const DelBtn = styled.button<I_DelBtn>`
-    display: ${(props) => props.isHide ? "flex" : "none"};
 `;
 
 const ColorInfos: I_ColorInfos[]= [
@@ -97,29 +89,7 @@ const ColorInfos: I_ColorInfos[]= [
 ];
 
 function BossItem(){
-    const [BossData, setBossData] = useRecoilState(S_MapleToDos);
-
-    const ToDoDelete = (contentsId?: string) => {
-        const Targets = BossData?.find((data) => data.ContentsId === contentsId);
-        const isDelete = window.confirm(`{ 보스 명: ${Targets?.ContentsNm} / 난이도: ${Targets?.Rank} }'을 삭제하겠습니까?`);
-
-        if(isDelete){
-            const ModifyData = BossData?.filter((data) => {
-                if(data.ContentsId !== contentsId){
-                    return data;
-                } else {
-                    return;
-                }
-            });
-            setBossData(ModifyData);
-            alert("일정을 삭제하였습니다.");
-            //setDelete(false);
-        } else {
-            alert("일정을 삭제하지 않았습니다.");
-            //setDelete(false);
-            return;
-        }
-    }
+    const BossData = useRecoilValue(S_MapleToDos);
 
     return (
         <Container>

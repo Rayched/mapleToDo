@@ -15,11 +15,6 @@ interface I_CategoryItem {
     nowCategories: string;
 };
 
-interface I_DeleteTarget {
-    targetId: string;
-    charNm?: string;
-};
-
 export interface I_ToDoItemProps {
     Delete: boolean;
     setDelete: Function;
@@ -62,34 +57,47 @@ const ToDoWrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin: 5px 0px;
 `;
 
-const ToDoItem = styled.li`
-    margin: 3px 0px;
-    padding: 5px;
+const AddToDoWrapper = styled.div`
+    width: 100vw;
+    height: 100vh;
+    top: 0%;
+    right: 0%;
+    position: absolute;
+    background-color: rgba(10, 10, 10, 0.8);
     display: flex;
+    justify-content: center;
     align-items: center;
-    border: 2px solid black;
+`;
+
+const BtnBox = styled.div<{isEdits: boolean}>`
+    display: flex;
+    justify-content: ${(props) => props.isEdits ? "space-between" : "center"};
+    align-items: center;
+    flex-direction: row;
+    width: 70%;
+`;
+
+const ToDoBtn = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    font-weight: bold;
+    border: 2px solid rgb(68, 72, 77);
     border-radius: 10px;
-    width: 15em;
-    height: 1.2em;
+    padding: 2px 3px;
+    color: rgb(240, 240, 240);
+    background-color: rgb(83, 92, 104);
+
+    svg {
+        padding: 0px 1px;
+    };
 `;
 
-const ToDoText = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 90%;
-`;
-
-const DelBtn = styled.button<I_DelBtn>`
-    display: ${(props) => props.isHide ? "flex" : "none"};
-    margin: 0px 3px;
-    width: 4em;
-    height: 1.5rem;
-    justify-content: center;
-    text-align: center;
-`;
+const ToDoItems = styled.ul``;
 
 function ToDoList(){
     const [isHide, setHide] = useState(false);
@@ -127,17 +135,50 @@ function ToDoList(){
                 }
             </Categories>
             <ToDoWrapper>
-                <div className="AddToDoContainer">
-                    <button onClick={() => setHide((prev) => !prev)}>할 일 추가</button>
-                    {isHide ? <AddToDo setHide={setHide} />: null}
-                    <button onClick={() => setEdits((prev) => !prev)}>일정 삭제</button>
-                </div>
-                <ul className="ToDoItemContainer">
+                <BtnBox isEdits={IsEdits}>
+                    {
+                        IsEdits ? null : (
+                            <ToDoBtn onClick={() => setEdits(true)}>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 512 512">
+                                    <path fill="rgb(245, 245, 245)" d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"/>
+                                </svg>
+                                일정 편집
+                            </ToDoBtn>
+                        )
+                    }
+                    {
+                        !(IsEdits) ? null : (
+                            <>
+                                <ToDoBtn onClick={() => setHide((prev) => !prev)}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 448 512">
+                                        <path fill="#f5f5f5" d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z"/>
+                                    </svg>
+                                    일정 추가
+                                </ToDoBtn>
+                                <ToDoBtn onClick={() => setEdits(false)}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 640 512">
+                                        <path fill="rgb(245, 245, 245)" d="M5.1 9.2C13.3-1.2 28.4-3.1 38.8 5.1l592 464c10.4 8.2 12.3 23.3 4.1 33.7s-23.3 12.3-33.7 4.1L9.2 42.9C-1.2 34.7-3.1 19.6 5.1 9.2z"/>
+                                    </svg>
+                                    편집 취소
+                                </ToDoBtn>
+                            </>
+                        )
+                    }
+                </BtnBox>
+                <ToDoItems className="ToDoItemContainer">
                     {NowCategories.Id === "Weeklys" ? <WeeklyItem /> : null}
                     {NowCategories.Id === "Boss" ? <BossItem /> : null}
                     {NowCategories.Id === "Customs" ? <CustomToDoItem /> : null}
-                </ul>
+                </ToDoItems>
             </ToDoWrapper>
+            {
+                !(isHide) ? null 
+                : (
+                    <AddToDoWrapper>
+                        <AddToDo setHide={setHide} />
+                    </AddToDoWrapper>
+                )
+            }
         </Container>
     );
 };

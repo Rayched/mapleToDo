@@ -77,13 +77,22 @@ const DataItem = styled.div`
     }
 `;
 
-const BtnBox = styled.div`
+const BookmarkBtn = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%;
-    padding: 0px 5px;
+    text-align: center;
+    position: absolute;
+    border: 2px solid black;
+    border-radius: 25px;
+    font-size: 25px;
+    top: 0.5em;
+    right: 1.5em;
 `;
+/**
+ * Bookmark 추가 관련 버튼은 사이드바 쪽으로
+ * 이관하는 방향으로 개발할 것
+ */
 
 function Details(){
     const [charID, setCharID] = useRecoilState(OcidAtoms);
@@ -116,7 +125,7 @@ function Details(){
                 await setCharNmSave((oldDatas) => [...oldDatas, String(CharNms)]);   
                 alert(`'캐릭터 명: ${CharNms}' 저장 완료!`);
             }
-        }
+        };
     };
 
     const targetIdx = WorldNms.findIndex((names) => CharInfo?.world_name === names);
@@ -142,9 +151,7 @@ function Details(){
                                 <DataItem>LV {CharInfo?.character_level}</DataItem>
                                 <DataItem>{CharInfo?.character_class}</DataItem>
                             </CharDatas>
-                            <BtnBox>
-                                <button onClick={SaveCharNm}>☆</button>
-                            </BtnBox>
+                            <BookmarkBtn onClick={SaveCharNm}>☆</BookmarkBtn>
                         </Headers>
                         <Mains />
                     </>
