@@ -54,12 +54,14 @@ const Icons = styled.img`
 
 const Mains = styled.div`
     display: flex;
+    width: 100%;
     justify-content: center;
     align-items: center;
     margin-top: 10px;
 `;
 
 const CharacterForm = styled.form`
+    width: 80%;
     padding: 5px;
     border: 2px solid black;
     border-radius: 18px;
@@ -70,7 +72,7 @@ const CharacterForm = styled.form`
 `;
 
 const SearchBar = styled.input`
-    width: 30em;
+    width: 100%;
     height: 2em;
     border: 0px;
     padding-left: 5px;
@@ -92,7 +94,7 @@ const Bookmark_Box = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 20em;
+    width: 80%;
     height: 10em;
     margin-top: 15px;
     padding: 10px;
