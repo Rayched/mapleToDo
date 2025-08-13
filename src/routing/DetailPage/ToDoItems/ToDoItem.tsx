@@ -37,12 +37,12 @@ function CustomToDoItem(){
             {
                 CustomToDos?.map((todoData) => {
                     return (
-                        <BasedToDo key={todoData.ContentsId} ToDoId={todoData.ContentsId} isDones={todoData.IsDone}>
+                        <BasedToDo key={todoData.ContentsId} ToDoId={todoData.ContentsId} isDones={todoData.DoneInfo?.isDone}>
                             <ContentsBox>
                                 <ToDoText>{todoData.ContentsId}</ToDoText>
                                 {
                                     todoData.openDt !== "" && todoData.endDt !== ""
-                                    ? <DateBox isDone={todoData.IsDone}>{todoData.openDt} ~ {todoData.endDt}</DateBox> : null
+                                    ? <DateBox isDone={todoData.DoneInfo?.isDone}>{todoData.openDt} ~ {todoData.endDt}</DateBox> : null
                                 }
                             </ContentsBox>
                         </BasedToDo>

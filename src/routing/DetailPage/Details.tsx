@@ -97,6 +97,8 @@ const BookmarkBtn = styled.div`
 function Details(){
     const [charID, setCharID] = useRecoilState(OcidAtoms);
 
+    const DayTexts = ["일", "월", "화", "수", "목", "금", "토"];
+
     const [CharNmSave, setCharNmSave] = useRecoilState(A_CharNmSaves);
 
     const {isLoading, data: CharInfo} = useQuery<I_CharInfo>(
@@ -129,8 +131,6 @@ function Details(){
     };
 
     const targetIdx = WorldNms.findIndex((names) => CharInfo?.world_name === names);
-
-    useEffect(() => console.log(CharNmSave), [CharNmSave]);
 
     return (
         <Wrapper>

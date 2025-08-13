@@ -142,7 +142,10 @@ function BossForm({setHide}: I_AddToDoParams){
                 ContentsNm: Targets.Name,
                 Rank: Targets.Rank[0],
                 Ranks: Targets.Rank,
-                IsDone: false
+                DoneInfo: {
+                    isDone: false,
+                    DoneTimes: ""
+                }
             };
             setItems((oldItems) => [...oldItems, TypeA]);            
         } else {
@@ -151,7 +154,10 @@ function BossForm({setHide}: I_AddToDoParams){
                 ContentsNm: Targets.Name,
                 Rank: Targets.Rank[0],
                 Ranks: Targets.Rank,
-                IsDone: false
+                DoneInfo: {
+                    isDone: false,
+                    DoneTimes: ""
+                }
             };
             setItems((oldItems) => [...oldItems, TypeB]);
         }
@@ -168,7 +174,7 @@ function BossForm({setHide}: I_AddToDoParams){
             ContentsNm: Items[idx].ContentsNm,
             Rank: value,
             Ranks: Items[idx].Ranks,
-            IsDone: Items[idx].IsDone
+            DoneInfo: Items[idx].DoneInfo
         };
 
         setItems((oldItems) => [

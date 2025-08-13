@@ -8,6 +8,7 @@ interface I_SideBar {
 
 const Wrapper = styled.div`
   width: 100vw;
+  max-width: 550px;
   height: 100vh;
   display: flex;
   align-items: center;

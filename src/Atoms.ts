@@ -35,7 +35,10 @@ const {persistAtom: ToDoSave} = recoilPersist();
 export interface I_DataFormat {
     ContentsId?: string;
     ContentsNm?: string;
-    IsDone?: boolean;
+    DoneInfo?: {
+        isDone?: boolean;
+        DoneTimes?: string;
+    };
     Rank?: string;
     Ranks?: string[];
     openDt?: string;

@@ -23,7 +23,7 @@ function WeeklyItem(){
             {
                 WeeklyData?.map((weeklys) => {
                     return (
-                        <BasedToDo key={weeklys.ContentsId} ToDoId={weeklys.ContentsId} isDones={weeklys.IsDone}>
+                        <BasedToDo key={weeklys.ContentsId} ToDoId={weeklys.ContentsId} isDones={weeklys.DoneInfo?.isDone}>
                             <WeeklyText>{weeklys.ContentsNm}</WeeklyText>
                         </BasedToDo>
                     );

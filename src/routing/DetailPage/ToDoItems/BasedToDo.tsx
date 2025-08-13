@@ -81,6 +81,11 @@ function BasedToDo({ToDoId, isDones, children}: I_BasedToDo){
     //일정 완료 여부를 설정하는 onChange Event Handler
     const onChange = (targetId?: string) => {
         const Target = ToDos?.find((todoData) => todoData.ContentsId === targetId);
+        const NowDate = new Date();
+
+        const FullYear = NowDate.getFullYear();
+        const Month = NowDate.getMonth() + 1;
+        const Days = NowDate.getDate();
 
         if(Target !== undefined){
             const Modifys = ToDos?.map((todoData) => {
@@ -88,7 +93,10 @@ function BasedToDo({ToDoId, isDones, children}: I_BasedToDo){
                     const ModifyData: I_DataFormat = {
                         ContentsId: todoData.ContentsId,
                         ContentsNm: todoData.ContentsNm,
-                        IsDone: todoData.IsDone ? false : true,
+                        DoneInfo: {
+                            isDone: true,
+                            DoneTimes: `${FullYear}-${Month}-${Days}`
+                        },
                         Rank: todoData.Rank,
                         Ranks: todoData.Ranks,
                         openDt: todoData.openDt,
@@ -123,6 +131,44 @@ function BasedToDo({ToDoId, isDones, children}: I_BasedToDo){
             alert(`'일정: ${Targets?.ContentsNm}' 삭제 취소`);
         }
     };
+
+    useEffect(() => {
+        const NowDate = new Date();
+        const FullYear = NowDate.getFullYear();
+        const Month = NowDate.getMonth() + 1;
+        const Dates = NowDate.getDate();
+
+        const DateTexts = `${FullYear}-${Month}-${Dates}`;
+
+        const Todays = NowDate.getDay();
+
+        if(Todays === 4){
+            const Modifys = ToDos?.map((data) => {
+                const DoneInfo = data.DoneInfo;
+
+                if(DoneInfo?.isDone && DoneInfo.DoneTimes !== DateTexts){
+                    const Resets: I_DataFormat = {
+                        ContentsId: data.ContentsId,
+                        ContentsNm: data.ContentsNm,
+                        Rank: data.Rank,
+                        Ranks: data.Ranks,
+                        openDt: data.openDt,
+                        endDt: data.endDt,
+                        DoneInfo: {
+                            isDone: false,
+                            DoneTimes: DoneInfo.DoneTimes
+                        }
+                    };
+                    return Resets;
+                } else {
+                    return data;
+                }
+            });
+            setToDos(Modifys);
+        } else {
+            return;
+        };
+    });
 
     return (
         <ToDoItem isDone={isDones}>

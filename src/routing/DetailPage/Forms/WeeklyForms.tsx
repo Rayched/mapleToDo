@@ -127,7 +127,10 @@ function WeeklyForm({setHide}: I_AddToDoParams){
         const AddWeeklyData: I_DataFormat = {
             ContentsId: SelectedItem.Id,
             ContentsNm: SelectedItem.Name,
-            IsDone: false
+            DoneInfo: {
+                isDone: false,
+                DoneTimes: ""
+            }
         };
 
         setItems((oldItems) => [
