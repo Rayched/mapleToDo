@@ -2,6 +2,7 @@
 //2025-08-13 기준
 
 import styled from "styled-components"
+import Routers from "./Routing/Router";
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -14,7 +15,9 @@ const Wrapper = styled.div`
 
 function App(){
   return (
-    <Wrapper>Hello</Wrapper>
+    <Wrapper>
+      <Routers />
+    </Wrapper>
   );
 };
 

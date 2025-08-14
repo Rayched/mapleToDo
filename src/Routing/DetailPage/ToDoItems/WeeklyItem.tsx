@@ -1,6 +1,6 @@
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { S_MapleToDos } from "../../../Atoms";
+import { A_MapleToDos, S_MapleToDos } from "../../../Atoms";
 import BasedToDo from "./BasedToDo";
 
 const Container = styled.ul`
@@ -17,6 +17,7 @@ const WeeklyText = styled.div`
 
 function WeeklyItem(){
     const WeeklyData = useRecoilValue(S_MapleToDos);
+    const setWeeklyData = useSetRecoilState(A_MapleToDos);
  
     return (
         <Container>
