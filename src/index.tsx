@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import { createGlobalStyle } from 'styled-components';
 import { QueryClient, QueryClientProvider, useQueryClient } from 'react-query';
+import { RecoilRoot } from 'recoil';
 
 const GlobalStyle = createGlobalStyle`
   /* http://meyerweb.com/eric/tools/css/reset/ 
@@ -64,8 +65,10 @@ const queryClient = new QueryClient();
 root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <App />
-      <GlobalStyle />
+      <RecoilRoot>
+        <App />
+        <GlobalStyle />
+      </RecoilRoot>
     </QueryClientProvider>
   </React.StrictMode>
 );
