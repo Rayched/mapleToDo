@@ -1,10 +1,10 @@
 //Boss Contents ToDo Form Component
-import {useRecoilState, useRecoilValue} from "recoil";
+import {useRecoilState, useRecoilValue, useSetRecoilState} from "recoil";
 import styled from "styled-components";
 import { OriginData } from "../../../modules/datas/originDatas";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
-import { A_MapleToDos, I_DataFormat, I_MapleToDos, OcidAtoms } from "../../../Atoms";
+import { A_MapleToDos, I_DataFormat, I_MapleToDos, IsEditMode, OcidAtoms } from "../../../Atoms";
 import { I_ContentsItem, I_DelBtn } from "./WeeklyForms";
 import { I_AddToDoParams } from "./FormBox";
 
@@ -123,6 +123,8 @@ function BossForm({setHide}: I_AddToDoParams){
     const BossOriginData = OriginData.BossContents;
     //OriginData, 보스 컨텐츠 정보 가져오는 용도
 
+    const setEditMode = useSetRecoilState(IsEditMode);
+
     const onValid = ({BossName}: I_forms) => {
         const idx = BossOriginData.findIndex((elm) => BossName === elm.Name);
         const Targets = BossOriginData[idx];
@@ -142,10 +144,7 @@ function BossForm({setHide}: I_AddToDoParams){
                 ContentsNm: Targets.Name,
                 Rank: Targets.Rank[0],
                 Ranks: Targets.Rank,
-                DoneInfo: {
-                    isDone: false,
-                    DoneTimes: ""
-                }
+                IsDone: false
             };
             setItems((oldItems) => [...oldItems, TypeA]);            
         } else {
@@ -154,10 +153,7 @@ function BossForm({setHide}: I_AddToDoParams){
                 ContentsNm: Targets.Name,
                 Rank: Targets.Rank[0],
                 Ranks: Targets.Rank,
-                DoneInfo: {
-                    isDone: false,
-                    DoneTimes: ""
-                }
+                IsDone: false
             };
             setItems((oldItems) => [...oldItems, TypeB]);
         }
@@ -174,7 +170,7 @@ function BossForm({setHide}: I_AddToDoParams){
             ContentsNm: Items[idx].ContentsNm,
             Rank: value,
             Ranks: Items[idx].Ranks,
-            DoneInfo: Items[idx].DoneInfo
+            IsDone: Items[idx].IsDone
         };
 
         setItems((oldItems) => [
@@ -227,6 +223,7 @@ function BossForm({setHide}: I_AddToDoParams){
                 setHide(false);
             }
         }
+        setEditMode(false);
     };
 
     const ToDoDelete = (targetId: string) => {

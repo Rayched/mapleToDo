@@ -9,6 +9,7 @@ import { I_DelBtn } from "./Forms/WeeklyForms";
 import BossItem from "./ToDoItems/BossItem";
 import WeeklyItem from "./ToDoItems/WeeklyItem";
 import CustomToDoItem from "./ToDoItems/ToDoItem";
+import useReset from "./ToDoItems/useReset";
 
 interface I_CategoryItem {
     category_id: string;
@@ -32,6 +33,7 @@ const Container = styled.div`
     align-items: center;
     width: 100%;
     height: 100%;
+    z-index: 2;
 `;
 
 const Categories = styled.div`
@@ -40,6 +42,7 @@ const Categories = styled.div`
     background-color: lightgray;
     padding: 10px;
     border-radius: 15px;
+    position: relative;
 `;
 
 const CategoryItem = styled.div<I_CategoryItem>`
@@ -58,6 +61,7 @@ const ToDoWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     margin: 5px 0px;
+    width: 100%;
 `;
 
 const AddToDoWrapper = styled.div`
@@ -77,7 +81,7 @@ const BtnBox = styled.div<{isEdits: boolean}>`
     justify-content: ${(props) => props.isEdits ? "space-between" : "center"};
     align-items: center;
     flex-direction: row;
-    width: 70%;
+    width: 95%;
 `;
 
 const ToDoBtn = styled.div`
@@ -91,6 +95,8 @@ const ToDoBtn = styled.div`
     padding: 2px 3px;
     color: rgb(240, 240, 240);
     background-color: rgb(83, 92, 104);
+    width: 100px;
+    height: 20px;
 
     svg {
         padding: 0px 1px;
@@ -104,18 +110,33 @@ function ToDoList(){
     //AddToDo Render 여부 관리용 state
 
     const [IsEdits, setEdits] = useRecoilState(IsEditMode);
+    const {charNm} = useRecoilValue(OcidAtoms);
 
     const [NowCategories, setCategories] = useRecoilState(CategoriesAtom);
+
+    const {ToDoReset} = useReset(String(charNm));
 
     const ChangeCategory = (targetId: string) => {
         const Idx = Categorys.findIndex((item) => item.Id === targetId);
 
         const newCategories: I_Categories = {
-            Id: targetId,
+            Id: Categorys[Idx].Id,
             name: Categorys[Idx].name
         };
 
         setCategories(newCategories);
+    };
+
+    const onClick_resetBtn = () => {
+        const isReset = window.confirm("컨텐츠 완료 기록을 초기화 하겠습니까?");
+
+        if(!isReset){
+            alert("컨텐츠 완료 기록 초기화가 취소됐습니다.");
+            return;
+        } else {
+            ToDoReset();
+            alert("초기화 완료");
+        }
     };
 
     return (
@@ -138,12 +159,17 @@ function ToDoList(){
                 <BtnBox isEdits={IsEdits}>
                     {
                         IsEdits ? null : (
-                            <ToDoBtn onClick={() => setEdits(true)}>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 512 512">
-                                    <path fill="rgb(245, 245, 245)" d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"/>
-                                </svg>
-                                일정 편집
-                            </ToDoBtn>
+                            <>
+                                <ToDoBtn onClick={() => setEdits(true)}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 512 512">
+                                        <path fill="rgb(245, 245, 245)" d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"/>
+                                    </svg>
+                                    일정 편집
+                                </ToDoBtn>
+                                <ToDoBtn onClick={onClick_resetBtn}>
+                                    초기화
+                                </ToDoBtn>
+                            </>
                         )
                     }
                     {

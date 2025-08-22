@@ -17,14 +17,13 @@ const WeeklyText = styled.div`
 
 function WeeklyItem(){
     const WeeklyData = useRecoilValue(S_MapleToDos);
-    const setWeeklyData = useSetRecoilState(A_MapleToDos);
  
     return (
         <Container>
             {
                 WeeklyData?.map((weeklys) => {
                     return (
-                        <BasedToDo key={weeklys.ContentsId} ToDoId={weeklys.ContentsId} isDones={weeklys.DoneInfo?.isDone}>
+                        <BasedToDo key={weeklys.ContentsId} ToDoId={weeklys.ContentsId} isDones={weeklys.IsDone}>
                             <WeeklyText>{weeklys.ContentsNm}</WeeklyText>
                         </BasedToDo>
                     );

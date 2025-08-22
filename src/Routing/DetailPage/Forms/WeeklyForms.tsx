@@ -1,12 +1,12 @@
 //Weekly Contents To Do form components
 
 import { useForm } from "react-hook-form";
-import { useRecoilState, useRecoilValue} from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState} from "recoil";
 import styled from "styled-components";
 import {OriginData} from "../../../modules/datas/originDatas";
 import { I_AddToDoParams } from "./FormBox";
 import React, { useEffect, useState } from "react";
-import { A_MapleToDos, I_DataFormat, I_MapleToDos, OcidAtoms } from "../../../Atoms";
+import { A_MapleToDos, I_DataFormat, I_MapleToDos, IsEditMode, OcidAtoms } from "../../../Atoms";
 
 interface I_WeeklyForms {
     WeeklyContents?: string;
@@ -117,6 +117,7 @@ function WeeklyForm({setHide}: I_AddToDoParams){
 
     const CharId = useRecoilValue(OcidAtoms);
     const [ToDos, setToDos] = useRecoilState(A_MapleToDos);
+    const setEditMode = useSetRecoilState(IsEditMode);
 
     const WeeklyOriginData = OriginData.WeeklyContents;
 
@@ -127,10 +128,7 @@ function WeeklyForm({setHide}: I_AddToDoParams){
         const AddWeeklyData: I_DataFormat = {
             ContentsId: SelectedItem.Id,
             ContentsNm: SelectedItem.Name,
-            DoneInfo: {
-                isDone: false,
-                DoneTimes: ""
-            }
+            IsDone: false
         };
 
         setItems((oldItems) => [
@@ -176,6 +174,7 @@ function WeeklyForm({setHide}: I_AddToDoParams){
             ]);
 
             setItems([]);
+            setEditMode(false);
             setHide(false);
         }
     }

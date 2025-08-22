@@ -99,7 +99,7 @@ function BossItem(){
                     const ColorSelect = ColorInfos[idx];
 
                     return (
-                        <BasedToDo key={todoData.ContentsId} ToDoId={todoData.ContentsId} isDones={todoData.DoneInfo?.isDone}>
+                        <BasedToDo key={todoData.ContentsId} ToDoId={todoData.ContentsId} isDones={todoData.IsDone}>
                             <ContentsBox>
                                 <Icons src={`logos/boss_icons/${todoData.ContentsId}.png`}/>
                                 <BossName>{todoData.ContentsNm}</BossName>

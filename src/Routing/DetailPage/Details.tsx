@@ -45,13 +45,27 @@ const Wrapper = styled.div`
 const Headers = styled.header`
     padding: 5px;
     display: flex;
+    flex-direction: row;
+    align-items: center;
     justify-content: center;
+    position: relative;
+    width: 98%;
+`;
+
+const ImgBox = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 20%;
+    height: 100%;
 `;
 
 const CharImgs = styled.img`
-    width: 5em;
-    height: 6em;
-    display: block;
+    position: absolute;
+    height: 250px;
+    top: -115px;
+    z-index: 1;
 `;
 
 const CharDatas = styled.div`
@@ -132,6 +146,8 @@ function Details(){
 
     const targetIdx = WorldNms.findIndex((names) => CharInfo?.world_name === names);
 
+    useEffect(() => console.log(CharInfo), [CharInfo]);
+
     return (
         <Wrapper>
             {
@@ -139,7 +155,9 @@ function Details(){
                 : (
                     <>
                         <Headers>
-                            <CharImgs src={CharInfo?.character_image} />
+                            <ImgBox>
+                                <CharImgs src={CharInfo?.character_image} height="200"/>
+                            </ImgBox>
                             <CharDatas>
                                 <DataItem key="charInfos">
                                     {CharInfo?.character_name}

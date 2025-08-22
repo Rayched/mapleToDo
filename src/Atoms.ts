@@ -18,7 +18,7 @@ export interface I_Categories {
     name: string;
 };
 
-enum Categories {
+export enum Categories {
     Weeklys = "Weeklys",
     Boss = "Boss",
     Customs = "Customs"
@@ -26,7 +26,7 @@ enum Categories {
 
 export const CategoriesAtom = atom<I_Categories>({
     key: "CategoriesAtom",
-    default: { Id: "", name: "" }
+    default: { Id: "Weeklys", name: "주간 컨텐츠" }
 });
 
 //ToDo Data 관련
@@ -35,10 +35,7 @@ const {persistAtom: ToDoSave} = recoilPersist();
 export interface I_DataFormat {
     ContentsId?: string;
     ContentsNm?: string;
-    DoneInfo?: {
-        isDone?: boolean;
-        DoneTimes?: string;
-    };
+    IsDone?: boolean;
     Rank?: string;
     Ranks?: string[];
     openDt?: string;

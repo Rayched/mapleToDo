@@ -44,11 +44,11 @@ function ToDoForms({setHide}: I_AddToDoParams){
     const [ToDos, setToDos] = useRecoilState(A_MapleToDos);
     const CharId = useRecoilValue(OcidAtoms);
 
-    const onValid = ({ContentsId, ContentsNm, openDt, endDt, DoneInfo}: I_DataFormat) => {
+    const onValid = ({ContentsId, ContentsNm, openDt, endDt}: I_DataFormat) => {
         const ToDoData: I_DataFormat = {
             ContentsId: ContentsId,
             ContentsNm: ContentsNm,
-            DoneInfo: DoneInfo,
+            IsDone: false,
             openDt: openDt,
             endDt: endDt
         };
