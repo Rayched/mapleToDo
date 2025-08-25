@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/mapleToDo/static/js/main.f78108dc.js",
+    "main.js": "/mapleToDo/static/js/main.8294af00.js",
     "index.html": "/mapleToDo/index.html",
-    "main.f78108dc.js.map": "/mapleToDo/static/js/main.f78108dc.js.map"
+    "main.8294af00.js.map": "/mapleToDo/static/js/main.8294af00.js.map"
   },
   "entrypoints": [
-    "static/js/main.f78108dc.js"
+    "static/js/main.8294af00.js"
   ]
 }
