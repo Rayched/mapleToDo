@@ -9,15 +9,25 @@ const Wrapper = styled.div<{maxHeight: number}>`
   height: 100vh;
   max-height: ${(props) => props.maxHeight};
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  position: relative;
+`;
+
+const Messages = styled.footer`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
 `;
 
 function App(){
   return (
     <Wrapper maxHeight={window.innerHeight}>
       <Routers />
+      <Messages>Data based on NEXON Open API</Messages>
     </Wrapper>
   );
 };
