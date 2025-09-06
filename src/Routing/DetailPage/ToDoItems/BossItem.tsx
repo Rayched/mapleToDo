@@ -2,6 +2,8 @@ import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { S_MapleToDos } from "../../../Atoms";
 import BasedToDo from "./BasedToDo";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 /**
  * 주간 보스 카테고리에 해당하는
@@ -28,6 +30,38 @@ const Container = styled.ul`
 `;
 
 const ContentsBox = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin-top: 5px;
+    height: 300px;
+`;
+
+const ToDoItemBox = styled(motion.div)`
+    width: 100%;
+    max-width: 310px;
+    padding: 3px 5px;
+    border: 1px solid rgb(144, 144, 145);
+    border-radius: 10px;
+    background-color: rgb(168, 169, 172);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`;
+
+const ScrollBtn = styled.div`
+    width: 100%;
+    height: 20px;
+    color: white;
+    align-items: center;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.8);
+`;
+
+const BossDataBox = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -88,27 +122,68 @@ const ColorInfos: I_ColorInfos[]= [
     }
 ];
 
+const ContentsLengths = styled.div`
+    width: 65%;
+    max-width: 300px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    font-weight: bold;
+    color: rgb(240, 240, 240);
+    background-color: rgb(83, 92, 104);
+    border-radius: 10px;
+    padding: 5px 4px;
+    margin: 3px 0px;
+`;
+
 function BossItem(){
     const BossData = useRecoilValue(S_MapleToDos);
 
+    const [Maximum, setMaximum] = useState(0);
+    const [Index, setIndex] = useState(0);
+
+    const offset = 6;
+
+    const ItemScroll = (BtnId: string) => {
+        if(BtnId === "Up"){
+            setIndex(0);
+        } else {
+            setIndex(1);
+        }
+    };
+
+    useEffect(() => {
+        setMaximum(Number(BossData?.length));
+    }, [BossData]);
+
     return (
         <Container>
-            {
-                BossData?.map((todoData) => {
-                    const idx = ColorInfos.findIndex((colors) => colors.key === todoData.Rank);
-                    const ColorSelect = ColorInfos[idx];
+            <ContentsLengths>
+                {`주간 보스 (${BossData?.filter((data) => data.IsDone).length} / ${Maximum})`}
+            </ContentsLengths>
+            <ContentsBox>
+                <ScrollBtn onClick={() => ItemScroll("Up")}>Up</ScrollBtn>
+                    <ToDoItemBox>
+                        {
+                            BossData?.slice(Index * offset, Index * offset + offset).map((todoData) => {
+                                const idx = ColorInfos.findIndex((colors) => colors.key === todoData.Rank);
+                                const ColorSelect = ColorInfos[idx];
 
-                    return (
-                        <BasedToDo key={todoData.ContentsId} ToDoId={todoData.ContentsId} isDones={todoData.IsDone}>
-                            <ContentsBox>
-                                <Icons src={`logos/boss_icons/${todoData.ContentsId}.png`}/>
-                                <BossName>{todoData.ContentsNm}</BossName>
-                                <Ranks rankInfo={todoData.Rank} ColorInfo={ColorSelect}>{todoData.Rank}</Ranks>
-                            </ContentsBox>
-                        </BasedToDo>
-                    );
-                })
-            }
+                                return (
+                                    <BasedToDo key={todoData.ContentsId} ToDoId={todoData.ContentsId} isDones={todoData.IsDone}>
+                                        <BossDataBox>
+                                            <Icons src={`logos/boss_icons/${todoData.ContentsId}.png`}/>
+                                            <BossName>{todoData.ContentsNm}</BossName>
+                                            <Ranks rankInfo={todoData.Rank} ColorInfo={ColorSelect}>{todoData.Rank}</Ranks>
+                                        </BossDataBox>
+                                    </BasedToDo>
+                                );
+                            })
+                        }
+                    </ToDoItemBox>
+                <ScrollBtn onClick={() => ItemScroll("Down")}>Down</ScrollBtn>
+            </ContentsBox>
         </Container>
     );
 };

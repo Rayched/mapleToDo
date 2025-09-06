@@ -4,7 +4,7 @@ import { A_CharNmSaves, A_MapleToDos, I_MapleToDos, OcidAtoms } from "../../Atom
 import { useQuery } from "react-query";
 import { getCharData } from "../../modules/Fetchs";
 import Mains from "./ToDoList";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 /**
  * Nexon api 통해 캐릭터 정보를 보여주고
@@ -114,6 +114,7 @@ function Details(){
     const DayTexts = ["일", "월", "화", "수", "목", "금", "토"];
 
     const [CharNmSave, setCharNmSave] = useRecoilState(A_CharNmSaves);
+    const [isSaved, setSaved] = useState(false);
 
     const {isLoading, data: CharInfo} = useQuery<I_CharInfo>(
         "charData",
@@ -146,7 +147,14 @@ function Details(){
 
     const targetIdx = WorldNms.findIndex((names) => CharInfo?.world_name === names);
 
-    useEffect(() => console.log(CharInfo), [CharInfo]);
+    useEffect(() => {
+        const isSames = CharNmSave.findIndex((data) => data === charID.charNm);
+        if(isSames === -1){
+            return;
+        } else {
+            setSaved(true);
+        }
+    }, []);
 
     return (
         <Wrapper>
@@ -169,7 +177,7 @@ function Details(){
                                 <DataItem>LV {CharInfo?.character_level}</DataItem>
                                 <DataItem>{CharInfo?.character_class}</DataItem>
                             </CharDatas>
-                            <BookmarkBtn onClick={SaveCharNm}>☆</BookmarkBtn>
+                            <BookmarkBtn onClick={SaveCharNm}>{isSaved ? "★" : "☆"}</BookmarkBtn>
                         </Headers>
                         <Mains />
                     </>

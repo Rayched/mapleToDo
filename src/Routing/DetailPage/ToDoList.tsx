@@ -76,12 +76,13 @@ const AddToDoWrapper = styled.div`
     align-items: center;
 `;
 
-const BtnBox = styled.div<{isEdits: boolean}>`
+const BtnBox = styled.div`
     display: flex;
-    justify-content: ${(props) => props.isEdits ? "space-between" : "center"};
+    justify-content: center;
     align-items: center;
     flex-direction: row;
     width: 95%;
+    max-width: 300px;
 `;
 
 const ToDoBtn = styled.div`
@@ -97,6 +98,7 @@ const ToDoBtn = styled.div`
     background-color: rgb(83, 92, 104);
     width: 100px;
     height: 20px;
+    margin-left: 3px;
 
     svg {
         padding: 0px 1px;
@@ -156,7 +158,7 @@ function ToDoList(){
                 }
             </Categories>
             <ToDoWrapper>
-                <BtnBox isEdits={IsEdits}>
+                <BtnBox>
                     {
                         IsEdits ? null : (
                             <>

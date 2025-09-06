@@ -4,9 +4,10 @@
 import styled from "styled-components"
 import Routers from "./Routing/Router";
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{maxHeight: number}>`
   width: 100vw;
   height: 100vh;
+  max-height: ${(props) => props.maxHeight};
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -15,7 +16,7 @@ const Wrapper = styled.div`
 
 function App(){
   return (
-    <Wrapper>
+    <Wrapper maxHeight={window.innerHeight}>
       <Routers />
     </Wrapper>
   );
