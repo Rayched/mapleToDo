@@ -25,5 +25,5 @@ yarn-error.log*
 # project build reports
 /reports
 
-# Private Data
-/src/modules/datas/APIs.ts
+# API Key
+.env

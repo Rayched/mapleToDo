@@ -37,6 +37,7 @@ const WorldNms = [
 
 const Wrapper = styled.div`
     width: 100%;
+    max-width: 650px;
     height: 95%;
     display: flex;
     flex-direction: column;
