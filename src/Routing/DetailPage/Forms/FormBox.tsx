@@ -6,8 +6,8 @@ import AddBossForm from "./BossForms";
 import AddCustomForms from "./ToDoForms";
 
 const Container = styled.div`
-    width: 30em;
-    height: 38em;
+    width: 20em;
+    height: 30em;
     background-color: rgba(245, 245, 245, 1.0);
     border-radius: 15px;
     display: flex;

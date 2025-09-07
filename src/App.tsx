@@ -4,10 +4,9 @@
 import styled from "styled-components"
 import Routers from "./Routing/Router";
 
-const Wrapper = styled.div<{maxHeight: number}>`
+const Wrapper = styled.div`
   width: 100vw;
-  height: 100vh;
-  max-height: ${(props) => props.maxHeight};
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -16,7 +15,6 @@ const Wrapper = styled.div<{maxHeight: number}>`
 `;
 
 const Messages = styled.footer`
-  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -25,7 +23,7 @@ const Messages = styled.footer`
 
 function App(){
   return (
-    <Wrapper maxHeight={window.innerHeight}>
+    <Wrapper>
       <Routers />
       <Messages>Data based on NEXON Open API</Messages>
     </Wrapper>

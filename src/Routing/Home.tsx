@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { A_CharNmSaves, OcidAtoms } from "../Atoms";
-import { API_Keys } from "../modules/datas/APIs";
 import { useState } from "react";
 
 interface I_Charactors {
@@ -195,11 +194,11 @@ function Home(){
 
     const onValid = async(data: I_Charactors) => {
         const API_URLs = `https://open.api.nexon.com/maplestory/v1/id?character_name=${data.charNm}`;
-        const APIKeys = API_Keys;
+        const APIKeys = process.env.REACT_APP_NEXON_OPEN_API_KEY;
 
         const FindCharacterID = fetch(API_URLs, {
             headers: {
-                "x-nxopen-api-key" : APIKeys
+                "x-nxopen-api-key" : `${APIKeys}`
             }
         }).then((resp) => resp.json());
 

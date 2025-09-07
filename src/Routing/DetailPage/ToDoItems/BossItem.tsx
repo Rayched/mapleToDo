@@ -37,28 +37,38 @@ const ContentsBox = styled.div`
     position: relative;
     margin-top: 5px;
     height: 300px;
+
+    .UpBtn {
+        border-top-right-radius: 15px;
+        border-top-left-radius: 15px;
+    };
+
+    .DownBtn {
+        border-bottom-right-radius: 15px;
+        border-bottom-left-radius: 15px;
+    };
 `;
 
 const ToDoItemBox = styled(motion.div)`
-    width: 100%;
-    max-width: 310px;
+    width: 310px;
+    height: 245px;
     padding: 3px 5px;
     border: 1px solid rgb(144, 144, 145);
-    border-radius: 10px;
     background-color: rgb(168, 169, 172);
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
 `;
 
 const ScrollBtn = styled.div`
-    width: 100%;
+    width: 310px;
     height: 20px;
+    padding: 0px 5px;
     color: white;
     align-items: center;
     text-align: center;
     background-color: rgba(0, 0, 0, 0.8);
+    border: 1px solid black;
 `;
 
 const BossDataBox = styled.div`
@@ -143,27 +153,37 @@ function BossItem(){
     const [Maximum, setMaximum] = useState(0);
     const [Index, setIndex] = useState(0);
 
+    const IsEmptys = BossData === null;
+
     const offset = 6;
 
     const ItemScroll = (BtnId: string) => {
-        if(BtnId === "Up"){
-            setIndex(0);
+        if(Number(BossData?.length) < 7 || IsEmptys){
+            return;
         } else {
-            setIndex(1);
-        }
+            if(BtnId === "Up"){
+                setIndex(0);
+            } else {
+                setIndex(1);
+            }
+        } 
     };
 
     useEffect(() => {
         setMaximum(Number(BossData?.length));
+        console.log(BossData);
     }, [BossData]);
 
     return (
         <Container>
             <ContentsLengths>
-                {`주간 보스 (${BossData?.filter((data) => data.IsDone).length} / ${Maximum})`}
+                {
+                    IsEmptys ? "주간 보스 (0 / 0)"
+                    : `주간 보스 (${BossData?.filter((data) => data.IsDone).length} / ${Maximum})`
+                }
             </ContentsLengths>
             <ContentsBox>
-                <ScrollBtn onClick={() => ItemScroll("Up")}>Up</ScrollBtn>
+                <ScrollBtn className="UpBtn" onClick={() => ItemScroll("Up")}>Up</ScrollBtn>
                     <ToDoItemBox>
                         {
                             BossData?.slice(Index * offset, Index * offset + offset).map((todoData) => {
@@ -182,7 +202,7 @@ function BossItem(){
                             })
                         }
                     </ToDoItemBox>
-                <ScrollBtn onClick={() => ItemScroll("Down")}>Down</ScrollBtn>
+                <ScrollBtn className="DownBtn" onClick={() => ItemScroll("Down")}>Down</ScrollBtn>
             </ContentsBox>
         </Container>
     );

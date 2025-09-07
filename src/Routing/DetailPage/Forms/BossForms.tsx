@@ -220,9 +220,9 @@ function BossForm({setHide}: I_AddToDoParams){
                 ]);
 
                 setItems([]);
-                setHide(false);
             }
         }
+        setHide(false);
         setEditMode(false);
     };
 
@@ -279,10 +279,10 @@ function BossForm({setHide}: I_AddToDoParams){
                         })
                     }
                 </SelectBox>
-                <button>임시 등록</button>
+                <button>장바구니 추가</button>
             </AddForm>
             <ItemBox>
-                <ItemHeader>주간 보스 목록</ItemHeader>
+                <ItemHeader>일정 장바구니</ItemHeader>
                 <ul>
                     {
                         Items.map((data) => {

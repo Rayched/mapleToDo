@@ -37,8 +37,8 @@ const WorldNms = [
 
 const Wrapper = styled.div`
     width: 100%;
-    max-width: 650px;
-    height: 95%;
+    height: 85%;
+    max-width: 600px;
     display: flex;
     flex-direction: column;
 `;
@@ -50,7 +50,7 @@ const Headers = styled.header`
     align-items: center;
     justify-content: center;
     position: relative;
-    width: 98%;
+    width: 95%;
 `;
 
 const ImgBox = styled.div`
