@@ -27,3 +27,7 @@ yarn-error.log*
 
 # API Key
 .env
+
+# 프로젝트 구조, 전면 개편 작업 파일
+# 완성 전까지 Github Repository에 Upload X
+/src/stores.ts

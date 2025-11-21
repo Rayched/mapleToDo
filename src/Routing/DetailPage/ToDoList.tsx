@@ -9,7 +9,6 @@ import { I_DelBtn } from "./Forms/WeeklyForms";
 import BossItem from "./ToDoItems/BossItem";
 import WeeklyItem from "./ToDoItems/WeeklyItem";
 import CustomToDoItem from "./ToDoItems/ToDoItem";
-import useReset from "./ToDoItems/useReset";
 
 interface I_CategoryItem {
     category_id: string;
@@ -116,8 +115,6 @@ function ToDoList(){
 
     const [NowCategories, setCategories] = useRecoilState(CategoriesAtom);
 
-    const {ToDoReset} = useReset(String(charNm));
-
     const ChangeCategory = (targetId: string) => {
         const Idx = Categorys.findIndex((item) => item.Id === targetId);
 
@@ -129,6 +126,7 @@ function ToDoList(){
         setCategories(newCategories);
     };
 
+    /*
     const onClick_resetBtn = () => {
         const isReset = window.confirm("컨텐츠 완료 기록을 초기화 하겠습니까?");
 
@@ -139,7 +137,7 @@ function ToDoList(){
             ToDoReset();
             alert("초기화 완료");
         }
-    };
+    };*/
 
     return (
         <Container>
@@ -167,9 +165,6 @@ function ToDoList(){
                                         <path fill="rgb(245, 245, 245)" d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"/>
                                     </svg>
                                     일정 편집
-                                </ToDoBtn>
-                                <ToDoBtn onClick={onClick_resetBtn}>
-                                    초기화
                                 </ToDoBtn>
                             </>
                         )

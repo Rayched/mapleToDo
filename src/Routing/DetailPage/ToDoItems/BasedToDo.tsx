@@ -7,6 +7,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {styled} from "styled-components";
 import { I_DataFormat, IsEditMode, S_MapleToDos } from "../../../Atoms";
 import { useEffect, useState } from "react";
+import useToDoReset from "../../../modules/useToDoReset";
 
 interface I_BasedToDo {
     ToDoId?: string;
@@ -77,32 +78,11 @@ const DeleteBtn = styled.div`
 function BasedToDo({ToDoId, isDones, children}: I_BasedToDo){
     const [ToDos, setToDos] = useRecoilState(S_MapleToDos);
     const IsEdits = useRecoilValue(IsEditMode);
+    const {ToDoDone} = useToDoReset();
 
     //일정 완료 여부를 설정하는 onChange Event Handler
     const onChange = (targetId?: string) => {
-        const Target = ToDos?.find((todoData) => todoData.ContentsId === targetId);
-
-        if(Target !== undefined){
-            const Modifys = ToDos?.map((todoData) => {
-                if(todoData.ContentsId === targetId){
-                    const ModifyData: I_DataFormat = {
-                        ContentsId: todoData.ContentsId,
-                        ContentsNm: todoData.ContentsNm,
-                        IsDone: true,
-                        Rank: todoData.Rank,
-                        Ranks: todoData.Ranks,
-                        openDt: todoData.openDt,
-                        endDt: todoData.endDt
-                    };
-                    return ModifyData;
-                } else {
-                    return todoData;
-                }
-            });
-            setToDos(Modifys);
-        } else {
-            return;
-        }
+        ToDoDone(String(targetId));
     };
 
     const onDelete = (targetId?: string) => {

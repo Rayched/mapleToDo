@@ -1,5 +1,8 @@
+import { stat } from "fs";
 import { atom, selector } from "recoil";
 import {recoilPersist} from "recoil-persist";
+import { create } from "zustand";
+import {persist} from "zustand/middleware";
 
 //ocid 관련 (ocid => 일종의 캐릭터 고유 id)
 export interface I_Ocids {
@@ -36,15 +39,17 @@ export interface I_DataFormat {
     ContentsId?: string;
     ContentsNm?: string;
     IsDone?: boolean;
+    DoneTime?: string;
     Rank?: string;
     Ranks?: string[];
     openDt?: string;
     endDt?: string;
-}
+};
 
 export interface I_MapleToDos {
     charNm: string;
     ocids: string;
+    latestResetDt: string;
     WeeklyToDos?: I_DataFormat[];
     BossToDos?: I_DataFormat[];
     CustomToDos?: I_DataFormat[];
@@ -96,7 +101,8 @@ export const S_MapleToDos = selector({
                     ocids: CharData.ocids,
                     WeeklyToDos: newValue as I_DataFormat[],
                     BossToDos: CharData.BossToDos,
-                    CustomToDos: CharData.CustomToDos
+                    CustomToDos: CharData.CustomToDos,
+                    latestResetDt: CharData.latestResetDt
                 };
 
                 return [
@@ -112,7 +118,8 @@ export const S_MapleToDos = selector({
                     ocids: CharData.ocids,
                     WeeklyToDos: CharData.WeeklyToDos,
                     BossToDos: newValue as I_DataFormat[],
-                    CustomToDos: CharData.CustomToDos
+                    CustomToDos: CharData.CustomToDos,
+                    latestResetDt: CharData.latestResetDt
                 };
 
                 return [
@@ -128,7 +135,8 @@ export const S_MapleToDos = selector({
                     ocids: CharData.ocids,
                     WeeklyToDos: CharData.WeeklyToDos,
                     BossToDos: CharData.BossToDos,
-                    CustomToDos: newValue as I_DataFormat[]
+                    CustomToDos: newValue as I_DataFormat[],
+                    latestResetDt: CharData.latestResetDt
                 };
                 return [
                     ...oldData.slice(0, Idx),
@@ -167,3 +175,33 @@ export const IsEditMode = atom({
  * 해당 상태를 atom으로 정의해서 관리한다.
  * (편집모드 진입 여부 관리하는 state)
  */
+
+//인겜 메할일, 자동 초기화 관련 (주간컨텐츠 + 주간 보스)
+
+type ResetTargetDtProps = {
+    CurrentFullDate: string,
+    NextFullDate: string
+};
+
+interface I_ToDoResetStore {
+    CurrentResetTargetDt: string;
+    NextResetTargetDt: string;
+    setResetTargetDts: ({CurrentFullDate, NextFullDate}: ResetTargetDtProps) => void;
+};
+
+export const ToDoResetStore = create<I_ToDoResetStore>()(
+    persist((set, get) => ({
+        CurrentResetTargetDt: "",
+        NextResetTargetDt: "",
+        setResetTargetDts: ({CurrentFullDate, NextFullDate}) => set({
+            CurrentResetTargetDt: CurrentFullDate,
+            NextResetTargetDt: NextFullDate
+        }),
+    }), {
+        name: "MapleToDoReset-Storage",
+        partialize: (state) => ({
+            CurrentResetTargetDt: state.CurrentResetTargetDt,
+            NextResetTargetDt: state.NextResetTargetDt,
+        })
+    })
+)

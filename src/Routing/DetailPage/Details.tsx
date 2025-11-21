@@ -5,6 +5,7 @@ import { useQuery } from "react-query";
 import { getCharData } from "../../modules/Fetchs";
 import Mains from "./ToDoList";
 import { useEffect, useState } from "react";
+import useToDoReset from "../../modules/useToDoReset";
 
 /**
  * Nexon api 통해 캐릭터 정보를 보여주고
@@ -111,8 +112,7 @@ const BookmarkBtn = styled.div`
 
 function Details(){
     const [charID, setCharID] = useRecoilState(OcidAtoms);
-
-    const DayTexts = ["일", "월", "화", "수", "목", "금", "토"];
+    const {UpdateResetDt} = useToDoReset();
 
     const [CharNmSave, setCharNmSave] = useRecoilState(A_CharNmSaves);
     const [isSaved, setSaved] = useState(false);
@@ -147,6 +147,10 @@ function Details(){
     };
 
     const targetIdx = WorldNms.findIndex((names) => CharInfo?.world_name === names);
+
+    useEffect(() => {
+        UpdateResetDt();
+    }, []);
 
     useEffect(() => {
         const isSames = CharNmSave.findIndex((data) => data === charID.charNm);

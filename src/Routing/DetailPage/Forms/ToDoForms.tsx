@@ -61,6 +61,7 @@ function ToDoForms({setHide}: I_AddToDoParams){
             const NewCharData: I_MapleToDos = {
                 charNm: String(CharId.charNm),
                 ocids: CharId.ocid,
+                latestResetDt: "",
                 WeeklyToDos: [],
                 BossToDos: [],
                 CustomToDos: DataConversion
@@ -75,6 +76,7 @@ function ToDoForms({setHide}: I_AddToDoParams){
             const ModifyData: I_MapleToDos = {
                 charNm: Targets.charNm,
                 ocids: Targets.ocids,
+                latestResetDt: Targets.latestResetDt,
                 WeeklyToDos: Targets.WeeklyToDos,
                 BossToDos: Targets.BossToDos,
                 CustomToDos: UpdateCustomToDo

@@ -128,7 +128,8 @@ function WeeklyForm({setHide}: I_AddToDoParams){
         const AddWeeklyData: I_DataFormat = {
             ContentsId: SelectedItem.Id,
             ContentsNm: SelectedItem.Name,
-            IsDone: false
+            IsDone: false,
+            DoneTime: ""
         };
 
         setItems((oldItems) => [
@@ -147,6 +148,7 @@ function WeeklyForm({setHide}: I_AddToDoParams){
             const newCharData: I_MapleToDos = {
                 charNm: String(CharId.charNm),
                 ocids: CharId.ocid,
+                latestResetDt: "",
                 WeeklyToDos: [...Items],
                 BossToDos: [],
                 CustomToDos: []
@@ -162,6 +164,7 @@ function WeeklyForm({setHide}: I_AddToDoParams){
             const EditCharData: I_MapleToDos = {
                 charNm: Targets.charNm,
                 ocids: Targets.ocids,
+                latestResetDt: Targets.latestResetDt,
                 WeeklyToDos: EditWeeklys,
                 BossToDos: Targets.BossToDos,
                 CustomToDos: Targets.CustomToDos

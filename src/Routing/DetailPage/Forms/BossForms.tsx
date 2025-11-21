@@ -144,7 +144,8 @@ function BossForm({setHide}: I_AddToDoParams){
                 ContentsNm: Targets.Name,
                 Rank: Targets.Rank[0],
                 Ranks: Targets.Rank,
-                IsDone: false
+                IsDone: false,
+                DoneTime: ""
             };
             setItems((oldItems) => [...oldItems, TypeA]);            
         } else {
@@ -153,7 +154,8 @@ function BossForm({setHide}: I_AddToDoParams){
                 ContentsNm: Targets.Name,
                 Rank: Targets.Rank[0],
                 Ranks: Targets.Rank,
-                IsDone: false
+                IsDone: false,
+                DoneTime: ""
             };
             setItems((oldItems) => [...oldItems, TypeB]);
         }
@@ -196,9 +198,10 @@ function BossForm({setHide}: I_AddToDoParams){
                 const newCharData: I_MapleToDos = {
                     charNm: String(CharId.charNm),
                     ocids: CharId.ocid,
+                    latestResetDt: "",
                     WeeklyToDos: [],
                     BossToDos: [...Items],
-                    CustomToDos: []
+                    CustomToDos: [],
                 };
                 setToDos((oldToDos) => [...oldToDos, newCharData]);
             } else {
@@ -210,7 +213,8 @@ function BossForm({setHide}: I_AddToDoParams){
                     ocids: Targets.ocids,
                     WeeklyToDos: Targets.WeeklyToDos,
                     BossToDos: Targets.BossToDos?.concat(Items),
-                    CustomToDos: Targets.CustomToDos
+                    CustomToDos: Targets.CustomToDos,
+                    latestResetDt: Targets.latestResetDt
                 };
 
                 setToDos((oldToDos) => [

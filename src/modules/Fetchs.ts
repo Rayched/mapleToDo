@@ -9,7 +9,6 @@ export async function TestFetch(charID: string) {
 }
 
 export async function getCharData(charID: I_Ocids){
-
     const characterURLs = Basic_URLs + `/character/basic?ocid=${charID.ocid}`;
 
     const CharacterData = await(await(
