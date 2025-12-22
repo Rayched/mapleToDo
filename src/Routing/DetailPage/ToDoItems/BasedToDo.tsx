@@ -7,7 +7,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {styled} from "styled-components";
 import { I_DataFormat, IsEditMode, S_MapleToDos } from "../../../Atoms";
 import { useEffect, useState } from "react";
-import useToDoReset from "../../../modules/useToDoReset";
+import useToDoReset from "../../../modules/useResetUtils";
 
 interface I_BasedToDo {
     ToDoId?: string;

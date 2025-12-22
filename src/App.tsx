@@ -3,8 +3,6 @@
 
 import styled from "styled-components"
 import Routers from "./Routing/Router";
-import { useEffect } from "react";
-import { GetResetDts } from "./modules/GetDateInfos";
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -24,7 +22,6 @@ const Messages = styled.footer`
 `;
 
 function App(){
-
   return (
     <Wrapper>
       <Routers />

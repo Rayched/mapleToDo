@@ -1,14 +1,15 @@
 //Detail Page, Main Part Components
 
 import styled from "styled-components";
-import {A_MapleToDos, CategoriesAtom, I_Categories, IsEditMode, OcidAtoms, S_MapleToDos} from "../../Atoms";
-import React, { useState } from "react";
+import { CategoriesAtom, I_Categories, IsEditMode, OcidAtoms, S_MapleToDos} from "../../Atoms";
+import React, { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import AddToDo from "./Forms/FormBox";
 import { I_DelBtn } from "./Forms/WeeklyForms";
 import BossItem from "./ToDoItems/BossItem";
 import WeeklyItem from "./ToDoItems/WeeklyItem";
 import CustomToDoItem from "./ToDoItems/ToDoItem";
+import useToDoReset from "../../modules/useToDoReset";
 
 interface I_CategoryItem {
     category_id: string;
@@ -112,6 +113,7 @@ function ToDoList(){
 
     const [IsEdits, setEdits] = useRecoilState(IsEditMode);
     const {charNm} = useRecoilValue(OcidAtoms);
+    const {ToDoReset} = useToDoReset();
 
     const [NowCategories, setCategories] = useRecoilState(CategoriesAtom);
 
@@ -126,18 +128,17 @@ function ToDoList(){
         setCategories(newCategories);
     };
 
-    /*
     const onClick_resetBtn = () => {
         const isReset = window.confirm("컨텐츠 완료 기록을 초기화 하겠습니까?");
 
         if(!isReset){
-            alert("컨텐츠 완료 기록 초기화가 취소됐습니다.");
+            alert("초기화 취소");
             return;
         } else {
-            ToDoReset();
+            ToDoReset(charNm);
             alert("초기화 완료");
         }
-    };*/
+    };
 
     return (
         <Container>
@@ -166,6 +167,7 @@ function ToDoList(){
                                     </svg>
                                     일정 편집
                                 </ToDoBtn>
+                                <ToDoBtn onClick={onClick_resetBtn}>초기화</ToDoBtn>
                             </>
                         )
                     }

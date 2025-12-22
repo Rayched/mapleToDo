@@ -5,7 +5,6 @@ import { useQuery } from "react-query";
 import { getCharData } from "../../modules/Fetchs";
 import Mains from "./ToDoList";
 import { useEffect, useState } from "react";
-import useToDoReset from "../../modules/useToDoReset";
 
 /**
  * Nexon api 통해 캐릭터 정보를 보여주고
@@ -112,7 +111,6 @@ const BookmarkBtn = styled.div`
 
 function Details(){
     const [charID, setCharID] = useRecoilState(OcidAtoms);
-    const {UpdateResetDt} = useToDoReset();
 
     const [CharNmSave, setCharNmSave] = useRecoilState(A_CharNmSaves);
     const [isSaved, setSaved] = useState(false);
@@ -127,18 +125,9 @@ function Details(){
         const isSames = CharNmSave.findIndex((data) => data === charID.charNm);
 
         if(CharNms !== "" && isSames === -1){
-            if(CharNmSave.length === 3){
-                const isDeletes = window.confirm("캐릭터는 총 3개까지만 저장 가능합니다.\n첫번째 캐릭터 데이터를 삭제하시겠습니까?");
-
-                if(isDeletes){
-                    await setCharNmSave((oldDatas) => [
-                        ...oldDatas.slice(1),
-                        String(CharNms)
-                    ]);
-                    alert(`'1번 슬롯 : ${CharNmSave[0]}'을 삭제하고\n'${CharNms}'을 새로 등록했습니다.`);
-                } else {
-                    return;
-                }
+            if(CharNmSave.length === 6){
+                alert("북마크는 최대 6개까지만 등록할 수 있습니다.");
+                return;
             } else {
                 await setCharNmSave((oldDatas) => [...oldDatas, String(CharNms)]);   
                 alert(`'캐릭터 명: ${CharNms}' 저장 완료!`);
@@ -147,10 +136,6 @@ function Details(){
     };
 
     const targetIdx = WorldNms.findIndex((names) => CharInfo?.world_name === names);
-
-    useEffect(() => {
-        UpdateResetDt();
-    }, []);
 
     useEffect(() => {
         const isSames = CharNmSave.findIndex((data) => data === charID.charNm);
