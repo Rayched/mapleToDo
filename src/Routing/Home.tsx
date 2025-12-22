@@ -25,7 +25,7 @@ interface I_EditMode {
 const Homes = styled.div`
     width: 100%;
     max-width: 650px;
-    height: 95%;
+    height: 85%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -95,6 +95,7 @@ const Bookmark_Box = styled.div`
     flex-direction: column;
     align-items: center;
     width: 80%;
+    max-width: 370px;
     height: 10em;
     margin-top: 15px;
     padding: 10px;
@@ -130,9 +131,9 @@ const EditBtn = styled.div<I_EditMode>`
 `;
 
 const Bookmarks = styled.ul`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px 5px;
     align-items: center;
     padding: 10px 0px;
 `;
@@ -142,7 +143,7 @@ const Bookmark_Item = styled.li<I_EditMode>`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    width: 20em;
+    width: 10em;
     height: 1.5em;
     padding: 5px 0px;
     margin: 2px 0px;
