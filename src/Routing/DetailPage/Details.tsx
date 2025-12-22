@@ -32,7 +32,7 @@ interface I_CharInfo {
 const WorldNms = [
     "헬리오스", "에오스", "오로라", "레드", "이노시스", "유니온", 
     "스카니아", "루나", "제니스", "크로아", "베라", "엘리시움", 
-    "아케인", "노바", "챌린저스1", "챌린저스2", "챌린저스3", "챌린저스4"
+    "아케인", "노바",  "챌린저스"
 ];
 
 const Wrapper = styled.div`
@@ -145,6 +145,8 @@ function Details(){
             setSaved(true);
         }
     }, []);
+
+    useEffect(() => console.log(CharInfo));
 
     return (
         <Wrapper>
