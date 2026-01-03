@@ -5,15 +5,9 @@ import { GetNowDateInfos } from "./GetDateInfos";
 export default function useToDoReset(){
     const [ToDos, setToDos] = useRecoilState(A_MapleToDos);
 
-    const ToDoReset = (targetNm?: string) => {
-        const Idx = ToDos.findIndex((data) => data.charNm === targetNm);
-
-        if(Idx === -1){
-            return;
-        } else {
-            const GetCharToDos = ToDos[Idx];
-
-            const WeeklyToDos = GetCharToDos.WeeklyToDos?.map((data) => {
+    const AllToDoReset = () => {
+        const DoneRecordReset = ToDos.map((data) => {
+            const Weeklys = data.WeeklyToDos?.map((data) => {
                 if(data.IsDone){
                     const UpdateValue: I_DataFormat = {
                         ContentsId: data.ContentsId,
@@ -27,7 +21,7 @@ export default function useToDoReset(){
                 }
             });
 
-            const BossToDos = GetCharToDos.BossToDos?.map((data) => {
+            const BossDatas = data.BossToDos?.map((data) => {
                 if(data.IsDone){
                     const UpdateValue: I_DataFormat = {
                         ContentsId: data.ContentsId,
@@ -44,7 +38,7 @@ export default function useToDoReset(){
                 }
             });
 
-            const CustomToDos = GetCharToDos.CustomToDos?.map((data) => {
+            const Customs = data.CustomToDos?.map((data) => {
                 if(data.IsDone){
                     const UpdateValue: I_DataFormat = {
                         ContentsId: data.ContentsId,
@@ -60,26 +54,22 @@ export default function useToDoReset(){
                 }
             });
 
-            setToDos((s) => {
-                const UpdateCharData: I_MapleToDos = {
-                    charNm: s[Idx].charNm,
-                    ocids: s[Idx].ocids,
-                    latestResetDt: "",
-                    WeeklyToDos: WeeklyToDos,
-                    BossToDos: BossToDos,
-                    CustomToDos: CustomToDos
-                };
+            const UpdataValue: I_MapleToDos = {
+                charNm: data.charNm,
+                ocids: data.ocids,
+                latestResetDt: data.latestResetDt,
+                WeeklyToDos: Weeklys,
+                BossToDos: BossDatas,
+                CustomToDos: Customs,
+            };
 
-                return [
-                    ...s.slice(0, Idx),
-                    UpdateCharData,
-                    ...s.slice(Idx + 1)
-                ];
-            })
-        };
+            return UpdataValue;
+        });
+
+        setToDos(DoneRecordReset);
     };
 
     return {
-        ToDoReset: ToDoReset
+        ToDoReset: AllToDoReset
     }
 };

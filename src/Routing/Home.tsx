@@ -29,7 +29,6 @@ const Homes = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
 `;
 
 const Headers = styled.header`
@@ -61,7 +60,7 @@ const Mains = styled.div`
 `;
 
 const CharacterForm = styled.form`
-    width: 80%;
+    width: 65%;
     padding: 5px;
     border: 2px solid black;
     border-radius: 18px;
@@ -95,7 +94,7 @@ const Bookmark_Box = styled.div`
     flex-direction: column;
     align-items: center;
     width: 80%;
-    max-width: 370px;
+    max-width: 340px;
     height: 10em;
     margin-top: 15px;
     padding: 10px;
@@ -262,6 +261,7 @@ function Home(){
                     </svg>
                     <span className="EditBtnText">편집</span>
                 </EditBtn>
+
                 <Bookmarks>
                     {
                         SaveNms.map((data) => {

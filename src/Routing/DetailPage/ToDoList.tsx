@@ -1,7 +1,7 @@
 //Detail Page, Main Part Components
 
 import styled from "styled-components";
-import { CategoriesAtom, I_Categories, IsEditMode, OcidAtoms, S_MapleToDos} from "../../Atoms";
+import { A_MapleToDos, CategoriesAtom, I_Categories, IsEditMode, OcidAtoms, S_MapleToDos} from "../../Atoms";
 import React, { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import AddToDo from "./Forms/FormBox";
@@ -113,6 +113,7 @@ function ToDoList(){
 
     const [IsEdits, setEdits] = useRecoilState(IsEditMode);
     const {charNm} = useRecoilValue(OcidAtoms);
+    const AllCharData = useRecoilValue(A_MapleToDos);
     const {ToDoReset} = useToDoReset();
 
     const [NowCategories, setCategories] = useRecoilState(CategoriesAtom);
@@ -129,13 +130,15 @@ function ToDoList(){
     };
 
     const onClick_resetBtn = () => {
-        const isReset = window.confirm("컨텐츠 완료 기록을 초기화 하겠습니까?");
+        const isReset = window.confirm(
+            `'${charNm}' 외 캐릭터 ${AllCharData.length - 1}명\n컨텐츠 완료 기록을 초기화 하겠습니까?`
+        );
 
         if(!isReset){
             alert("초기화 취소");
             return;
         } else {
-            ToDoReset(charNm);
+            ToDoReset();
             alert("초기화 완료");
         }
     };
