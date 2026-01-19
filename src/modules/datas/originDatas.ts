@@ -12,7 +12,6 @@ export interface I_BossContent {
 };
 
 const new_WeeklyContent_data: I_WeeklyContent[] = [
-    {Id: "azumos", Name: "아즈모스 협곡"},
     {Id: "monsterpark", Name: "몬스터파크 익스트림"},
     {Id: "epic01", Name: "하이마운틴"},
     {Id: "epic02", Name: "앵글러 컴퍼니"},
