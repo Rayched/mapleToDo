@@ -129,36 +129,36 @@ function BossForm({setHide}: I_AddToDoParams){
         const idx = BossOriginData.findIndex((elm) => BossName === elm.Name);
         const Targets = BossOriginData[idx];
 
-        //주간보스 12회 이상 등록 방지 logic
         const CharIdx = ToDos.findIndex((data) => data.charNm === CharId.charNm);
 
         if(CharIdx !== -1){
             const CharBossToDos = ToDos[CharIdx].BossToDos;
+            //주간보스 12회 이상 등록 방지 logic
             if(CharBossToDos?.length === 12) return;
         }
+            
+        const NewData: I_DataFormat = {
+            ContentsId: Targets.Id,  
+            ContentsNm: Targets.Name,  
+            Rank: Targets.Rank[0],
+            Ranks: Targets.Rank,
+            IsDone: false,
+            DoneTime: ""
+        };
 
-        //난이도 1개 이상/이하 구분
-        if(Targets.Rank.length === 1){
-            const TypeA: I_DataFormat = {
-                ContentsId: Targets.Id,
-                ContentsNm: Targets.Name,
-                Rank: Targets.Rank[0],
-                Ranks: Targets.Rank,
-                IsDone: false,
-                DoneTime: ""
-            };
-            setItems((oldItems) => [...oldItems, TypeA]);            
-        } else {
-            const TypeB: I_DataFormat = {
-                ContentsId: Targets.Id,
-                ContentsNm: Targets.Name,
-                Rank: Targets.Rank[0],
-                Ranks: Targets.Rank,
-                IsDone: false,
-                DoneTime: ""
-            };
-            setItems((oldItems) => [...oldItems, TypeB]);
-        }
+        const UpdateItem = [...Items, NewData].sort((a, b) => {
+            if(String(a.ContentsId) > String(b.ContentsId)){
+                return 1;
+            } else if(String(a.ContentsId) < String(b.ContentsId)){
+                return -1;
+            } else {
+                return 0;
+            }
+        });
+            
+        console.log(UpdateItem);
+        setItems(UpdateItem);
+        
     };
 
     const RankChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -183,10 +183,6 @@ function BossForm({setHide}: I_AddToDoParams){
     };
 
     const DataSubmit = () => {
-        //임시 저장소, Items에 저장된 ToDo가 0개 미만인 경우
-        //해당 캐릭터 이름의 ToDo 저장소 없을 경우, 있을 경우
-        //주간 보스 등록 12개로 제한하기 (결정 판매 제한)
-
         if(Items.length === 0){
             alert("보스 컨텐츠를 추가하지 않았습니다!");
             return;
@@ -208,11 +204,21 @@ function BossForm({setHide}: I_AddToDoParams){
                 //기존 저장소 있는 경우
                 const Targets = ToDos[TargetIdx];
 
+                const ToDoSort = Targets.BossToDos?.concat(Items).sort((a, b) => {
+                    if(String(a.ContentsId) > String(b.ContentsId)){
+                        return 1;
+                    } else if(String(a.ContentsId) < String(b.ContentsId)){
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                })
+
                 const UpdateCharData: I_MapleToDos = {
                     charNm: Targets.charNm,
                     ocids: Targets.ocids,
                     WeeklyToDos: Targets.WeeklyToDos,
-                    BossToDos: Targets.BossToDos?.concat(Items),
+                    BossToDos: ToDoSort,
                     CustomToDos: Targets.CustomToDos,
                     latestResetDt: Targets.latestResetDt
                 };
