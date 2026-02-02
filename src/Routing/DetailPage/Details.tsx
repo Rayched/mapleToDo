@@ -5,6 +5,7 @@ import { useQuery } from "react-query";
 import { getCharData } from "../../modules/Fetchs";
 import Mains from "./ToDoList";
 import { useEffect, useState } from "react";
+import ToDoList from "./ToDoList";
 
 /**
  * Nexon api 통해 캐릭터 정보를 보여주고
@@ -171,7 +172,7 @@ function Details(){
                             </CharDatas>
                             <BookmarkBtn onClick={SaveCharNm}>{isSaved ? "★" : "☆"}</BookmarkBtn>
                         </Headers>
-                        <Mains />
+                        <ToDoList />
                     </>
                 )
             }

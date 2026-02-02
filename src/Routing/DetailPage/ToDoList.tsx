@@ -10,6 +10,7 @@ import BossItem from "./ToDoItems/BossItem";
 import WeeklyItem from "./ToDoItems/WeeklyItem";
 import CustomToDoItem from "./ToDoItems/ToDoItem";
 import useToDoReset from "../../modules/useToDoReset";
+import FormBox from "./Forms/FormBox";
 
 interface I_CategoryItem {
     category_id: string;
@@ -193,11 +194,16 @@ function ToDoList(){
                         )
                     }
                 </BtnBox>
+                <ToDoItems>
+                    {NowCategories.Id === "Weeklys" ? <WeeklyItem /> : null}
+                    {NowCategories.Id === "Boss" ? <BossItem /> : null}
+                    {NowCategories.Id === "Customs" ? <CustomToDoItem /> : null}
+                </ToDoItems>
             </ToDoWrapper>
             {
                 isHide ? (
                     <AddToDoWrapper>
-                        <AddToDo setHide={setHide} />
+                        <FormBox setHide={setHide} />
                     </AddToDoWrapper>
                 ): null
             }
