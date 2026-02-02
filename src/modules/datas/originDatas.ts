@@ -12,20 +12,19 @@ export interface I_BossContent {
 };
 
 const new_WeeklyContent_data: I_WeeklyContent[] = [
-    {Id: "monsterpark", Name: "몬스터파크 익스트림"},
-    {Id: "epic01", Name: "하이마운틴"},
-    {Id: "epic02", Name: "앵글러 컴퍼니"},
-    {Id: "arc01", Name: "에르다 스펙트럼"},
-    {Id: "arc02", Name: "배고픈 무토"},
-    {Id: "arc03", Name: "미드나잇 체이서"},
-    {Id: "arc04", Name: "스피릿 세이비어"},
-    {Id: "arc05", Name: "엔하임 디펜스"},
-    {Id: "arc06", Name: "프로텍트 에스페라"},
-    {Id: "mulung", Name: "무릉도장"},
-    {Id: "guild01", Name: "플래그 레이스"},
-    {Id: "guild02", Name: "지하수로"},
-    {Id: "abs01", Name: "타락한 세계수 주간퀘"},
-    {Id: "abs02", Name: "헤이븐 주간퀘"},
+    {Id: "weekly01", Name: "몬스터파크 익스트림"},
+    {Id: "weekly02", Name: "하이마운틴"},
+    {Id: "weekly03", Name: "앵글러 컴퍼니"},
+    {Id: "weekly04", Name: "악몽선경"},
+    {Id: "weekly05", Name: "에르다 스펙트럼"},
+    {Id: "weekly06", Name: "배고픈 무토"},
+    {Id: "weekly07", Name: "미드나잇 체이서"},
+    {Id: "weekly08", Name: "스피릿 세이비어"},
+    {Id: "weekly09", Name: "엔하임 디펜스"},
+    {Id: "weekly10", Name: "프로텍트 에스페라"},
+    {Id: "weekly11", Name: "무릉도장"},
+    {Id: "weekly12", Name: "플래그 레이스"},
+    {Id: "weekly13", Name: "지하수로"},
 ];
 
 const new_BossContent_data: I_BossContent[] = [

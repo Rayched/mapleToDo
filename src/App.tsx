@@ -2,7 +2,8 @@
 //2025-08-13 기준
 
 import styled from "styled-components"
-import Routers from "./Routing/Router";
+import Home from "./Routing/Home";
+import Routers from "./Router";
 
 const Wrapper = styled.div`
   width: 100vw;

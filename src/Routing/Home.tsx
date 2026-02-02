@@ -210,7 +210,7 @@ function Home(){
             setValue("charNm", "");
         } else {
             await setCharID({charNm: data.charNm, ocid: Outputs.ocid});
-            Navigate("/charToDo");
+            Navigate("/chartodos");
         }
     };
 
