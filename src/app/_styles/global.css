@@ -1,25 +1,6 @@
-/* http://meyerweb.com/eric/tools/css/reset/ 
-   v2.0 | 20110126
-   License: none (public domain)
-*/
+/*전역 CSS Style*/
 
-@font-face {
-    font-family: "Noto-Sans-Kr";
-    src: url("/public/fonts/NotoSansKR-Regular.ttf");
-    font-weight: 100;
-    font-style: normal;
-    font-optical-sizing: auto;
-}
-
-@font-face {
-    font-family: "Noto-Sans";
-    src: url("/public/fonts/NotoSans-Regular.ttf");
-    font-style: normal;
-    font-variation-settings: "wdth" 100;
-    font-optical-sizing: auto;
-    font-weight: 100;
-}
-
+/*CSS Reset*/
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -36,7 +17,7 @@ time, mark, audio, video {
 	margin: 0;
 	padding: 0;
 	border: 0;
-	font-size: 1rem;
+	font-size: 100%;
 	font: inherit;
 	vertical-align: baseline;
 }
@@ -47,10 +28,8 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
 	line-height: 1;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	font-family: "Noto-Sans", "Noto-Sans-Kr";
+    width: 100dvw;
+    min-height: 100dvh;
 }
 ol, ul {
 	list-style: none;
@@ -66,11 +45,4 @@ q:before, q:after {
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
-}
-img {
-	-webkit-user-drag: none;
-	-khtml-user-drag: none;
-	-moz-user-drag: none;
-	-o-user-drag: none;
-	user-drag: none;
 }

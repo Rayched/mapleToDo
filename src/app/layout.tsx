@@ -1,9 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import "../styles/global.css";
-import styles from "../styles/Root.module.css";
-import Link from "next/link";
-import Navigations from "@/components/navs/Navigations";
-import ViewportListener from "@/components/ViewportListener";
+import RootPage from "./page";
+import "./_styles/global.css"
 
 export interface I_LayoutProps {
   children: React.ReactNode;
@@ -31,19 +28,8 @@ export default function RootLayout({
 }>) {
   return (
     <html>
-      <body className={styles.Wrapper}>
-        <ViewportListener />
-        <header className={styles.header}>
-          <Link href={"/"} className={styles.Titles}>
-            <img src={"/imgs/logo/icons.png"} />
-            <span>메이플 To Do</span>
-          </Link>
-          <Navigations />
-        </header>
-        {children}
-        <footer className={styles.rootlayout_footer}>
-          Data Based on NEXON OPEN API
-        </footer>
+      <body>
+        <RootPage />
       </body>
     </html>
   );

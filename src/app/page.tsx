@@ -1,18 +1,9 @@
 import Link from "next/link";
-import styles from "../styles/Root.module.css";
 
-export default function HomePage() {
+export default function RootPage() {
   return (
-    <div className={styles.HomeWrapper}>
-      <div className={styles.linkbox} id={styles.chartodos}>
-        <Link href={"/chartodos"}>
-          <span>메할일 목록</span>
-          <span>{`(스케줄러)`}</span>
-        </Link>
-      </div>
-      <div className={styles.linkbox} id={styles.incomes}>
-        <Link href={"/incomes"}>주간 수익</Link>
-      </div>
+    <div>
+      코드 전면 개편
     </div>
   );
 }
