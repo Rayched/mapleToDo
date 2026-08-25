@@ -295,7 +295,8 @@ const WeeklyBossDatas: I_BossContents[] = [
     },
     {
         BossId: "boss20",
-        BossNm: "칼로스",
+        BossNm: "감시자 칼로스",
+        SubName: "칼로스",
         Ranks: [
             {rankId: "easy",rankNm: "이지", price: 280000000},
             {rankId: "normal",rankNm: "노말", price: 505000000},
@@ -335,6 +336,15 @@ const WeeklyBossDatas: I_BossContents[] = [
     },
     {
         BossId: "boss24",
+        BossNm: "벨로나",
+        Ranks: [
+            {rankId: "easy", rankNm: "이지", price: 440000000},
+            {rankId: "normal", rankNm: "이지", price: 850000000},
+            {rankId: "hard", rankNm: "이지", price: 2950000000},
+        ]
+    },
+    {
+        BossId: "boss25",
         BossNm: "림보",
         Ranks: [
             {rankId: "normal",rankNm: "노말", price: 1026000000},
@@ -342,7 +352,7 @@ const WeeklyBossDatas: I_BossContents[] = [
         ]
     },
     {
-        BossId: "boss25",
+        BossId: "boss26",
         BossNm: "발드릭스",
         Ranks: [
             {rankId: "normal",rankNm: "노말", price: 1368000000},
@@ -350,7 +360,7 @@ const WeeklyBossDatas: I_BossContents[] = [
         ]
     },
     {
-        BossId: "boss26",
+        BossId: "boss27",
         BossNm: "유피테르",
         Ranks: [
             {rankId: "normal", rankNm: "노말", price: 1615000000},

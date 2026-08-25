@@ -242,7 +242,7 @@ export function BossToDoItem({
             </div>
             <div className={styles.todoitem_children_area}>
                 <div className={styles.bosstodoitem_bossdata_area}>
-                    <img src={`/imgs/boss_monsters/${contents_id}.png`} />
+                    <img src={`/imgs/boss_monsters/${contents_name}.png`} />
                     <span>
                         {little_name ? little_name : null}
                         {!little_name ? contents_name : null}

@@ -52,7 +52,7 @@ export default function IncomeItemBox({incomedatas}: I_IncomeItemBoxProps){
 
                     return (
                         <div key={`${data.bossid}`} className="bossincomeitem">
-                            <img src={`imgs/boss_monsters/${data.bossid}.png`} />
+                            <img src={`imgs/boss_monsters/${data.bossname}.png`} />
                             <RankIcon bossrank={data.bossrank} />
                         </div>
                     );

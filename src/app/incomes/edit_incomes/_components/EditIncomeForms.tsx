@@ -209,7 +209,7 @@ export default function EditIncomeList({charname, ocid, charimgurl}: I_EditIncom
                     return Convert;
                 });
 
-                const DefaultCheckboxData = TargetData.incomeData.map((data) => data.bossid);
+                const DefaultCheckboxData = TargetData.incomeData.map((data) => data.bossname);
                 const DefaultRadioboxdata = Object.fromEntries(
                     TargetData.incomeData.map((data) => [data.bossid, data.bossrank])
                 );
@@ -265,9 +265,9 @@ export default function EditIncomeList({charname, ocid, charimgurl}: I_EditIncom
                                     <div className={styles.incomeforms_todoitem_bossdatabox}>
                                         <input 
                                             type="checkbox"
-                                            value={bossdata.BossId}
+                                            value={bossdata.BossNm}
                                             disabled={DisabledCondition}
-                                            defaultChecked={watch("BossToDoCheckbox").includes(bossdata.BossId)}
+                                            defaultChecked={watch("BossToDoCheckbox").includes(bossdata.BossNm)}
                                             {...register("BossToDoCheckbox", {
                                                 onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
                                                     const {
@@ -279,7 +279,7 @@ export default function EditIncomeList({charname, ocid, charimgurl}: I_EditIncom
                                                 }
                                             })}
                                         />
-                                        <img src={`/imgs/boss_monsters/${bossdata.BossId}.png`} />
+                                        <img src={`/imgs/boss_monsters/${bossdata.BossNm}.png`} />
                                     </div>
                                     <FormProvider {...FormMethods}>
                                         {

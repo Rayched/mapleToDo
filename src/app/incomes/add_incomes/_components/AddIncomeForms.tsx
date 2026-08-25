@@ -228,7 +228,7 @@ export default function AddBossIncomeForms({charname, ocid, charimg, worldname}:
                                                 }
                                             })}
                                         />
-                                        <img src={`/imgs/boss_monsters/${data.BossId}.png`} />
+                                        <img src={`/imgs/boss_monsters/${data.BossNm}.png`} />
                                     </div>
                                     <FormProvider {...FormMethods}>
                                         {
