@@ -7,6 +7,7 @@ import { BookmarkStore } from "@/stores/BookmarkStore";
 import { BossContentsType, ContentsType } from "@/game_datas/Fetchs";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import QuickSchedules from "./QuickSchedules";
 
 const BookmarkItemDeleteBtn = styled.div`
     width: 17px;
@@ -74,6 +75,11 @@ export default function BookmarkItem({
                     </div>
                 </div>
                 <div className={styles.bookmarkitem_scheduledatabox}>
+                    {
+                        !isEditMode ? (
+                            <QuickSchedules />
+                        ) : null
+                    }
                     {
                         isEditMode ? (
                             <div className={styles.bookmarkitem_scheduledatabox_header}>

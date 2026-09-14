@@ -71,27 +71,7 @@ export default function BookmarkList({AllScheduleData}: I_BookmarkList){
     }, []);
 
     useEffect(() => {
-        if(!Bookmarknames){
-            return;
-        };
-        const GetCharnames = Bookmarks.map((bookmark) => {
-            const isIncludes = Bookmarknames.includes(bookmark.charname);
-
-            if(isIncludes){
-                return null;
-            } else {
-                return bookmark.charname;
-            }
-        }).filter((data) => data !== null);
-
-        setCookie(
-            "mapletodos_bookmarknames",
-            JSON.stringify([...Bookmarknames, ...GetCharnames]),
-            {
-                path: "/chartodos",
-                maxAge: 60 * 60 * 24 * 30, //30일
-            }
-        )
+        console.log(AllScheduleData);
     }, []);
 
     return (
@@ -120,7 +100,7 @@ export default function BookmarkList({AllScheduleData}: I_BookmarkList){
                 </div>
             </div>
             <main className={styles.bookmarklist_mains}>
-                <div className={styles.bookmarklist_container}>
+                <div className={styles.bookmarkitem_list}>
                     {
                         Bookmarks.map((data, idx) => {
                             const GetWorldData = WorldDatas.find((worlds) => worlds.worldNm === data.worldname);

@@ -1,8 +1,9 @@
 /*chartodos page, 메할일 목록 container*/
 .bookmarklist_container {
-    width: 90%;
+    width: 95%;
     max-width: 710px;
     height: 100%;
+    padding-bottom: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -23,7 +24,7 @@
     border-top-left-radius: inherit;
     span {
         width: 40%;
-        margin-left: 5px;
+        margin-left: 10px;
         font-size: 17px;
         font-weight: bold;
     }
@@ -58,7 +59,7 @@
     align-items: center;
 }
 
-.bookmarklist_container {
+.bookmarkitem_list {
     width: 95%;
     height: auto;
     min-height: 250px;

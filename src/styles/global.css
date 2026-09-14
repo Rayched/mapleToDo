@@ -47,10 +47,13 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
 	line-height: 1;
+	user-select: none;
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
 	font-family: "Noto-Sans", "Noto-Sans-Kr";
+	width: 100dvw;
+	min-height: 100dvh;
 }
 ol, ul {
 	list-style: none;

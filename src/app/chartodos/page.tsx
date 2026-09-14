@@ -8,10 +8,11 @@ import { RequestCookies } from "next/dist/compiled/@edge-runtime/cookies";
 
 export default async function Chartodos_page(){
     const CookieStore = await cookies();
-    const Charnames = CookieStore.get("mapletodos_bookmarknames")?.value;
+    const Charnames = CookieStore.get("mapletodos_bookmarknames");
 
     if(Charnames){
-        const Test = JSON.parse(decodeURIComponent(Charnames));
+        const Test = JSON.parse(Charnames.value);
+        console.log(Test);
         const GetScheduleDatas = await GetBookmarksSchduleData(Test);
 
         return (
